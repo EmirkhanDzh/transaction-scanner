@@ -1,5 +1,6 @@
-package com.notiprice.notiprice.bot.telegram
+package com.notiprice.telegram
 
+import com.notiprice.scarper.ScarperBot
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
@@ -14,7 +15,7 @@ class MyFirstBot : TelegramLongPollingBot() {
         if(update.hasMessage() && update.message.hasText()) {
             val message = SendMessage()
             message.chatId = update.message.chatId.toString()
-            message.text = "your input: ${update.message.text}"
+            message.text = ScarperBot.get(update.message.text)
 
             execute(message)
         }
