@@ -13,7 +13,6 @@ class Scarper {
                 "&url=$urlToScrape"
 
         val doc: Document = Jsoup.connect(apiEndPoint).get()
-        val result = Xsoup.compile(xpath).evaluate(doc).get()
-        return ""
+        return Xsoup.compile(xpath).evaluate(doc).elements.first()?.textNodes()?.first()?.text() ?: ""
     }
 }
