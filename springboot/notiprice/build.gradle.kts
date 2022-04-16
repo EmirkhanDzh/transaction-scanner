@@ -27,6 +27,8 @@ dependencies {
     implementation("org.jsoup:jsoup:1.14.3")
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
     implementation("us.codecraft:xsoup:0.3.2")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.1.21")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
 
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
