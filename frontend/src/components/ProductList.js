@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import * as myConstants from './Constants'
+import * as myConstants from './Constants';
 
 
 const ProductList = (props) => {
@@ -13,7 +13,7 @@ const ProductList = (props) => {
 
     const getSearchTerm = (e) => {
         props.searchHandler(e.target.value)
-    }
+    };
 
     return (
         <div className="main">
