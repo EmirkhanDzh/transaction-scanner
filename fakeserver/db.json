@@ -1,0 +1,16 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Нуржигит",
+            "price": 90.99,
+            "url": "adidas.com"
+        },
+        {
+            "id": 2,
+            "name": "Бакытбек",
+            "price": 90.99,
+            "url": "adidas.com"
+        }
+    ]
+}

@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import {HOME} from "./Constants"
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AddProduct = (props) => {
+const EditProduct = (props) => {
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const [name, setName] = useState("")
-    const [url, setUrl] = useState("")
+    const [name, setName] = useState(location.state.product.name);
+    const [url, setUrl] = useState(location.state.product.url);
 
-    const addProduct = (e) => {
+    const updateProduct = (e) => {
         e.preventDefault();
         if (name === "" || url === "") {
             alert("All fields are mandotory!")
             return
         };
 
-        props.addProductHandler(
+        props.updateProductHandler(
             {
+                id: location.state.product.id,
                 name: name,
                 price: 90.99,
                 url: "adidas.com"
@@ -31,8 +33,8 @@ const AddProduct = (props) => {
 
     return (
         <div className="main">
-            <h2>Add a product</h2>
-            <form className="ui form" onSubmit={addProduct}>
+            <h2>Edit the product</h2>
+            <form className="ui form" onSubmit={updateProduct}>
                 <div className="field">
                     <label>Name</label>
                     <input type="text" name="name" placeholder="input there the product's name"
@@ -45,7 +47,7 @@ const AddProduct = (props) => {
                         value={url}
                         onChange={(e) => setUrl(e.target.value)} />
                 </div>
-                <button className="ui button blue">Add</button>
+                <button className="ui button blue">Save</button>
             </form>
         </div>
     );
@@ -105,4 +107,4 @@ const AddProduct = (props) => {
 //     }
 // }
 
-export default AddProduct;
+export default EditProduct;
