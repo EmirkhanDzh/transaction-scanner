@@ -5,15 +5,15 @@ import Header from './Header';
 import AddProduct from './AddProduct';
 import ProductList from './ProductList';
 import * as myConstants from './Constants'
+import ProductDetail from "./ProductDetails";
 
 
-function App() {
+function App(props) {
   const PRODUCTS_LS_KEY = "PRODUCTS_LS_KEY";
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const retrievedProducts = JSON.parse(localStorage.getItem(PRODUCTS_LS_KEY))
-    console.log(retrievedProducts)
     if (retrievedProducts) {
       setProducts(retrievedProducts)
     }
@@ -24,12 +24,13 @@ function App() {
   }, [products]);
 
   const addProductHandler = (product) => {
-    console.log(product)
+    // console.log(product)
     setProducts([...products, product])
+
   };
 
   const removeProductHandler = (id) => {
-    console.log(id)
+    // console.log(id)
     const newProducts = products.filter((product) => { return product.id !== id })
     setProducts(newProducts)
   };
@@ -39,8 +40,19 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route path={myConstants.HOME} exact element={<ProductList products={products} removeProductHandler={removeProductHandler} />} />
-          <Route path={myConstants.ADD_PRODUCT} element={<AddProduct addProductHandler={addProductHandler} />} />
+          <Route path={myConstants.HOME} exact
+            element={<ProductList products={products}
+              removeProductHandler={removeProductHandler} />}
+          />
+          <Route
+            path={myConstants.ADD_PRODUCT}
+            element={<AddProduct
+              addProductHandler={addProductHandler} />}
+          />
+          <Route
+            path="/product/:id"
+            element={<ProductDetail {...props}/>}
+          />
         </Routes>
       </Router>
     </div>

@@ -1,12 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import { ROUTES } from "./AddProduct"
 import * as myConstants from './Constants'
 
 
 const ProductList = (props) => {
-    console.log(props);
     const renderProducts = props.products.map((product) => {
         return (
             <ProductCard product={product} key={product.id} removeProductHandler={props.removeProductHandler} />
