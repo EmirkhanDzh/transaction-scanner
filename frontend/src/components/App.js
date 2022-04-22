@@ -13,8 +13,8 @@ import EditProduct from "./EditProduct";
 function App(props) {
   const PRODUCTS_LS_KEY = "PRODUCTS_LS_KEY";
   const [products, setProducts] = useState([]);
-
-
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searchResult, setSearchResult] = useState([])
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -50,7 +50,7 @@ function App(props) {
     }
     setProducts([...products, response.data])
   };
-  
+
   const updateProductHandler = async (product) => {
     console.log(`going to edit the product ${JSON.stringify(product)}`)
 
@@ -77,14 +77,34 @@ function App(props) {
     setProducts(newProducts)
   };
 
+  const searchHandler = (searchT) => {
+    setSearchTerm(searchT);
+    if (searchT !== "") {
+      const resultProducts = products.filter((product) => {
+        return Object
+          .values(product)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchT.toLowerCase())
+      });
+
+      setSearchResult(resultProducts);
+    } else {
+      setSearchResult(products);
+    }
+  }
+
   return (
     <div className='ui container'>
       <Router>
         <Header />
         <Routes>
           <Route path={myConstants.HOME} exact
-            element={<ProductList products={products}
-              removeProductHandler={removeProductHandler} />}
+            element={
+              <ProductList products={searchTerm.length < 1 ? products : searchResult}
+                removeProductHandler={removeProductHandler}
+                term={searchTerm}
+                searchHandler={searchHandler} />}
           />
           <Route
             path={myConstants.ADD_PRODUCT}

@@ -11,6 +11,10 @@ const ProductList = (props) => {
         );
     });
 
+    const getSearchTerm = (e) => {
+        props.searchHandler(e.target.value)
+    }
+
     return (
         <div className="main">
             <h3 className="bottomMargin">
@@ -20,8 +24,20 @@ const ProductList = (props) => {
                 </Link>
 
             </h3>
+            <div className="ui search">
+                <div className="ui icon input">
+                    <input
+                        type="text"
+                        placeholder="Search Product"
+                        className="prompt"
+                        value={props.term}
+                        onChange={getSearchTerm} />
+                    <i className="search icon" />
+
+                </div>
+            </div>
             <div className="ui celled list">
-                {renderProducts}
+                {renderProducts.length > 0 ? renderProducts : "No products available"}
             </div>
         </div>
 
