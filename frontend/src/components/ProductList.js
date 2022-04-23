@@ -20,7 +20,7 @@ const ProductList = (props) => {
             <h3 className="bottomMargin">
                 Your products
                 <Link to={myConstants.ADD_PRODUCT}>
-                    <button className="ui button blue right">Add Product</button>
+                    <button className="ui button blue right bottomMargin">Add Product</button>
                 </Link>
 
             </h3>

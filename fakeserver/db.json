@@ -1,16 +1,12 @@
 {
-    "products": [
-        {
-            "id": 1,
-            "name": "Нуржигит",
-            "price": 90.99,
-            "url": "adidas.com"
-        },
-        {
-            "id": 2,
-            "name": "Бакытбек",
-            "price": 90.99,
-            "url": "adidas.com"
-        }
-    ]
+  "products": [
+    {
+      "id": 10,
+      "name": "кроссовки PUMA x Helly Hansen RS-Connect",
+      "price": 90.99,
+      "url": "https://street-beat.ru/d/krossovki-puma-38233601/",
+      "xpath": "/html/body/article/div[1]/div/div/section/div[4]/div/div/span",
+      "currency": "RUB"
+    }
+  ]
 }

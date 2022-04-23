@@ -10,10 +10,12 @@
 .ui.search .input {
   width: 100%;
 }
+
 .ui.search .prompt {
   border-radius: 0px;
 }
-.ui.input > input {
+
+.ui.input>input {
   border: 1.5px solid rgba(34, 36, 38, 0.15);
 }
 
@@ -30,10 +32,26 @@ i.icon {
 .right {
   float: right !important;
 }
+
 .center-div {
   text-align: center;
 }
 
-.bottomMargin{
-  margin-bottom: 1em;
+.bottomMargin {
+  margin-bottom: 0.5em !important;
+}
+
+.rightMargin {
+  margin-right: 0.5em !important;
+}
+
+.hor {
+  display: flex;
+  flex-direction: row;
+}
+
+.likeColumn {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
