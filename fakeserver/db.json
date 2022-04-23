@@ -7,6 +7,94 @@
       "url": "https://street-beat.ru/d/krossovki-puma-38233601/",
       "xpath": "/html/body/article/div[1]/div/div/section/div[4]/div/div/span",
       "currency": "RUB"
+    },
+    {
+      "id": 11,
+      "name": "Нуржигит",
+      "price": 90.99,
+      "url": "vk.com",
+      "xpath": "vk.com",
+      "currency": "vk.com"
+    },
+    {
+      "id": 12,
+      "name": "dd",
+      "price": 90.99,
+      "url": "jn",
+      "xpath": "nii",
+      "currency": "n"
+    },
+    {
+      "id": 13,
+      "name": "eeef",
+      "price": 90.99,
+      "url": "dfefe",
+      "xpath": "efef",
+      "currency": "efefe"
+    },
+    {
+      "id": 14,
+      "name": "dfds",
+      "price": 90.99,
+      "url": "efe",
+      "xpath": "efef",
+      "currency": "feefef"
+    },
+    {
+      "id": 15,
+      "name": "efef",
+      "price": 90.99,
+      "url": "eefef",
+      "xpath": "effef",
+      "currency": "feef"
+    },
+    {
+      "id": 16,
+      "name": "efefef",
+      "price": 90.99,
+      "url": "efefe",
+      "xpath": "fefef",
+      "currency": "efefe"
+    },
+    {
+      "id": 17,
+      "name": "efef",
+      "price": 90.99,
+      "url": "efef",
+      "xpath": "efef",
+      "currency": "feefef"
+    },
+    {
+      "id": 18,
+      "name": "efeffe",
+      "price": 90.99,
+      "url": "efef",
+      "xpath": "effefeef",
+      "currency": "feefe"
+    },
+    {
+      "id": 19,
+      "name": "eefeff",
+      "price": 90.99,
+      "url": "feefef",
+      "xpath": "feefefe",
+      "currency": "efefefe"
+    },
+    {
+      "id": 20,
+      "name": "wddw",
+      "price": 90.99,
+      "url": "wdwd",
+      "xpath": "eefef",
+      "currency": "efefe"
+    },
+    {
+      "id": 21,
+      "name": "wdwd",
+      "price": 90.99,
+      "url": "wdwd",
+      "xpath": "feef",
+      "currency": "feefe"
     }
   ]
 }

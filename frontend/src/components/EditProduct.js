@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {HOME} from "./Constants"
+import { PRODUCT } from "./Constants"
 import { useLocation, useNavigate } from "react-router-dom";
 
 const EditProduct = (props) => {
@@ -20,9 +20,9 @@ const EditProduct = (props) => {
         };
 
         // Retrieve prize and currency by xpath it will be done in the next iter
-        const price =  90.99
+        const price = 90.99
 
-        props.updateProductHandler(
+        const isUpdated = props.updateProductHandler(
             {
                 id: location.state.product.id,
                 name: name,
@@ -32,12 +32,21 @@ const EditProduct = (props) => {
                 currency: currency
             }
         );
-        
+
+        if (isUpdated) {
+            location.state.product.name = name
+            location.state.product.price = price
+            location.state.product.url = url
+            location.state.product.xpath = xpath
+            location.state.product.currency = currency
+        }
+
         setName("")
         setUrl("")
         setXpath("")
         setCurrency("")
-        navigate(HOME)
+
+        navigate(`${PRODUCT}/${location.state.product.id}`, { state:{ product: location.state.product } })
     }
 
 

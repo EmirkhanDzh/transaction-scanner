@@ -7,7 +7,7 @@ import * as myConstants from './Constants';
 const ProductList = (props) => {
     const renderProducts = props.products.map((product) => {
         return (
-            <ProductCard product={product} key={product.id} removeProductHandler={props.removeProductHandler} />
+            <ProductCard product={product} key={product.id} />
         );
     });
 

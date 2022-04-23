@@ -19,6 +19,8 @@ function App(props) {
   useEffect(() => {
     const getAllProducts = async () => {
       const response = await api.get("/products")
+      const response1 = await api.get("/products/10")
+      console.log(response1)
 
       if (response.status !== 200) {
         alert("Couldn't retrieve products")
@@ -57,13 +59,14 @@ function App(props) {
     const response = await api.put(`/products/${product.id}`, product)
     if (response.status !== 200) {
       alert("Couldn't update the product")
-      return
+      return false
     }
     setProducts(
       products.map((product) => {
         return product.id === response.data.id ? { ...response.data } : product;
       })
     );
+    return true
   };
 
   const removeProductHandler = async (id) => {
@@ -102,7 +105,6 @@ function App(props) {
           <Route path={myConstants.HOME} exact
             element={
               <ProductList products={searchTerm.length < 1 ? products : searchResult}
-                removeProductHandler={removeProductHandler}
                 term={searchTerm}
                 searchHandler={searchHandler} />}
           />
@@ -113,7 +115,7 @@ function App(props) {
           />
           <Route
             path="/product/:id"
-            element={<ProductDetail {...props} />}
+            element={<ProductDetail {...props} removeProductHandler={removeProductHandler} />}
           />
           <Route
             path={`${myConstants.EDIT_PRODUCT}/:id`}
