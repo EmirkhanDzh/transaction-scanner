@@ -17,7 +17,7 @@ body {
 }
 
 .ui.search .prompt {
-  border-radius: 0px;
+  border-radius: 0.28571429rem;
 }
 
 .ui.input>input {
@@ -40,6 +40,10 @@ i.icon {
 
 .center-div {
   text-align: center;
+}
+
+.ui.button {
+  margin: 0;
 }
 
 .bottomMargin {

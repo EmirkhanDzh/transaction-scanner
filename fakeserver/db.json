@@ -87,14 +87,6 @@
       "url": "wdwd",
       "xpath": "eefef",
       "currency": "efefe"
-    },
-    {
-      "id": 21,
-      "name": "wdwd",
-      "price": 90.99,
-      "url": "wdwd",
-      "xpath": "feef",
-      "currency": "feefe"
     }
   ]
 }
