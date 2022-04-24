@@ -39,6 +39,8 @@ const EditProduct = (props) => {
             location.state.product.url = url
             location.state.product.xpath = xpath
             location.state.product.currency = currency
+        } else {
+            alert("Couldn't update")
         }
 
         setName("")

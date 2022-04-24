@@ -19,8 +19,8 @@ function App(props) {
   useEffect(() => {
     const getAllProducts = async () => {
       const response = await api.get("/products")
-      const response1 = await api.get("/products/10")
-      console.log(response1)
+      // const response1 = await api.get("/products/10")
+      // console.log(response1)
 
       if (response.status !== 200) {
         alert("Couldn't retrieve products")
@@ -46,7 +46,7 @@ function App(props) {
       ...product
     }
     const response = await api.post("/products", request)
-    if (response.status !== 201) {
+    if (response.status !== 200 && response.status !== 201) {
       alert("Couldn't add the product")
       return
     }

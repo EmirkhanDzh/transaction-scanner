@@ -1,8 +1,10 @@
 package com.notiprice.notiprice.product
 
 data class Product(
-    val id: Long,
-    val title: String,
-    val price: Double,
-    val url: String
+    var id: Long,
+    var name: String,
+    var price: Double,
+    var currency: String,
+    var url: String,
+    var xpath: String
 )
