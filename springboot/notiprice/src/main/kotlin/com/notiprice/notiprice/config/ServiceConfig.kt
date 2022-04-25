@@ -5,15 +5,18 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.time.Duration
 
 @Configuration
+@EnableScheduling
 class ServiceConfig
-    //: WebMvcConfigurer
 {
+    /**
+     * "Instances of the JdbcTemplate class are threadsafe once configured"
+     * https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/jdbc.html
+     */
     @Bean
     fun restTemplate(
         builder: RestTemplateBuilder,
@@ -25,7 +28,14 @@ class ServiceConfig
         .setReadTimeout(Duration.ofSeconds(readTimeout))
         .build()
 
-//    override fun addCorsMappings(registry: CorsRegistry) {
-//        registry.addMapping("/**").allowedMethods("*")
+
+//    @Bean
+//    fun telegramBotApi(): MyFirstBot {
+//
+//        val botsApi = TelegramBotsApi(DefaultBotSession::class.java)
+//        val bot = MyFirstBot()
+//        botsApi.registerBot(bot)
+//
+//        return bot
 //    }
 }

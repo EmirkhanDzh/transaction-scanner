@@ -1,6 +1,5 @@
 package com.notiprice.telegram
 
-import com.notiprice.scarper.getValueByXpath
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
@@ -16,8 +15,13 @@ class MyFirstBot : TelegramLongPollingBot() {
             val message = SendMessage()
             message.chatId = update.message.chatId.toString()
             val lines = update.message.text.split(" ")
-            message.text = getValueByXpath(url = lines[0], xpath = lines[1]) ?: "error"
+//            message.text = getValueByXpath(url = lines[0], xpath = lines[1]) ?: "error"
+
+            message.text = message.chatId
+
             execute(message)
         }
     }
+
+
 }

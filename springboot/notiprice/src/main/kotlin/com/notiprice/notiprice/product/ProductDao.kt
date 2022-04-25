@@ -27,6 +27,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
             ps.setString(3, product.currency)
             ps.setString(4, product.url)
             ps.setString(5, product.xpath)
+            ps.setString(6, product.priceStr)
             ps
         }, keyHolder)
 
@@ -51,6 +52,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
                 rs.getString(currency),
                 rs.getString(url),
                 rs.getString(xpath),
+                rs.getString(priceStr),
             )
         }.firstOrNull()
     }
@@ -64,8 +66,9 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
                     "$currency = ?, " +
                     "$url = ?, " +
                     "$xpath = ? " +
+                    "$priceStr = ? " +
                     "where $id = ?",
-            product.name, product.price, product.currency, product.url, product.xpath, product.id
+            product.name, product.price, product.currency, product.url, product.xpath, product.priceStr, product.id
         )
 
         require(numOfUpdates == 1)
@@ -93,6 +96,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
             rs.getString(currency),
             rs.getString(url),
             rs.getString(xpath),
+            rs.getString(priceStr),
         )
     }
 
@@ -104,6 +108,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         const val currency = "currency"
         const val url = "url"
         const val xpath = "xpath"
+        const val priceStr = "price_str"
     }
 
     /*

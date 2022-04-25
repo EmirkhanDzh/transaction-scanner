@@ -7,5 +7,6 @@ CREATE TABLE products
     price DOUBLE PRECISION,
     currency VARCHAR(255),
     url    VARCHAR(1000),
-    xpath    VARCHAR(1000)
+    xpath    VARCHAR(1000),
+    price_str VARCHAR(255)
 );
