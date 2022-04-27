@@ -8,16 +8,21 @@ import ProductList from './ProductList';
 import * as myConstants from './Constants'
 import ProductDetail from "./ProductDetails";
 import EditProduct from "./EditProduct";
+import Auth from "./auth/Auth";
 
 
 function App(props) {
-  const PRODUCTS_LS_KEY = "PRODUCTS_LS_KEY";
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("")
   const [searchResult, setSearchResult] = useState([])
 
+  const [isAuth, setIsAuth] = useState(false)
+
   useEffect(() => {
     const getAllProducts = async () => {
+      if(!isAuth) {
+        return
+      }
       const response = await api.get("/products")
       // const response1 = await api.get("/products/10")
       // console.log(response1)
@@ -33,11 +38,15 @@ function App(props) {
 
     };
     getAllProducts();
-  }, []);
+  }, [isAuth]);
 
-  useEffect(() => {
-    localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
-  }, [products]);
+  // useEffect(() => {
+  //   localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
+  // }, [products]);
+
+  if(!isAuth) {
+    return (<Auth/>)
+  }
 
   const addProductHandler = async (product) => {
     console.log(`going to add the product ${JSON.stringify(product)}`)
@@ -96,6 +105,8 @@ function App(props) {
       setSearchResult(products);
     }
   }
+
+  
 
   return (
     <div className='ui container'>

@@ -20,7 +20,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         val numOfUpdates = jdbcTemplate.update({ connection: Connection ->
             val ps = connection
                 .prepareStatement(
-                    "insert into products ($name, $price, $currency, $url, $xpath) values (?, ?, ?, ?, ?)",
+                    "insert into products ($name, $price, $currency, $url, $xpath, $priceStr) values (?, ?, ?, ?, ?,?)",
                     Statement.RETURN_GENERATED_KEYS
                 )
             ps.setString(1, product.name)

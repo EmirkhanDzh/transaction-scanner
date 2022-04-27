@@ -22,17 +22,18 @@ class PriceScanner(
 //    @Value("\${process.product.limit}") val processProductLimit: Int,
 ) {
 
-    val products = listOf(
-        Product(
-            1,
-            "Рубашка H&M",
-            0.0,
-            "RUB",
-            "https://www.avito.ru/odintsovo/odezhda_obuv_aksessuary/rubashka_hm_2366591359",
-            "//*[@id=\"price-value\"]/span/span/span[1]",
-            ""
-        )
-    )
+    val products = emptyList<Product>()
+//        listOf(
+//        Product(
+//            1,
+//            "Рубашка H&M",
+//            0.0,
+//            "RUB",
+//            "https://www.avito.ru/odintsovo/odezhda_obuv_aksessuary/rubashka_hm_2366591359",
+//            "//*[@id=\"price-value\"]/span/span/span[1]",
+//            ""
+//        )
+//    )
 
     /**
      * Scanning db to find products to check
