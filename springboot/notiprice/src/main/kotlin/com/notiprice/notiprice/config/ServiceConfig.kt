@@ -27,15 +27,4 @@ class ServiceConfig
         .setConnectTimeout(Duration.ofSeconds(connectTimeout))
         .setReadTimeout(Duration.ofSeconds(readTimeout))
         .build()
-
-
-//    @Bean
-//    fun telegramBotApi(): MyFirstBot {
-//
-//        val botsApi = TelegramBotsApi(DefaultBotSession::class.java)
-//        val bot = MyFirstBot()
-//        botsApi.registerBot(bot)
-//
-//        return bot
-//    }
 }

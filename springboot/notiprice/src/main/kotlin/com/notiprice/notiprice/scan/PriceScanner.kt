@@ -1,10 +1,9 @@
 package com.notiprice.notiprice.scan
 
-import com.notiprice.notiprice.product.Product
-import com.notiprice.notiprice.product.ProductDao
+import com.notiprice.notiprice.entity.Product
+import com.notiprice.notiprice.repo.ProductDao
 import com.notiprice.scarper.getValueByXpath
 import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.Mutex
 import mu.KotlinLogging
 import org.springframework.http.ResponseEntity
 import org.springframework.scheduling.annotation.EnableScheduling
@@ -26,11 +25,11 @@ class PriceScanner(
     val products = listOf(
         Product(
             1,
-            "PUMA x Helly Hansen RS-Connect",
+            "Рубашка H&M",
             0.0,
             "RUB",
-            "https://vk.com/club199905316?w=wall-199905316_2",
-            "//*[@id=\"wpt-199905316_2\"]/div",
+            "https://www.avito.ru/odintsovo/odezhda_obuv_aksessuary/rubashka_hm_2366591359",
+            "//*[@id=\"price-value\"]/span/span/span[1]",
             ""
         )
     )

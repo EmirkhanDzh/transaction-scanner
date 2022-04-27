@@ -1,4 +1,6 @@
-package com.notiprice.notiprice.product
+package com.notiprice.notiprice.entity
+
+import com.notiprice.notiprice.dto.ProductDto
 
 data class Product(
     var id: Long = 0,
@@ -9,3 +11,5 @@ data class Product(
     var xpath: String,
     var priceStr: String = ""
 )
+
+fun Product.toDto() = ProductDto(id, name, price, currency, url, xpath, priceStr)

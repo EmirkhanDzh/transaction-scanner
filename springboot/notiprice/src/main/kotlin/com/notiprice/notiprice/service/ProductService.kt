@@ -1,7 +1,8 @@
-package com.notiprice.notiprice.product
+package com.notiprice.notiprice.service
 
+import com.notiprice.notiprice.entity.Product
+import com.notiprice.notiprice.repo.ProductDao
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
 
 @Service
 class ProductService(val productDao: ProductDao) {
