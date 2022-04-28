@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import "./Auth.css";
 
-function SignIn() {
+function SignIn(props) {
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState
     const onSubmit = (data) => {
         console.log(data);
+
+        props.login("ok")
     };
     console.log(errors);
     const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"

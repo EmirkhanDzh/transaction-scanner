@@ -4,12 +4,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import "./Auth.css";
 
-function SignUp() {
-    // const { register, handleSubmit, formState } = useForm();
-    // const { errors } = formState
+function SignUp(props) {
 
     const onSubmit = (data) => {
         console.log(data);
+        props.login("ok")
     };
 
     const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"

@@ -16,7 +16,9 @@ function App(props) {
   const [searchTerm, setSearchTerm] = useState("")
   const [searchResult, setSearchResult] = useState([])
 
-  const [isAuth, setIsAuth] = useState(false)
+  console.log(localStorage.getItem("token"))
+
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("token") !== null)
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -24,8 +26,6 @@ function App(props) {
         return
       }
       const response = await api.get("/products")
-      // const response1 = await api.get("/products/10")
-      // console.log(response1)
 
       if (response.status !== 200) {
         alert("Couldn't retrieve products")
@@ -44,8 +44,13 @@ function App(props) {
   //   localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
   // }, [products]);
 
+  const login = (token) => {
+    localStorage.setItem("token", token)
+    setIsAuth(true)
+  }
+
   if(!isAuth) {
-    return (<Auth/>)
+    return (<Auth login = {login}/>)
   }
 
   const addProductHandler = async (product) => {

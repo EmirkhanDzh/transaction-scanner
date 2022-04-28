@@ -1,7 +1,7 @@
 package com.notiprice.notiprice.scan
 
 import com.notiprice.notiprice.entity.Product
-import com.notiprice.notiprice.repo.ProductDao
+import com.notiprice.notiprice.dao.ProductDao
 import com.notiprice.scarper.getValueByXpath
 import kotlinx.coroutines.*
 import mu.KotlinLogging

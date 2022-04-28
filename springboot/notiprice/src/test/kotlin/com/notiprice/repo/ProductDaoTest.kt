@@ -2,7 +2,7 @@ package com.notiprice.repo
 
 
 import com.notiprice.notiprice.entity.Product
-import com.notiprice.notiprice.repo.ProductDao
+import com.notiprice.notiprice.dao.ProductDao
 import org.junit.jupiter.api.*
 
 import org.junit.jupiter.api.Assertions.*

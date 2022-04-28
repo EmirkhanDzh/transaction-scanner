@@ -1,7 +1,7 @@
 package com.notiprice.notiprice.service
 
 import com.notiprice.notiprice.entity.Product
-import com.notiprice.notiprice.repo.ProductDao
+import com.notiprice.notiprice.dao.ProductDao
 import org.springframework.stereotype.Service
 
 @Service
