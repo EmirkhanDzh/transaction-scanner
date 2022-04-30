@@ -7,7 +7,7 @@ function SignIn(props) {
     const onSubmit = (data) => {
         console.log(data);
 
-        props.login("ok")
+        props.login(data, "ok")
     };
     console.log(errors);
     const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"

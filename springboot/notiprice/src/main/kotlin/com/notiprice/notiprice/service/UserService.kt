@@ -15,6 +15,21 @@ class UserService(private val userDao: UserDao) {
         return userDao.findByIdOrNull(id) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
     }
 
+    fun getProductByUsername(username: String): User {
+        return userDao.findByUsernameOrNull(username) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
+    }
+
+    fun login(user: User): User {
+
+        val userDb = getProductByUsername(user.username)
+
+        if(user.username != userDb.password) {
+            throw IllegalArgumentException("No password is incorrect")
+        }
+
+        return user
+    }
+
     fun getAllProducts(): List<User> {
         return userDao.findAll()
     }

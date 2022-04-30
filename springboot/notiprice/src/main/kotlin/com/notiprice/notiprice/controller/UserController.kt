@@ -31,6 +31,11 @@ class UserController(val userService: UserService) {
         return userService.getAllProducts().map(User::toDto)
     }
 
+    @PostMapping("/login")
+    fun getProductByUsername(@RequestBody user: UserDto): UserDto {
+        return userService.login(user.toEntity()).toDto()
+    }
+
     @GetMapping("/{id}")
     fun getProductById(@PathVariable id: Long): UserDto {
         return userService.getProductById(id).toDto()

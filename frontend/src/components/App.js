@@ -12,24 +12,25 @@ import Auth from "./auth/Auth";
 
 
 function App(props) {
+  //const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("")
-  const [searchResult, setSearchResult] = useState([])
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
 
-  console.log(localStorage.getItem("token"))
+  console.log(localStorage.getItem("token"));
 
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("token") !== null)
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("token") !== null && localStorage.getItem("token") !== "");
 
   useEffect(() => {
     const getAllProducts = async () => {
-      if(!isAuth) {
-        return
+      if (!isAuth) {
+        return;
       }
       const response = await api.get("/products")
 
       if (response.status !== 200) {
-        alert("Couldn't retrieve products")
-        return
+        alert("Couldn't retrieve products");
+        return;
       }
 
       if (response.data) {
@@ -44,21 +45,45 @@ function App(props) {
   //   localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
   // }, [products]);
 
-  const login = (token) => {
+
+
+  const login = async (user, token) => {
+    
+    const response = await api.post(`/users/login`, user);
+
+    if(response.status != 200) {
+      alert("Cannot find the user")
+      return;
+    }
+    console.log(response.data)
     localStorage.setItem("token", token)
     setIsAuth(true)
+    //navigate("/")
   }
 
-  if(!isAuth) {
-    return (<Auth login = {login}/>)
+  const signUp = async (user) => {
+
+    console.log(`going to add the user ${JSON.stringify(user)}`);
+    const response = await api.post("/users", user);
+
+    if (response.status !== 200 && response.status !== 201) {
+      alert("Couldn't add a new user")
+      return
+    };
+
+    login(user, "ok")
+  }
+
+  if (!isAuth) {
+    return (<Auth login={login} signUp={signUp} />)
   }
 
   const addProductHandler = async (product) => {
-    console.log(`going to add the product ${JSON.stringify(product)}`)
+    console.log(`going to add the product ${JSON.stringify(product)}`);
     const request = {
       id: (products.length + 10),
       ...product
-    }
+    };
     const response = await api.post("/products", request)
     if (response.status !== 200 && response.status !== 201) {
       alert("Couldn't add the product")
@@ -111,7 +136,7 @@ function App(props) {
     }
   }
 
-  
+
 
   return (
     <div className='ui container'>

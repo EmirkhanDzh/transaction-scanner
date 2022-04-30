@@ -39,6 +39,21 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
         }.firstOrNull()
     }
 
+    fun findByUsernameOrNull(name: String): User? {
+
+        return jdbcTemplate.query(
+            "select * from $users where $username = ?",
+            arrayOf<Any>(name),
+            intArrayOf(Types.VARCHAR)
+        ) { rs: ResultSet, _: Int ->
+            User(
+                rs.getLong(chatId),
+                rs.getString(username),
+                rs.getString(password)
+            )
+        }.firstOrNull()
+    }
+
     fun update(user: User) {
 
         val numOfUpdates = jdbcTemplate.update(

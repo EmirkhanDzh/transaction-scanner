@@ -1,14 +1,24 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import "./Auth.css";
 
 function SignUp(props) {
 
-    const onSubmit = (data) => {
-        console.log(data);
-        props.login("ok")
+    const {id} = useParams();
+    console.log(id)
+    const navigate = useNavigate();
+
+    const onSubmit = async (data) => {
+        const user = {
+            chatId: id,
+            username: data.username,
+            password: data.password
+        }
+        await props.signUp(user, "ok")
+        navigate("/")
+        window.location.reload();
     };
 
     const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
@@ -31,11 +41,6 @@ function SignUp(props) {
 
     console.log(errors);
 
-    function onFormSubmit(data) {
-        console.log(JSON.stringify(data, null, 4))
-        return false
-    }
-
     return (
         <div className="authContainer">
             <p className="invisible">Prrr</p>
@@ -52,14 +57,12 @@ function SignUp(props) {
                                 required: "Username is required",
                                 minLength: {
                                     value: 5,
-                                    message: "Password must be more than 5 characters",
+                                    message: "Username must be more than 5 characters",
                                 }
                             })}
                         />
                     </div>
                     <p className="authP">{errors?.username?.message}</p>
-
-
 
                     <div className="field">
                         <label>Password</label>
