@@ -1,6 +1,5 @@
 package com.notiprice.notiprice.scan
 
-import com.notiprice.notiprice.entity.Product
 import com.notiprice.notiprice.dao.ProductDao
 import com.notiprice.scarper.getValueByXpath
 import kotlinx.coroutines.*
@@ -18,11 +17,10 @@ private val logger = KotlinLogging.logger {}
 @Component
 class PriceScanner(
     private val productDao: ProductDao,
-    private val restTemplate: RestTemplate,
-//    @Value("\${process.product.limit}") val processProductLimit: Int,
+    private val restTemplate: RestTemplate
 ) {
 
-    val products = emptyList<Product>()
+//    val products = emptyList<Product>()
 //        listOf(
 //        Product(
 //            1,
@@ -43,16 +41,23 @@ class PriceScanner(
 
         logger.info { "Staring scanning" }
 
-
-
+        val products = productDao.findToCheck()
 
         products.map {
             launch(Dispatchers.IO) {
-
+                logger.info { it.toString() }
                 val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)
-//                val currentPrice = null
-                if (currentPrice == null || currentPrice == it.priceStr || currentPrice == "") {
-                    logger.info { "Cannot get object or price wasn't changed: \n current price = $currentPrice" }
+
+                if (currentPrice == null || currentPrice == "") {
+                    logger.info { "Cannot get price from the object" }
+                    return@launch
+                }
+
+                if (currentPrice == it.priceStr) {
+
+                    logger.info { "Price wasn't changed: $currentPrice" }
+                    it.lastCheck = System.currentTimeMillis()
+                    productDao.update(it)
                     return@launch
                 }
 
@@ -61,32 +66,17 @@ class PriceScanner(
                     String::class.java
                 )
 
-                if(response.statusCode.is2xxSuccessful) {
-
+                if (response.statusCode.is2xxSuccessful) {
+                    it.lastCheck = System.currentTimeMillis()
                     it.priceStr = currentPrice
+                    productDao.update(it)
+
                     logger.info { "message was sent to telegram: new price: $currentPrice" }
 
                 } else {
                     logger.info { "Cannot send message: new price: $currentPrice to " }
                 }
-
-
-//                mutex.withLock {
-//                    logger.info { "Trying to send message: new price: $currentPrice" }
-//                }
             }
         }.joinAll()
-
-        // select user_id, product_id as time from subscription where last_check + interval_in_seconds >= now()
-        // soring by last_check limit processProductLimit
-
-        // foreach products scarp price and if prices doesn't match notify the user and update last_check
     }
-
-//    @Scheduled(fixedDelay = 5, timeUnit = TimeUnit.SECONDS)
-//    fun test() = runBlocking {
-//        logger.info { "Staring testing!!!" }
-//    }
-
-
 }

@@ -9,7 +9,8 @@ data class Product(
     var currency: String,
     var url: String,
     var xpath: String,
-    var priceStr: String = ""
+    var priceStr: String = "",
+    var lastCheck: Long
 )
 
 fun Product.toDto() = ProductDto(id, name, price, currency, url, xpath, priceStr)

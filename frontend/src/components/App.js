@@ -45,19 +45,17 @@ function App(props) {
   //   localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
   // }, [products]);
 
-
-
   const login = async (user, token) => {
-    
+
     let response
 
     try {
       response = await api.post(`/users/login`, user);
-    }catch(err) {
+    } catch (err) {
       console.log(err)
     }
 
-    if(!response || response.status !== 200) {
+    if (!response || response.status !== 200) {
       alert("Please check your username and password")
       return;
     }
@@ -106,8 +104,8 @@ function App(props) {
       return false
     }
     setProducts(
-      products.map((product) => {
-        return product.id === response.data.id ? { ...response.data } : product;
+      products.map((p) => {
+        return p.id === product.id ? { ...product } : p;
       })
     );
     return true

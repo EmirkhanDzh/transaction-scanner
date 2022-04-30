@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 class ProductService(val productDao: ProductDao) {
 
     fun addProduct(product: Product): Product {
+        product.lastCheck = System.currentTimeMillis()
         return productDao.save(product)
     }
 

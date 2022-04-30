@@ -12,4 +12,4 @@ data class ProductDto(
     var priceStr: String = ""
 )
 
-fun ProductDto.toEntity() = Product(id, name, price, currency, url, xpath, priceStr)
+fun ProductDto.toEntity() = Product(id, name, price, currency, url, xpath, priceStr, 0L)

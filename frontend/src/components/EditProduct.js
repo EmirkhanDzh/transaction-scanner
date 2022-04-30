@@ -49,6 +49,7 @@ const EditProduct = (props) => {
         setCurrency("")
 
         navigate(`${PRODUCT}/${location.state.product.id}`, { state:{ product: location.state.product } })
+        
     }
 
 

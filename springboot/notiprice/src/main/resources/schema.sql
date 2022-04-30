@@ -8,7 +8,8 @@ CREATE TABLE products
     currency  VARCHAR(255),
     url       VARCHAR(1000),
     xpath     VARCHAR(1000),
-    price_str VARCHAR(255)
+    price_str VARCHAR(255),
+    last_check BIGINT
 );
 
 CREATE TABLE users

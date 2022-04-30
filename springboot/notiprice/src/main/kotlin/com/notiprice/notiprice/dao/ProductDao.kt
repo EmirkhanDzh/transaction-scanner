@@ -20,7 +20,9 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         val numOfUpdates = jdbcTemplate.update({ connection: Connection ->
             val ps = connection
                 .prepareStatement(
-                    "insert into $products ($name, $price, $currency, $url, $xpath, $priceStr) values (?, ?, ?, ?, ?,?)",
+                    "insert into $products " +
+                            "($name, $price, $currency, $url, $xpath, $priceStr, $lastCheck) " +
+                            "values (?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
                 )
             ps.setString(1, product.name)
@@ -29,6 +31,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
             ps.setString(4, product.url)
             ps.setString(5, product.xpath)
             ps.setString(6, product.priceStr)
+            ps.setLong(7, product.lastCheck)
             ps
         }, keyHolder)
 
@@ -54,6 +57,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
                 rs.getString(url),
                 rs.getString(xpath),
                 rs.getString(priceStr),
+                rs.getLong(lastCheck),
             )
         }.firstOrNull()
     }
@@ -66,10 +70,18 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
                     "$price = ?, " +
                     "$currency = ?, " +
                     "$url = ?, " +
-                    "$xpath = ? " +
-                    "$priceStr = ? " +
+                    "$xpath = ?, " +
+                    "$priceStr = ?, " +
+                    "$lastCheck = ? " +
                     "where $id = ?",
-            product.name, product.price, product.currency, product.url, product.xpath, product.priceStr, product.id
+            product.name,
+            product.price,
+            product.currency,
+            product.url,
+            product.xpath,
+            product.priceStr,
+            product.lastCheck,
+            product.id
         )
 
         require(numOfUpdates == 1)
@@ -98,7 +110,29 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
             rs.getString(url),
             rs.getString(xpath),
             rs.getString(priceStr),
+            rs.getLong(lastCheck)
         )
+    }
+
+    fun findToCheck(timeInterval: Int = 8 * 1000, limit: Int = 1000): List<Product> {
+        val now = System.currentTimeMillis()
+
+        //TODO: NOW() from SQL
+        return jdbcTemplate.query(
+            "select * from $products where $lastCheck + $timeInterval <= $now " +
+                    "order by $lastCheck limit $limit"
+        ) { rs: ResultSet, _: Int ->
+            Product(
+                rs.getLong(id),
+                rs.getString(name),
+                rs.getDouble(price),
+                rs.getString(currency),
+                rs.getString(url),
+                rs.getString(xpath),
+                rs.getString(priceStr),
+                rs.getLong(lastCheck)
+            )
+        }
     }
 
     companion object {
@@ -110,5 +144,6 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         const val url = "url"
         const val xpath = "xpath"
         const val priceStr = "price_str"
+        const val lastCheck = "last_check"
     }
 }
