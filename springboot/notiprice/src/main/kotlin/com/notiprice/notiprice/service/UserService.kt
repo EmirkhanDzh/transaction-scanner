@@ -23,8 +23,8 @@ class UserService(private val userDao: UserDao) {
 
         val userDb = getProductByUsername(user.username)
 
-        if(user.username != userDb.password) {
-            throw IllegalArgumentException("No password is incorrect")
+        if(user.password != userDb.password) {
+            throw IllegalArgumentException("Password is incorrect")
         }
 
         return user

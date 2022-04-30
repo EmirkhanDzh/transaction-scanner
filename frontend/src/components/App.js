@@ -49,16 +49,21 @@ function App(props) {
 
   const login = async (user, token) => {
     
-    const response = await api.post(`/users/login`, user);
+    let response
 
-    if(response.status != 200) {
-      alert("Cannot find the user")
+    try {
+      response = await api.post(`/users/login`, user);
+    }catch(err) {
+      console.log(err)
+    }
+
+    if(!response || response.status !== 200) {
+      alert("Please check your username and password")
       return;
     }
     console.log(response.data)
     localStorage.setItem("token", token)
     setIsAuth(true)
-    //navigate("/")
   }
 
   const signUp = async (user) => {
