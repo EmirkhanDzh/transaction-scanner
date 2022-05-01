@@ -16,9 +16,13 @@ function SignUp(props) {
             username: data.username,
             password: data.password
         }
-        await props.signUp(user, "ok")
-        navigate("/")
-        window.location.reload();
+        if(await props.signUp(user, "ok")) {
+            navigate("/");
+        } else {
+            window.location.reload();
+        }
+        
+        
     };
 
     const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"

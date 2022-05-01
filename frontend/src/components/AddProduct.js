@@ -17,7 +17,7 @@ const AddProduct = (props) => {
             return
         };
         // Retrieve prize and currency by xpath it will be done in the next iter
-        const price =  90.99
+        const price =  0.00
 
         props.addProductHandler(
             {

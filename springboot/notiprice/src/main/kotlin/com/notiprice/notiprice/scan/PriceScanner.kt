@@ -1,6 +1,7 @@
 package com.notiprice.notiprice.scan
 
 import com.notiprice.notiprice.dao.ProductDao
+import com.notiprice.notiprice.dao.SubscriptionDao
 import com.notiprice.scarper.getValueByXpath
 import kotlinx.coroutines.*
 import mu.KotlinLogging
@@ -17,6 +18,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class PriceScanner(
     private val productDao: ProductDao,
+    private val subscriptionDao: SubscriptionDao,
     private val restTemplate: RestTemplate
 ) {
 
@@ -61,21 +63,27 @@ class PriceScanner(
                     return@launch
                 }
 
-                val response: ResponseEntity<String> = restTemplate.getForEntity(
-                    "https://api.telegram.org/bot5119272724:AAGaZ5I0olOEpDAZIqT-TXTJiJqBNxfpb_w/sendMessage?chat_id=992338299&text=$currentPrice",
-                    String::class.java
-                )
+                val chatIds = subscriptionDao.findChatIdsByProductId(it.id)
 
-                if (response.statusCode.is2xxSuccessful) {
-                    it.lastCheck = System.currentTimeMillis()
-                    it.priceStr = currentPrice
-                    productDao.update(it)
+                for (chatId in chatIds) {
 
-                    logger.info { "message was sent to telegram: new price: $currentPrice" }
+                    val response: ResponseEntity<String> = restTemplate.getForEntity(
+                        "https://api.telegram.org/bot5119272724:AAGaZ5I0olOEpDAZIqT-TXTJiJqBNxfpb_w/" +
+                                "sendMessage?chat_id=$chatId&text=$currentPrice",
+                        String::class.java
+                    )
 
-                } else {
-                    logger.info { "Cannot send message: new price: $currentPrice to " }
+                    if (response.statusCode.is2xxSuccessful) {
+                        logger.info { "message was sent to telegram: new price: $currentPrice" }
+                    } else {
+                        logger.info { "Cannot send message: new price: $currentPrice to " }
+                    }
                 }
+
+                it.lastCheck = System.currentTimeMillis()
+                it.priceStr = currentPrice
+                productDao.update(it)
+
             }
         }.joinAll()
     }

@@ -1,6 +1,7 @@
 package com.notiprice.notiprice.dao
 
 import com.notiprice.notiprice.entity.Subscription
+import com.notiprice.notiprice.entity.User
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 import java.sql.ResultSet
@@ -58,6 +59,16 @@ class SubscriptionDao(private val jdbcTemplate: JdbcTemplate) {
         require(numOfUpdates == 1)
     }
 
+    fun findChatIdsByProductId(productId: Long): List<Long> {
+
+        return jdbcTemplate.query(
+            "select * from $subscriptions where $productId = ?",
+            arrayOf<Any>(productId),
+            intArrayOf(Types.BIGINT)
+        ) { rs: ResultSet, _: Int ->
+            rs.getLong(chatId)
+        }
+    }
 
     @Deprecated("Only for developing")
     fun findAll(): List<Subscription> = jdbcTemplate.query(
@@ -68,6 +79,7 @@ class SubscriptionDao(private val jdbcTemplate: JdbcTemplate) {
             rs.getLong(productId),
         )
     }
+
 
     companion object {
         const val subscriptions = "subscriptions"

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*
 class ProductController(val productService: ProductService) { //ToDo: Dto
 
     @PostMapping
-    fun addProduct(@RequestBody product: ProductDto): ProductDto {
-        return productService.addProduct(product.toEntity()).toDto()
+    fun addProduct(@RequestBody product: ProductDto, @RequestParam username: String): ProductDto {
+        return productService.addProduct(product.toEntity(), username).toDto()
     }
 
     @PutMapping("/{id}")

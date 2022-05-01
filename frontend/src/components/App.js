@@ -12,7 +12,6 @@ import Auth from "./auth/Auth";
 
 
 function App(props) {
-  //const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
@@ -59,9 +58,10 @@ function App(props) {
       alert("Please check your username and password")
       return;
     }
-    console.log(response.data)
-    localStorage.setItem("token", token)
-    setIsAuth(true)
+    console.log(response.data);
+    localStorage.setItem("token", token);
+    localStorage.setItem("username", user.username);
+    setIsAuth(true);
   }
 
   const signUp = async (user) => {
@@ -71,10 +71,11 @@ function App(props) {
 
     if (response.status !== 200 && response.status !== 201) {
       alert("Couldn't add a new user")
-      return
+      return false;
     };
 
-    login(user, "ok")
+    return true;
+    // login(user, "ok")
   }
 
   if (!isAuth) {
@@ -87,7 +88,8 @@ function App(props) {
       id: (products.length + 10),
       ...product
     };
-    const response = await api.post("/products", request)
+    const username = localStorage.getItem("username")
+    const response = await api.post(`/products?username=${username}`, request)
     if (response.status !== 200 && response.status !== 201) {
       alert("Couldn't add the product")
       return
