@@ -54,11 +54,20 @@ i.icon {
   margin-right: 0.5rem !important;
 }
 
+.backAndNext {
+  display: flex;
+  align-items: center;
+}
+
 .commands {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  width: 100%;
+}
+
+.validateImg {
   width: 100%;
 }
 
