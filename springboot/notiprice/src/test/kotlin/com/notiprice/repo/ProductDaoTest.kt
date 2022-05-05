@@ -48,7 +48,7 @@ class ProductDaoTest(@Autowired val productDao: ProductDao) {
     @Test
     @Order(4)
     fun findAll() {
-        val resList = productDao.findAll()
+        val resList = productDao.findAllUserProducts()
 
         assertEquals(1, resList.size)
         assertEquals(product, resList.first())
@@ -59,7 +59,7 @@ class ProductDaoTest(@Autowired val productDao: ProductDao) {
     fun delete() {
         assertDoesNotThrow { productDao.delete(product.id) }
 
-        val resList = productDao.findAll()
+        val resList = productDao.findAllUserProducts()
         assertEquals(0, resList.size)
     }
 

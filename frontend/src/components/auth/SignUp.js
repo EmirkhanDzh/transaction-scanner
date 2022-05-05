@@ -15,18 +15,21 @@ function SignUp(props) {
             chatId: id,
             username: data.username,
             password: data.password
-        }
+        };
+
         if(await props.signUp(user, "ok")) {
             navigate("/");
         } else {
+
+            alert("Cannot connect to server");
             window.location.reload();
         }
         
         
     };
 
-    const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
-    const TELEGRAM_BOT = "http://t.me/nur312_bot"
+    // const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
+    // const TELEGRAM_BOT = "http://t.me/nur312_bot"
 
     const formSchema = Yup.object().shape({
         password: Yup.string()
@@ -35,11 +38,11 @@ function SignUp(props) {
         passwordConfirm: Yup.string()
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password')], 'Passwords must and should match'),
-    })
+    });
 
     const validationOpt = { resolver: yupResolver(formSchema) }
 
-    const { register, handleSubmit, reset, formState } = useForm(validationOpt)
+    const { register, handleSubmit, formState } = useForm(validationOpt)
 
     const { errors } = formState
 

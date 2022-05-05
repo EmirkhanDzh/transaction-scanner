@@ -1,4 +1,4 @@
-package com.notiprice.notiprice.scan
+package com.notiprice.notiprice.scanner
 
 import com.notiprice.notiprice.dao.ProductDao
 import com.notiprice.notiprice.dao.SubscriptionDao
@@ -21,19 +21,6 @@ class PriceScanner(
     private val subscriptionDao: SubscriptionDao,
     private val restTemplate: RestTemplate
 ) {
-
-//    val products = emptyList<Product>()
-//        listOf(
-//        Product(
-//            1,
-//            "Рубашка H&M",
-//            0.0,
-//            "RUB",
-//            "https://www.avito.ru/odintsovo/odezhda_obuv_aksessuary/rubashka_hm_2366591359",
-//            "//*[@id=\"price-value\"]/span/span/span[1]",
-//            ""
-//        )
-//    )
 
     /**
      * Scanning db to find products to check

@@ -15,34 +15,37 @@ class ProductController(val productService: ProductService) { //ToDo: Dto
 
     @PostMapping
     fun addProduct(@RequestBody product: ProductDto, @RequestParam username: String): ProductDto {
+
         return productService.addProduct(product.toEntity(), username).toDto()
     }
 
     @PutMapping("/{id}")
     fun updateProduct(@PathVariable id: Long, @RequestBody product: ProductDto) {
+
         productService.updateProduct(product.toEntity())
     }
 
     @DeleteMapping("/{id}")
     fun deleteProduct(@PathVariable id: Long) {
+
         productService.deleteProduct(id)
     }
 
     @GetMapping
-    fun getProducts(): List<ProductDto> {
-        return productService.getAllProducts().map(Product::toDto)
+    fun getProducts(@RequestParam username: String): List<ProductDto> {
+
+        return productService.getAllUserProducts(username).map(Product::toDto)
     }
 
     @GetMapping("/{id}")
     fun getProductById(@PathVariable id: Long): ProductDto {
+
         return productService.getProductById(id).toDto()
     }
 
     @GetMapping("/xpath")
     fun getProductXpathByUrl(@RequestParam url: String): String {
 
-
-        //return "//*[@id=\"price-value\"]/span/span/span[1]"
         return productService.getProductXpathByUrl(url)
     }
 

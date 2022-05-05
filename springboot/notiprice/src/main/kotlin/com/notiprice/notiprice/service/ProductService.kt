@@ -16,6 +16,11 @@ class ProductService(val productDao: ProductDao, val subscriptionDao: Subscripti
 
     @Transactional
     fun addProduct(product: Product, username: String): Product {
+
+        if(product.url.contains("?")) {
+            product.url = product.url.split("?").first()
+        }
+        // ToDo: вынести название в subscriptions, добавлять, если нет продуктов с таким же url и xpath
         product.lastCheck = System.currentTimeMillis()
         val savedProduct = productDao.save(product)
 
@@ -31,8 +36,8 @@ class ProductService(val productDao: ProductDao, val subscriptionDao: Subscripti
         return productDao.findByIdOrNull(id) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
     }
 
-    fun getAllProducts(): List<Product> {
-        return productDao.findAll()
+    fun getAllUserProducts(username: String): List<Product> {
+        return productDao.findAllUserProducts(username)
     }
 
     fun updateProduct(product: Product) {
@@ -68,6 +73,5 @@ class ProductService(val productDao: ProductDao, val subscriptionDao: Subscripti
             }
         }
         return ""
-        return "//*[@id=\"price-value\"]/span/span/span[1]"
     }
 }

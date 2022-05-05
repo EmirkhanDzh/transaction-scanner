@@ -21,6 +21,13 @@ class ControllerExceptionHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleIllegalArgumentException(e: NoSuchElementException): Map<String, String> {
+        log.warn(e.message, e)
+        return errorResponse(e)
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleResourceAccessException(e: ResourceAccessException): Map<String, String> {
         log.warn(e.message, e)
         return errorResponse(e)

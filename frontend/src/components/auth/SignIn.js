@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { TELEGRAM_BOT } from "../Constants";
 import "./Auth.css";
 
 function SignIn(props) {
@@ -6,12 +7,9 @@ function SignIn(props) {
     const { errors } = formState
     const onSubmit = (data) => {
         console.log(data);
-
         props.login(data, "ok")
     };
-    console.log(errors);
-    const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
-    const TELEGRAM_BOT = "http://t.me/nur312_bot"
+    // const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
     return (
         <div className="authContainer">
             <p className="invisible">Prrr</p>

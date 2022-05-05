@@ -29,6 +29,7 @@ class MyFirstBot : TelegramLongPollingBot() {
     private fun handleSignUp(chatId: String) {
         val message = SendMessage()
         message.chatId = chatId
+        // TODO: вынести в проперти файл
         message.text = "Please go to http://localhost:3000/sign-up/$chatId"
         execute(message)
     }

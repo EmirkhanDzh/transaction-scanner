@@ -13,7 +13,7 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
 
 
     fun save(user: User): User {
-        val keyHolder: KeyHolder = GeneratedKeyHolder()
+        // val keyHolder: KeyHolder = GeneratedKeyHolder()
 
         val numOfUpdates = jdbcTemplate.update(
             "insert into users ($chatId, $username, $password) values (?, ?, ?)",

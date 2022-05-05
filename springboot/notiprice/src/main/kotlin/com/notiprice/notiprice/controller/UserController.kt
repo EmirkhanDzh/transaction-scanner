@@ -12,32 +12,44 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/users")
 class UserController(val userService: UserService) {
     @PostMapping
-    fun addProduct(@RequestBody user: UserDto): UserDto {
-        return userService.addProduct(user.toEntity()).toDto()
+    fun addUser(@RequestBody user: UserDto): UserDto {
+
+        return userService.addUser(user.toEntity()).toDto()
     }
 
     @PutMapping("/{id}")
-    fun updateProduct(@PathVariable id: Long, @RequestBody user: UserDto) {
+    fun updateUser(@PathVariable id: Long, @RequestBody user: UserDto) {
+
         userService.updateProduct(user.toEntity())
     }
 
     @DeleteMapping("/{id}")
-    fun deleteProduct(@PathVariable id: Long) {
+    fun deleteUser(@PathVariable id: Long) {
+
         userService.deleteProduct(id)
     }
 
     @GetMapping
-    fun getProducts(): List<UserDto> {
-        return userService.getAllProducts().map(User::toDto)
+    fun getUsers(): List<UserDto> {
+
+        return userService.getAllUsers().map(User::toDto)
     }
 
     @PostMapping("/login")
-    fun getProductByUsername(@RequestBody user: UserDto): UserDto {
+    fun login(@RequestBody user: UserDto): UserDto {
+
         return userService.login(user.toEntity()).toDto()
     }
 
+    @GetMapping("/get")
+    fun getUserByUsername(@RequestParam username: String): UserDto {
+
+        return userService.getUserByUsername(username).toDto()
+    }
+
     @GetMapping("/{id}")
-    fun getProductById(@PathVariable id: Long): UserDto {
+    fun getUserById(@PathVariable id: Long): UserDto {
+
         return userService.getProductById(id).toDto()
     }
 }

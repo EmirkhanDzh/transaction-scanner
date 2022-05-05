@@ -98,10 +98,11 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         require(numOfUpdates == 1)
     }
 
-
-    @Deprecated("Only for developing")
-    fun findAll(): List<Product> = jdbcTemplate.query(
-        "select * from $products"
+    fun findAllUserProducts(username: String): List<Product> = jdbcTemplate.query(
+        "select * from $products join ${SubscriptionDao.subscriptions} on " +
+                "$products.$id = ${SubscriptionDao.subscriptions}.${SubscriptionDao.productId} join ${UserDao.users} on " +
+                "${UserDao.users}.${UserDao.chatId} = ${SubscriptionDao.subscriptions}.${SubscriptionDao.chatId} " +
+                "where ${UserDao.users}.${UserDao.username} = ?", username
     ) { rs: ResultSet, _: Int ->
         Product(
             rs.getLong(id),
@@ -136,7 +137,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         }
     }
 
-    fun getXpathByUrl(baseUrl: String) : List<String> {
+    fun getXpathByUrl(baseUrl: String): List<String> {
         // select city, max(cnt) as popular_city from (select city, count(CustomerID) as cnt from Customers group by city)
 
         // select xpath, max(cnt) from (select xpath, count(id) as cnt from products where url = $url group by xpath)
@@ -146,7 +147,7 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         return jdbcTemplate.query(
             "select $xpath, count(id) as cnt from products where $url like ? group by $xpath order by cnt desc",
             "%$baseUrl%"
-        ){ rs: ResultSet, _: Int ->
+        ) { rs: ResultSet, _: Int ->
             rs.getString(xpath)
         }
     }

@@ -12,20 +12,34 @@ import Auth from "./auth/Auth";
 
 
 function App(props) {
+
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("username") && localStorage.getItem("token") && localStorage.getItem("userId"));
 
-  console.log(localStorage.getItem("token"));
+  isAuth && api
+    .get(`/users/get?username=${localStorage.getItem("username")}`)
+    .then((response) => {
+      if (response.status !== 200) {
 
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("token") !== null && localStorage.getItem("token") !== "");
+        throw new Error("user doesn't exist");
+      }
+    })
+    .catch(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("userId");
+      setIsAuth(false);
+    });
 
   useEffect(() => {
     const getAllProducts = async () => {
       if (!isAuth) {
         return;
       }
-      const response = await api.get("/products")
+      
+      const response = await api.get(`/products?username=${localStorage.getItem("username")}`)
 
       if (response.status !== 200) {
         alert("Couldn't retrieve products");
@@ -60,21 +74,33 @@ function App(props) {
     }
     console.log(response.data);
     localStorage.setItem("token", token);
-    localStorage.setItem("username", user.username);
+    localStorage.setItem("username", response.data.username);
+    localStorage.setItem("userId", response.data.id);
     setIsAuth(true);
   }
 
   const signUp = async (user) => {
 
     console.log(`going to add the user ${JSON.stringify(user)}`);
-    const response = await api.post("/users", user);
 
-    if (response.status !== 200 && response.status !== 201) {
-      alert("Couldn't add a new user")
-      return false;
-    };
+    return await api.post("/users", user)
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          alert("Couldn't add a new user")
+          return false;
+        };
+        return true;
+      }).catch((error) => {
+        console.log(error);
+      });
+    // const response = await api.post("/users", user);
 
-    return true;
+    // if (response.status !== 200 && response.status !== 201) {
+    //   alert("Couldn't add a new user")
+    //   return false;
+    // };
+
+    // return true;
     // login(user, "ok")
   }
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(private val userDao: UserDao) {
 
-    fun addProduct(user: User): User {
+    fun addUser(user: User): User {
         return userDao.save(user)
     }
 
@@ -27,10 +27,10 @@ class UserService(private val userDao: UserDao) {
             throw IllegalArgumentException("Password is incorrect")
         }
 
-        return user
+        return userDb
     }
 
-    fun getAllProducts(): List<User> {
+    fun getAllUsers(): List<User> {
         return userDao.findAll()
     }
 
