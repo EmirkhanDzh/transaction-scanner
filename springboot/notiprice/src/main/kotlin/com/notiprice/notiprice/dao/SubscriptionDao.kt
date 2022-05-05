@@ -62,7 +62,7 @@ class SubscriptionDao(private val jdbcTemplate: JdbcTemplate) {
     fun findChatIdsByProductId(productId: Long): List<Long> {
 
         return jdbcTemplate.query(
-            "select * from $subscriptions where $productId = ?",
+            "select distinct $chatId from $subscriptions where $productId = ?",
             arrayOf<Any>(productId),
             intArrayOf(Types.BIGINT)
         ) { rs: ResultSet, _: Int ->

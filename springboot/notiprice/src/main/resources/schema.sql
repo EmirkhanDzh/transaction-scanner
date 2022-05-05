@@ -25,5 +25,5 @@ CREATE TABLE subscriptions
     product_id BIGINT,
     FOREIGN KEY(chat_id) REFERENCES users(chat_id),
     FOREIGN KEY(product_id) REFERENCES products(id),
-    PRIMARY KEY (chat_id, chat_id)
+    PRIMARY KEY (chat_id, product_id)
 );

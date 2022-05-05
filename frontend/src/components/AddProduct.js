@@ -51,7 +51,7 @@ const AddProduct = (props) => {
 
         try {
             const response = await api.get(`/products/xpath?url=${url}`)
-            if (response.status == 200) {
+            if (response.status === 200) {
                 serverXpath = response.data;
             }
         } catch (error) {
@@ -76,9 +76,29 @@ const AddProduct = (props) => {
         //navigate(HOME);
     }
 
-    const onConfirm = () => {
-        console.log("COnfirm");
-        navigate(HOME);
+    const onConfirm = (e) => {
+        e.preventDefault();
+        if (name === "" || url === "" || xpath === "") {
+            alert("All fields are mandotory!")
+            return
+        };
+        // Retrieve prize and currency by xpath it will be done in the next iter
+        const price = 0.00
+
+        props.addProductHandler(
+            {
+                name: name,
+                price: price,
+                url: url,
+                xpath: xpath,
+                currency: "RUB"
+            }
+        );
+
+        setName("")
+        setUrl("")
+        setXpath("")
+        navigate(HOME)
     }
 
     const onBack = () => {

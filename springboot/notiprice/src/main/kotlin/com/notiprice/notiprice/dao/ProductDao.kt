@@ -2,6 +2,7 @@ package com.notiprice.notiprice.dao
 
 import com.notiprice.notiprice.entity.Product
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.query
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.jdbc.support.KeyHolder
 import org.springframework.stereotype.Component
@@ -132,6 +133,21 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
                 rs.getString(priceStr),
                 rs.getLong(lastCheck)
             )
+        }
+    }
+
+    fun getXpathByUrl(baseUrl: String) : List<String> {
+        // select city, max(cnt) as popular_city from (select city, count(CustomerID) as cnt from Customers group by city)
+
+        // select xpath, max(cnt) from (select xpath, count(id) as cnt from products where url = $url group by xpath)
+
+        // "select $xpath, max(cnt) from (select $xpath, count(id) as cnt from products where $url like ? group by $xpath) as xpathtocnt"
+
+        return jdbcTemplate.query(
+            "select $xpath, count(id) as cnt from products where $url like ? group by $xpath order by cnt desc",
+            "%$baseUrl%"
+        ){ rs: ResultSet, _: Int ->
+            rs.getString(xpath)
         }
     }
 

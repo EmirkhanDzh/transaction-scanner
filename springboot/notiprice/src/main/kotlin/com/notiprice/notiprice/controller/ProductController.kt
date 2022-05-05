@@ -5,13 +5,8 @@ import com.notiprice.notiprice.dto.toEntity
 import com.notiprice.notiprice.entity.Product
 import com.notiprice.notiprice.entity.toDto
 import com.notiprice.notiprice.service.ProductService
-import org.apache.commons.io.IOUtils
-import org.jsoup.Jsoup
-import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import us.codecraft.xsoup.Xsoup
-
 
 @CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
@@ -46,32 +41,14 @@ class ProductController(val productService: ProductService) { //ToDo: Dto
     @GetMapping("/xpath")
     fun getProductXpathByUrl(@RequestParam url: String): String {
 
-        require(url.isNotBlank() && url.isNotEmpty())
-        return "//*[@id=\"price-value\"]/span/span/span[1]"
+
+        //return "//*[@id=\"price-value\"]/span/span/span[1]"
+        return productService.getProductXpathByUrl(url)
     }
-//
-//    @GetMapping(value = ["/img"], produces = [MediaType.IMAGE_PNG_VALUE])
-//    fun getScreenshotByXpath(@RequestParam url: String, @RequestParam xpath: String): ByteArray? {
-//
-//        println(xpath)
-//
-//
-//        val imgFile = ClassPathResource("img.png")
-//        return IOUtils.toByteArray(imgFile.inputStream)
-//    }
 
     @GetMapping(value = ["/html"], produces = [MediaType.TEXT_HTML_VALUE])
     fun getHtmlWithHighlightedElement(@RequestParam url: String, @RequestParam xpath: String): String {
-//        val tempUrl = "https://www.avito.ru/odintsovo/odezhda_obuv_aksessuary/rubashka_hm_2366591359"
-//        val tempXpath = "//*[@id=\"price-value\"]/span/span/span[1]"
 
-        val doc = Jsoup.connect(url).get()
-
-        Xsoup.compile(xpath)
-            .evaluate(doc)
-            .elements.first()
-            ?.attr("style", "background-color: #FFFF00")
-
-        return doc.toString()
+        return productService.getHtmlWithHighlightedElement(url, xpath)
     }
 }

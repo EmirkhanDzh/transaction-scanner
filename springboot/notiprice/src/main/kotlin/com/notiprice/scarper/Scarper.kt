@@ -13,12 +13,12 @@ fun getValueByXpath(url: String, xpath: String): String? =
 //        val apiEndPoint = "https://app.zenscrape.com/api/v1/get" +
 //                "?apikey=$apiKey" +
 //                "&url=$url"
-        val apiEndPoint = url
-            Xsoup.compile(xpath)
-            .evaluate(Jsoup.connect(apiEndPoint).get())
+
+        Xsoup.compile(xpath)
+            .evaluate(Jsoup.connect(url).get())
             .elements.first()
             ?.childNodes()?.first()
-            ?.outerHtml()
+            ?.outerHtml()?.replace("&nbsp;", " ")
     } catch (th: Throwable) {
         logger.warn { "Cannot read a value by this xpath" }
         null
