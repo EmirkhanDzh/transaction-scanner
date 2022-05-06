@@ -65,18 +65,26 @@ class PriceScanner(
         }.joinAll()
     }
 
-    suspend fun sendNotifications(product: Product, currentPrice: String) {
+    fun sendNotifications(product: Product, currentPrice: String) {
         val chatIds = subscriptionDao.findChatIdsByProductId(product.id)
 
         for (chatId in chatIds) {
 
-            val response: ResponseEntity<String> = withContext(Dispatchers.IO) {
+            var text = "Price of the product was changed" +
+                    "\nname ${product.name}" +
+                    "\nprice $currentPrice" +
+                    "\nurl ${product.url}"
+            //text = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
+            //println(text)
+//            text = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
+//            println(text)
+            val response: ResponseEntity<String> =
                 restTemplate.getForEntity(
                     "https://api.telegram.org/bot5119272724:AAGaZ5I0olOEpDAZIqT-TXTJiJqBNxfpb_w/" +
-                            "sendMessage?chat_id=$chatId&text=$currentPrice",
+                            "sendMessage?chat_id=$chatId&text=$text",
                     String::class.java
                 )
-            }
+
 
             if (response.statusCode.is2xxSuccessful) {
                 logger.info { "message was sent to telegram: new price: $currentPrice" }

@@ -9,7 +9,6 @@ function SignIn(props) {
         console.log(data);
         props.login(data, "ok")
     };
-    // const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
     return (
         <div className="authContainer">
             <p className="invisible">Prrr</p>

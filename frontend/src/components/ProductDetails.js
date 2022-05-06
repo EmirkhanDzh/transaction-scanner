@@ -6,9 +6,7 @@ import { EDIT_PRODUCT, HOME } from "./Constants";
 const ProductDetail = (props) => {
     const location = useLocation();
     const navigate = useNavigate();
-    //const { id } = useParams();
-    //console.log(id)
-    const { name, url, price, id, currency } = location.state.product;
+    const { name, url, id } = location.state.product;
 
     const remove = async () => {
         await props.removeProductHandler(id)
@@ -22,7 +20,6 @@ const ProductDetail = (props) => {
                 </div>
                 <div className="content">
                     <div className="header">{name}</div>
-                    <div className="description">{price + " " + currency}</div>
                     <div className="description"><a className = "" href={url} target="_blank" rel="noreferrer">{url}</a></div>
                 </div>
                 <div className="commands bottomMargin">

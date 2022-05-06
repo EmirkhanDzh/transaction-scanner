@@ -28,9 +28,6 @@ function SignUp(props) {
         
     };
 
-    // const TELEGRAM_USERNAME = "https://telegram.org/faq#q-what-are-usernames-how-do-i-get-one"
-    // const TELEGRAM_BOT = "http://t.me/nur312_bot"
-
     const formSchema = Yup.object().shape({
         password: Yup.string()
             .required('Password is required')

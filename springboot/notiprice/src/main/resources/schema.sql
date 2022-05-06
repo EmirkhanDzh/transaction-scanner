@@ -23,7 +23,7 @@ CREATE TABLE subscriptions
 (
     chat_id    BIGINT,
     product_id BIGINT,
-    FOREIGN KEY(chat_id) REFERENCES users(chat_id),
-    FOREIGN KEY(product_id) REFERENCES products(id),
+    FOREIGN KEY(chat_id) REFERENCES users(chat_id) ON DELETE CASCADE,
+    FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE CASCADE,
     PRIMARY KEY (chat_id, product_id)
 );

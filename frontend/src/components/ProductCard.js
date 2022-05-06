@@ -13,7 +13,7 @@ const ProductCard = (props) => {
                     state={{ product: props.product }}
                 >
                     <div className="header noNewLine">{props.product.name}</div>
-                    <div className="description">{props.product.price + " " + props.product.currency}</div>
+                    <div className="description">{props.product.priceStr}</div>
                 </Link>
             </div>
 

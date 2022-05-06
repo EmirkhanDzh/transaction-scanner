@@ -10,34 +10,7 @@ const AddProduct = (props) => {
     const [name, setName] = useState("");
     const [url, setUrl] = useState("");
     const [xpath, setXpath] = useState("");
-    //const [currency, setCurrency] = useState("");
     const [step, setStep] = useState(0);
-
-    // const addProduct = (e) => {
-    //     e.preventDefault();
-    //     if (name === "" || url === "" || xpath === "" || currency === "") {
-    //         alert("All fields are mandotory!")
-    //         return
-    //     };
-    //     // Retrieve prize and currency by xpath it will be done in the next iter
-    //     const price = 0.00
-
-    //     props.addProductHandler(
-    //         {
-    //             name: name,
-    //             price: price,
-    //             url: url,
-    //             xpath: xpath,
-    //             currency: currency
-    //         }
-    //     );
-
-    //     setName("")
-    //     setUrl("")
-    //     setXpath("")
-    //     setCurrency("")
-    //     navigate(HOME)
-    // }
 
     const onNameAndUrl = async () => {
         if (name === "" || url === "") {
@@ -83,15 +56,13 @@ const AddProduct = (props) => {
             return
         };
         // Retrieve prize and currency by xpath it will be done in the next iter
-        const price = 0.00
+        // const price = 0.00
 
         props.addProductHandler(
             {
                 name: name,
-                price: price,
                 url: url,
-                xpath: xpath,
-                currency: "RUB"
+                xpath: xpath
             }
         );
 
@@ -116,7 +87,7 @@ const AddProduct = (props) => {
                             <label>Name</label>
                             <input type="text" name="name" placeholder="input there the product's name"
                                 value={name}
-                                onChange={(e) => setName(e.target.value)} />
+                                onChange={(e) => setName(e.target.value.match(/[\p{L}\p{N}\s]/gu).join(''))} />
                         </div>
                         <div className="field">
                             <label>URL</label>
