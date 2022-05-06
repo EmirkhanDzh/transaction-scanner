@@ -71,6 +71,10 @@ i.icon {
   width: 100%;
 }
 
+.linkToShop {
+  width: 80% !important;
+}
+
 *::-webkit-scrollbar {
   width: 12px;
   background-color: #f0eded;

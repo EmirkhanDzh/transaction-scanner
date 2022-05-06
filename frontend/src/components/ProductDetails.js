@@ -20,7 +20,7 @@ const ProductDetail = (props) => {
                 </div>
                 <div className="content">
                     <div className="header">{name}</div>
-                    <div className="description"><a className = "" href={url} target="_blank" rel="noreferrer">{url}</a></div>
+                    <div className="description"><a className = "linkToShop" href={url} target="_blank" rel="noreferrer">{url.substring(0, 33)}...</a></div>
                 </div>
                 <div className="commands bottomMargin">
                     <i className="trash alternate outline icon" onClick={remove} />
