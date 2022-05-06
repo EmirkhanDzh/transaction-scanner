@@ -1,10 +1,9 @@
-package com.notiprice.notiprice.controller
+package com.notiprice.controller
 
-import com.notiprice.notiprice.dto.UserDto
-import com.notiprice.notiprice.dto.toEntity
-import com.notiprice.notiprice.entity.User
-import com.notiprice.notiprice.entity.toDto
-import com.notiprice.notiprice.service.UserService
+import com.notiprice.dto.UserDto
+import com.notiprice.dto.toEntity
+import com.notiprice.entity.toDto
+import com.notiprice.service.UserService
 import org.springframework.web.bind.annotation.*
 
 @CrossOrigin(origins = ["http://localhost:3000"])
@@ -27,12 +26,6 @@ class UserController(val userService: UserService) {
     fun deleteUser(@PathVariable id: Long) {
 
         userService.deleteProduct(id)
-    }
-
-    @GetMapping
-    fun getUsers(): List<UserDto> {
-
-        return userService.getAllUsers().map(User::toDto)
     }
 
     @PostMapping("/login")

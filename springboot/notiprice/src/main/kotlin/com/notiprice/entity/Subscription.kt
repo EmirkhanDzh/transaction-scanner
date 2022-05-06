@@ -1,4 +1,4 @@
-package com.notiprice.notiprice.entity
+package com.notiprice.entity
 
 data class Subscription(
     val chatId: Long,

@@ -1,10 +1,10 @@
-package com.notiprice.notiprice.controller
+package com.notiprice.controller
 
-import com.notiprice.notiprice.dto.ProductDto
-import com.notiprice.notiprice.dto.toEntity
-import com.notiprice.notiprice.entity.Product
-import com.notiprice.notiprice.entity.toDto
-import com.notiprice.notiprice.service.ProductService
+import com.notiprice.dto.ProductDto
+import com.notiprice.dto.toEntity
+import com.notiprice.entity.Product
+import com.notiprice.entity.toDto
+import com.notiprice.service.ProductService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 

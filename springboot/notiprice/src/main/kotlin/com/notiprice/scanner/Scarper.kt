@@ -1,4 +1,4 @@
-package com.notiprice.scarper
+package com.notiprice.scanner
 
 import mu.KotlinLogging
 import org.jsoup.Jsoup

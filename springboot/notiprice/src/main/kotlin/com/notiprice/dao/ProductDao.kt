@@ -1,6 +1,6 @@
-package com.notiprice.notiprice.dao
+package com.notiprice.dao
 
-import com.notiprice.notiprice.entity.Product
+import com.notiprice.entity.Product
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.query
 import org.springframework.jdbc.support.GeneratedKeyHolder
@@ -116,13 +116,13 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         )
     }
 
-    fun findToCheck(timeInterval: Int = 8 * 1000, limit: Int = 1000): List<Product> {
-        val now = System.currentTimeMillis()
+    fun findToCheck(timeInterval: Int, limit: Int): List<Product> {
 
-        //TODO: NOW() from SQL
         return jdbcTemplate.query(
-            "select * from $products where $lastCheck + $timeInterval <= $now " +
-                    "order by $lastCheck limit $limit"
+            "select * from $products where " +
+                    "$lastCheck + ? <= EXTRACT (EPOCH from CURRENT_TIMESTAMP)*1000000 " +
+                    "order by $lastCheck limit ?",
+            timeInterval * 1000, limit
         ) { rs: ResultSet, _: Int ->
             Product(
                 rs.getLong(id),
@@ -138,11 +138,6 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
     }
 
     fun getXpathByUrl(baseUrl: String): List<String> {
-        // select city, max(cnt) as popular_city from (select city, count(CustomerID) as cnt from Customers group by city)
-
-        // select xpath, max(cnt) from (select xpath, count(id) as cnt from products where url = $url group by xpath)
-
-        // "select $xpath, max(cnt) from (select $xpath, count(id) as cnt from products where $url like ? group by $xpath) as xpathtocnt"
 
         return jdbcTemplate.query(
             "select $xpath, count(id) as cnt from products where $url like ? group by $xpath order by cnt desc",

@@ -1,4 +1,4 @@
-package com.notiprice.notiprice.exception
+package com.notiprice.exception
 
 import org.slf4j.LoggerFactory
 import org.springframework.http.client.ClientHttpResponse

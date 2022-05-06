@@ -1,6 +1,6 @@
-package com.notiprice.notiprice.config
+package com.notiprice.config
 
-import com.notiprice.notiprice.exception.RestTemplateResponseErrorHandler
+import com.notiprice.exception.RestTemplateResponseErrorHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean

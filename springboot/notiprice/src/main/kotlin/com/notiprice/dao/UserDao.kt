@@ -1,9 +1,7 @@
-package com.notiprice.notiprice.dao
+package com.notiprice.dao
 
-import com.notiprice.notiprice.entity.User
+import com.notiprice.entity.User
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.support.GeneratedKeyHolder
-import org.springframework.jdbc.support.KeyHolder
 import org.springframework.stereotype.Component
 import java.sql.ResultSet
 import java.sql.Types
@@ -13,7 +11,6 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
 
 
     fun save(user: User): User {
-        // val keyHolder: KeyHolder = GeneratedKeyHolder()
 
         val numOfUpdates = jdbcTemplate.update(
             "insert into users ($chatId, $username, $password) values (?, ?, ?)",
@@ -75,18 +72,6 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
         )
 
         require(numOfUpdates == 1)
-    }
-
-
-    @Deprecated("Only for developing")
-    fun findAll(): List<User> = jdbcTemplate.query(
-        "select * from $users"
-    ) { rs: ResultSet, _: Int ->
-        User(
-            rs.getLong(chatId),
-            rs.getString(username),
-            rs.getString(password)
-        )
     }
 
     companion object {

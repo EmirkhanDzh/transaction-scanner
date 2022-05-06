@@ -1,4 +1,4 @@
-package com.notiprice.notiprice
+package com.notiprice
 
 import com.notiprice.telegram.MyFirstBot
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -10,7 +10,17 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 class NotipriceApplication
 
 fun main(args: Array<String>) {
+
+    val context = runApplication<NotipriceApplication>(*args)
+
     val botsApi = TelegramBotsApi(DefaultBotSession::class.java)
-    botsApi.registerBot(MyFirstBot())
-    runApplication<NotipriceApplication>(*args)
+    botsApi.registerBot(
+        MyFirstBot(
+            context.environment.getProperty("bot.token")!!,
+            context.environment.getProperty("bot.username")!!,
+            context.environment.getProperty("notiprice.url")!!
+        )
+    )
 }
+
+

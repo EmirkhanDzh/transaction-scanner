@@ -1,7 +1,6 @@
-package com.notiprice.notiprice.dao
+package com.notiprice.dao
 
-import com.notiprice.notiprice.entity.Subscription
-import com.notiprice.notiprice.entity.User
+import com.notiprice.entity.Subscription
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 import java.sql.ResultSet

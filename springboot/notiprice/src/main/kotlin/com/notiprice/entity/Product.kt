@@ -1,6 +1,6 @@
-package com.notiprice.notiprice.entity
+package com.notiprice.entity
 
-import com.notiprice.notiprice.dto.ProductDto
+import com.notiprice.dto.ProductDto
 
 data class Product(
     var id: Long = 0,

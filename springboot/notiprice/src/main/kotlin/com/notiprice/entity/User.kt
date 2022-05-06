@@ -1,6 +1,6 @@
-package com.notiprice.notiprice.entity
+package com.notiprice.entity
 
-import com.notiprice.notiprice.dto.UserDto
+import com.notiprice.dto.UserDto
 
 data class User(
     val chatId: Long,

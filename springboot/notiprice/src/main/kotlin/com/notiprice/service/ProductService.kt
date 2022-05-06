@@ -1,10 +1,10 @@
-package com.notiprice.notiprice.service
+package com.notiprice.service
 
-import com.notiprice.notiprice.entity.Product
-import com.notiprice.notiprice.dao.ProductDao
-import com.notiprice.notiprice.dao.SubscriptionDao
-import com.notiprice.notiprice.entity.Subscription
-import com.notiprice.scarper.getValueByXpath
+import com.notiprice.entity.Product
+import com.notiprice.dao.ProductDao
+import com.notiprice.dao.SubscriptionDao
+import com.notiprice.entity.Subscription
+import com.notiprice.scanner.getValueByXpath
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

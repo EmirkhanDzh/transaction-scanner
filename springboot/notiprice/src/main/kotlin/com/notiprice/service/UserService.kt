@@ -1,7 +1,7 @@
-package com.notiprice.notiprice.service
+package com.notiprice.service
 
-import com.notiprice.notiprice.dao.UserDao
-import com.notiprice.notiprice.entity.User
+import com.notiprice.dao.UserDao
+import com.notiprice.entity.User
 import org.springframework.stereotype.Service
 
 @Service
@@ -28,10 +28,6 @@ class UserService(private val userDao: UserDao) {
         }
 
         return userDb
-    }
-
-    fun getAllUsers(): List<User> {
-        return userDao.findAll()
     }
 
     fun updateProduct(user: User) {

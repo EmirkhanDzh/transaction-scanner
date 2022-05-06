@@ -1,5 +1,6 @@
 package com.notiprice.scarper
 
+import com.notiprice.scanner.getValueByXpath
 import org.junit.jupiter.api.Test
 
 
