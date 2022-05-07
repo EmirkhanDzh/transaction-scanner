@@ -6,15 +6,16 @@ import com.notiprice.entity.toDto
 import com.notiprice.service.UserService
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["http://localhost:3000"])
+//@CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
 @RequestMapping("/users")
 class UserController(val userService: UserService) {
-    @PostMapping
-    fun addUser(@RequestBody user: UserDto): UserDto {
 
-        return userService.addUser(user.toEntity()).toDto()
-    }
+//    @PostMapping
+//    fun addUser(@RequestBody user: UserDto): UserDto {
+//
+//        return userService.addUser(user.toEntity()).toDto()
+//    }
 
     @PutMapping("/{id}")
     fun updateUser(@PathVariable id: Long, @RequestBody user: UserDto) {
@@ -28,11 +29,11 @@ class UserController(val userService: UserService) {
         userService.deleteProduct(id)
     }
 
-    @PostMapping("/login")
-    fun login(@RequestBody user: UserDto): UserDto {
-
-        return userService.login(user.toEntity()).toDto()
-    }
+//    @PostMapping("/login")
+//    fun login(@RequestBody user: UserDto): UserDto {
+//
+//        return userService.login(user.toEntity()).toDto()
+//    }
 
     @GetMapping("/get")
     fun getUserByUsername(@RequestParam username: String): UserDto {

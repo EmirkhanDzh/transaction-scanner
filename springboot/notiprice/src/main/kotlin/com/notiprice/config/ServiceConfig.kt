@@ -6,12 +6,19 @@ import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.config.http.SessionCreationPolicy
+import com.notiprice.config.jwt.JwtFilter
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.client.RestTemplate
 import java.time.Duration
 
 @Configuration
 @EnableScheduling
-class ServiceConfig
+@EnableWebSecurity
+class ServiceConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAdapter()
 {
     /**
      * "Instances of the JdbcTemplate class are threadsafe once configured"
@@ -27,4 +34,21 @@ class ServiceConfig
         .setConnectTimeout(Duration.ofSeconds(connectTimeout))
         .setReadTimeout(Duration.ofSeconds(readTimeout))
         .build()
+
+    override fun configure(http: HttpSecurity?) {
+        http!!.httpBasic().disable().csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().authorizeRequests()
+            .antMatchers("/products*").hasRole("USER")
+            .antMatchers("/users*").hasRole("USER")
+            .antMatchers("/auth*").permitAll()
+            .and()
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+
+    }
+//    @Bean
+//    fun passwordEncoder() : PasswordEncoder {
+//
+//        return BCryptPasswordEncoder()
+//    }
 }

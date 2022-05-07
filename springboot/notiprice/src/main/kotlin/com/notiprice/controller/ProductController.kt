@@ -8,7 +8,7 @@ import com.notiprice.service.ProductService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["http://localhost:3000"])
+//@CrossOrigin(origins = ["http://localhost:3000"])
 @RestController
 @RequestMapping("/products")
 class ProductController(val productService: ProductService) { //ToDo: Dto

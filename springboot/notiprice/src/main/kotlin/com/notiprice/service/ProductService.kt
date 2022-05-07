@@ -12,12 +12,16 @@ import us.codecraft.xsoup.Xsoup
 import java.net.URL
 
 @Service
-class ProductService(val productDao: ProductDao, val subscriptionDao: SubscriptionDao, val userService: UserService) {
+class ProductService(
+    val productDao: ProductDao,
+    val subscriptionDao: SubscriptionDao,
+    val userService: UserService
+) {
 
     @Transactional
     fun addProduct(product: Product, username: String): Product {
 
-        if(product.url.contains("?")) {
+        if (product.url.contains("?")) {
             product.url = product.url.split("?").first()
         }
         // ToDo: вынести название в subscriptions, добавлять, если нет продуктов с таким же url и xpath
@@ -33,7 +37,8 @@ class ProductService(val productDao: ProductDao, val subscriptionDao: Subscripti
     }
 
     fun getProductById(id: Long): Product {
-        return productDao.findByIdOrNull(id) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
+        return productDao.findByIdOrNull(id)
+            ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
     }
 
     fun getAllUserProducts(username: String): List<Product> {
@@ -66,9 +71,9 @@ class ProductService(val productDao: ProductDao, val subscriptionDao: Subscripti
         val baseUrl = url.host
         val candidates = productDao.getXpathByUrl(baseUrl)
 
-        for(xpath in candidates) {
+        for (xpath in candidates) {
 
-            if(getValueByXpath(urlString, xpath) != null) {
+            if (getValueByXpath(urlString, xpath) != null) {
                 return xpath
             }
         }
