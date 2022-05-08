@@ -20,6 +20,7 @@ class JwtFilter(
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
 
         println("filter...")
+
         val token = getTokenFromRequest(request as HttpServletRequest)
 
         if(token != null && jwtProvider.validateToken(token)) {

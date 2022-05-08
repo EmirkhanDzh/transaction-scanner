@@ -46,6 +46,9 @@ class ProductService(
     }
 
     fun updateProduct(product: Product) {
+        val prevProduct = getProductById(product.id)
+        product.lastCheck = prevProduct.lastCheck
+        product.priceStr = prevProduct.priceStr
         productDao.update(product) //ToDo: throw ex there
     }
 

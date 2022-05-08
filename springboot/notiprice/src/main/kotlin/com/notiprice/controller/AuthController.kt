@@ -5,12 +5,11 @@ import com.notiprice.dto.UserDto
 import com.notiprice.dto.toEntity
 import com.notiprice.entity.toDto
 import com.notiprice.service.UserService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+//@CrossOrigin(origins = ["*"])
+//@CrossOrigin(origins = ["http://localhost:3000"])
 @RequestMapping("/auth")
 class AuthController(private val userService: UserService, private val jwtProvider: JwtProvider) {
 

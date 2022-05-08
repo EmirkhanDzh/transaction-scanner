@@ -7,6 +7,7 @@ import com.notiprice.service.UserService
 import org.springframework.web.bind.annotation.*
 
 //@CrossOrigin(origins = ["http://localhost:3000"])
+//@CrossOrigin(origins = ["*"])
 @RestController
 @RequestMapping("/users")
 class UserController(val userService: UserService) {
