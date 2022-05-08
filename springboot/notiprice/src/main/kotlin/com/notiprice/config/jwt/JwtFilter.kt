@@ -19,7 +19,7 @@ class JwtFilter(
 ) : GenericFilterBean() {
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
 
-        println("filter...")
+        //println("filter...")
 
         val token = getTokenFromRequest(request as HttpServletRequest)
 

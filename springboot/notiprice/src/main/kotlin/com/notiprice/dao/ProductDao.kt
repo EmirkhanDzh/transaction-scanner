@@ -117,12 +117,13 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
     }
 
     fun findToCheck(timeInterval: Int, limit: Int): List<Product> {
-
+        //*1000000
+        val now = System.currentTimeMillis()
         return jdbcTemplate.query(
             "select * from $products where " +
-                    "$lastCheck + ? <= EXTRACT (EPOCH from CURRENT_TIMESTAMP)*1000000 " +
+                    "$lastCheck + ? <= ?" +
                     "order by $lastCheck limit ?",
-            timeInterval * 1000, limit
+            timeInterval * 1000, now, limit
         ) { rs: ResultSet, _: Int ->
             Product(
                 rs.getLong(id),

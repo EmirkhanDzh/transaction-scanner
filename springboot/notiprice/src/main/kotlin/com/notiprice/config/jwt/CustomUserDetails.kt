@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 fun User.toCustomUserDetails(): CustomUserDetails {
-    println("username: $username password: $password")
+    //println("username: $username password: $password")
     return CustomUserDetails(username, password, Collections.singletonList(SimpleGrantedAuthority("ROLE_USER")))
 }
 

@@ -15,16 +15,16 @@ import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Scanning db to find products to check
+ */
 @EnableScheduling
 @Component
 class PriceScanner(
     private val productDao: ProductDao,
     private val subscriptionDao: SubscriptionDao,
     private val restTemplate: RestTemplate,
-    /**
-     * Scanning db to find products to check
-     */
-    @Value("\${scan.fixedDelay.in.seconds}") private val timeInterval: Int,
+    @Value("\${scan.recheck.in.seconds}") private val timeIntervalInSeconds: Int,
     @Value("\${process.product.limit}") private val limit: Int
 ) {
 
@@ -33,36 +33,44 @@ class PriceScanner(
 
     ) = runBlocking {
 
-        logger.info { "Staring scanning" }
+        var products: List<Product>
 
-        val products = productDao.findToCheck(timeInterval, limit)
+        do {
+            products = productDao.findToCheck(timeIntervalInSeconds, limit)
 
-        products.map {
-            launch(Dispatchers.IO) {
-                logger.info { it.toString() }
-                val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)
+            products.map {
+                launch(Dispatchers.IO) {
+                    logger.info { it.toString() }
+                    val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)
 
-                if (currentPrice == null || currentPrice == "") {
-                    logger.info { "Cannot get price from the object" }
-                    return@launch
-                }
+                    if (currentPrice == null || currentPrice == "") {
+                        logger.info { "Cannot get price from the object" }
+                        it.lastCheck = System.currentTimeMillis()
+                        productDao.update(it)
+                        return@launch
+                    }
 
-                if (currentPrice == it.priceStr) {
+                    if (currentPrice == it.priceStr) {
 
-                    logger.info { "Price wasn't changed: $currentPrice" }
+                        logger.info { "Price wasn't changed: $currentPrice" }
+                        it.lastCheck = System.currentTimeMillis()
+                        productDao.update(it)
+                        return@launch
+                    }
+
+                    sendNotifications(it, currentPrice)
+
                     it.lastCheck = System.currentTimeMillis()
+                    it.priceStr = currentPrice
                     productDao.update(it)
-                    return@launch
+
                 }
+            }.joinAll()
 
-                sendNotifications(it, currentPrice)
+            val i = 1
 
-                it.lastCheck = System.currentTimeMillis()
-                it.priceStr = currentPrice
-                productDao.update(it)
+        } while (products.isNotEmpty())
 
-            }
-        }.joinAll()
     }
 
     fun sendNotifications(product: Product, currentPrice: String) {
@@ -70,21 +78,17 @@ class PriceScanner(
 
         for (chatId in chatIds) {
 
-            var text = "Price of the product was changed" +
+            val text = "Price of the product was changed" +
                     "\nname ${product.name}" +
                     "\nprice $currentPrice" +
                     "\nurl ${product.url}"
-            //text = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
-            //println(text)
-//            text = URLEncoder.encode(text, StandardCharsets.UTF_8.toString())
-//            println(text)
+
             val response: ResponseEntity<String> =
                 restTemplate.getForEntity(
                     "https://api.telegram.org/bot5119272724:AAGaZ5I0olOEpDAZIqT-TXTJiJqBNxfpb_w/" +
                             "sendMessage?chat_id=$chatId&text=$text",
                     String::class.java
                 )
-
 
             if (response.statusCode.is2xxSuccessful) {
                 logger.info { "message was sent to telegram: new price: $currentPrice" }

@@ -78,6 +78,13 @@ function App(props) {
     setIsAuth(true);
   }
 
+  const logout = () => {
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setIsAuth(false);
+  }
+
   const signUp = async (user) => {
 
     console.log(`going to add the user ${JSON.stringify(user)}`);
@@ -171,7 +178,7 @@ function App(props) {
   return (
     <div className='ui container'>
       <Router>
-        <Header />
+        <Header logout={logout} />
         <Routes>
           <Route path={myConstants.HOME} exact
             element={

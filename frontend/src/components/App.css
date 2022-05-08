@@ -75,6 +75,13 @@ i.icon {
   width: 80% !important;
 }
 
+.logout {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+
 *::-webkit-scrollbar {
   width: 12px;
   background-color: #f0eded;
