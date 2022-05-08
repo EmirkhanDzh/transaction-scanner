@@ -45,7 +45,7 @@ function SignIn(props) {
                                         message: "Password must be more than 4 characters",
                                     },
                                     maxLength: {
-                                        value: 10,
+                                        value: 20,
                                         message: "Password cannot exceed more than 10 characters",
                                     },
                                 })}

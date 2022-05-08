@@ -92,7 +92,7 @@ function SignUp(props) {
                 </div>
                 <button className="fluid ui button blue">Sign Up</button>
             </form >
-            <Link to="/sign-in" className="signInUpFooter">
+            <Link to="/" className="signInUpFooter">
                 Already on Notiprice? <u>Sign In</u>
             </Link>
         </div >

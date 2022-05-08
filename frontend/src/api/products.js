@@ -1,4 +1,36 @@
 import axios from "axios";
 import { BASE_URL } from "../components/Constants";
 
-export default axios.create({baseURL:BASE_URL})
+export const authBearer = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        return { Authorization: 'Bearer ' + token };
+    } else {
+        return {};
+    }
+}
+
+
+const api = axios.create({ baseURL: BASE_URL });
+    const token = authBearer().Authorization;
+    console.log(token);
+    if(token) {
+        api.defaults.headers.common['Authorization'] = token;
+    }
+
+
+export default api;
+
+
+
+
+// export const authHeader = () => {
+//     const bearer = authBearer()
+    
+//     if (bearer !== {}) {
+//         //console.log({ headers: bearer })
+//         return { headers: bearer }
+//     } else {
+//         return {}
+//     }
+// }

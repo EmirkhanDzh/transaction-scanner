@@ -16,8 +16,9 @@ function App(props) {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("username") && localStorage.getItem("token") && localStorage.getItem("userId"));
-
+  const [isAuth, setIsAuth] = useState(localStorage.getItem("username") && localStorage.getItem("token"));
+  //console.log(authHeader())
+  
   isAuth && api
     .get(`/users/get?username=${localStorage.getItem("username")}`)
     .then((response) => {
@@ -29,7 +30,7 @@ function App(props) {
     .catch(() => {
       localStorage.removeItem("token");
       localStorage.removeItem("username");
-      localStorage.removeItem("userId");
+      localStorage.removeItem("chatId");
       setIsAuth(false);
     });
 
@@ -58,24 +59,22 @@ function App(props) {
   //   localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
   // }, [products]);
 
-  const login = async (user, token) => {
+  const login = async (user) => {
 
     let response
 
-    try {
-      response = await api.post(`/users/login`, user);
-    } catch (err) {
-      console.log(err)
-    }
+    response = await api.post(`/auth/sign-in`, user);
+
 
     if (!response || response.status !== 200) {
       alert("Please check your username and password")
       return;
     }
     console.log(response.data);
-    localStorage.setItem("token", token);
-    localStorage.setItem("username", response.data.username);
-    localStorage.setItem("userId", response.data.id);
+    console.log(user)
+    localStorage.setItem("token", response.data);
+    localStorage.setItem("username", user.username);
+    //localStorage.setItem("chatId", user.chatId);
     setIsAuth(true);
   }
 
@@ -83,7 +82,7 @@ function App(props) {
 
     console.log(`going to add the user ${JSON.stringify(user)}`);
 
-    return await api.post("/users", user)
+    return await api.post("/auth/sign-up", user)
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           alert("Couldn't add a new user")
