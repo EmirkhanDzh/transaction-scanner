@@ -11,13 +11,18 @@ import org.springframework.transaction.annotation.Transactional
 import us.codecraft.xsoup.Xsoup
 import java.net.URL
 
+/**
+ * Сервис для товаров.
+ */
 @Service
 class ProductService(
-    val productDao: ProductDao,
-    val subscriptionDao: SubscriptionDao,
-    val userService: UserService
+    private val productDao: ProductDao,
+    private val subscriptionDao: SubscriptionDao,
+    private val userService: UserService
 ) {
-
+    /**
+     * Добавление товара. Функция является транзакционной.
+     */
     @Transactional
     fun addProduct(product: Product, username: String): Product {
 
@@ -36,15 +41,24 @@ class ProductService(
         return savedProduct
     }
 
+    /**
+     * Получение товара по идентификатору.
+     */
     fun getProductById(id: Long): Product {
         return productDao.findByIdOrNull(id)
             ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
     }
 
+    /**
+     * Получение продуктов пользователя.
+     */
     fun getAllUserProducts(username: String): List<Product> {
         return productDao.findAllUserProducts(username)
     }
 
+    /**
+     * Изменение данных о товаре.
+     */
     fun updateProduct(product: Product) {
         val prevProduct = getProductById(product.id)
         product.lastCheck = prevProduct.lastCheck
@@ -52,10 +66,16 @@ class ProductService(
         productDao.update(product) //ToDo: throw ex there
     }
 
+    /**
+     * Удаление продукта.
+     */
     fun deleteProduct(id: Long) {
         productDao.delete(id)
     }
 
+    /**
+     * Получает страницу по URL и выделяет элемент по xpath и возвращает страницу.
+     */
     fun getHtmlWithHighlightedElement(url: String, xpath: String): String {
         val doc = Jsoup.connect(url).get()
 
@@ -67,12 +87,17 @@ class ProductService(
         return doc.toString()
     }
 
+    /**
+     * Получение xpath продукта по URL. В базе данных ищутся xpath от базового домена URL.
+     * Найденные xpath проверяются можно ли получить значение по этому xpath значение.
+     * Если таких несколько, то выбирается самый популярный.
+     */
     fun getProductXpathByUrl(urlString: String): String {
 
         require(urlString.isNotBlank() && urlString.isNotEmpty())
         val url = URL(urlString)
         val baseUrl = url.host
-        val candidates = productDao.getXpathByUrl(baseUrl)
+        val candidates = productDao.findXpathByUrl(baseUrl)
 
         for (xpath in candidates) {
 

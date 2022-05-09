@@ -1,4 +1,4 @@
--- DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS products;
 
 CREATE TABLE products
 (
@@ -12,12 +12,16 @@ CREATE TABLE products
     last_check BIGINT
 );
 
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users
 (
     chat_id  BIGINT PRIMARY KEY,
     username VARCHAR(255) UNIQUE,
     password VARCHAR(255)
 );
+
+DROP TABLE IF EXISTS subscriptions;
 
 CREATE TABLE subscriptions
 (

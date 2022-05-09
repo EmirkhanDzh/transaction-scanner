@@ -7,6 +7,9 @@ import us.codecraft.xsoup.Xsoup
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Извлечение значения из страницы по xpath.
+ */
 fun getValueByXpath(url: String, xpath: String): String? =
     try {
 //        val apiKey = "cc4f9ce0-bcbc-11ec-94c9-1125c5e45be1"

@@ -11,10 +11,14 @@ import java.sql.ResultSet
 import java.sql.Statement
 import java.sql.Types
 
+/**
+ * DAO продукта для работы с базой данных.
+ */
 @Component
 class ProductDao(private val jdbcTemplate: JdbcTemplate) {
-
-
+    /**
+     * Сохранение экземпляра класса Product в базе данных.
+     */
     fun save(product: Product): Product {
         val keyHolder: KeyHolder = GeneratedKeyHolder()
 
@@ -24,17 +28,18 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
                     "insert into $products " +
                             "($name, $price, $currency, $url, $xpath, $priceStr, $lastCheck) " +
                             "values (?, ?, ?, ?, ?, ?, ?)",
+
                     Statement.RETURN_GENERATED_KEYS
                 )
             ps.setString(1, product.name)
-            ps.setString(2, product.price.toString())
+            ps.setDouble(2, product.price)
             ps.setString(3, product.currency)
             ps.setString(4, product.url)
             ps.setString(5, product.xpath)
             ps.setString(6, product.priceStr)
             ps.setLong(7, product.lastCheck)
             ps
-        }, keyHolder)
+        }, keyHolder, )
 
         require(numOfUpdates == 1)
 
@@ -43,6 +48,9 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         return product
     }
 
+    /**
+     * Получение продукта по идентификатору.
+     */
     fun findByIdOrNull(id: Long): Product? {
 
         return jdbcTemplate.query(
@@ -63,6 +71,9 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         }.firstOrNull()
     }
 
+    /**
+     * Изменение данных о продукте.
+     */
     fun update(product: Product) {
 
         val numOfUpdates = jdbcTemplate.update(
@@ -88,6 +99,9 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         require(numOfUpdates == 1)
     }
 
+    /**
+     * Удаление продукта.
+     */
     fun delete(productId: Long) {
 
         val numOfUpdates = jdbcTemplate.update(
@@ -98,6 +112,9 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         require(numOfUpdates == 1)
     }
 
+    /**
+     * Получение товаров пользователя по пользовательскому имени.
+     */
     fun findAllUserProducts(username: String): List<Product> = jdbcTemplate.query(
         "select * from $products join ${SubscriptionDao.subscriptions} on " +
                 "$products.$id = ${SubscriptionDao.subscriptions}.${SubscriptionDao.productId} join ${UserDao.users} on " +
@@ -116,14 +133,17 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         )
     }
 
-    fun findToCheck(timeInterval: Int, limit: Int): List<Product> {
-        //*1000000
+    /**
+     * Получение товаров для сканирования. Возвращает товары, которые не проверялись определенный
+     * интервал времени в секундах timeInterval.
+     */
+    fun findToCheck(timeIntervalInSeconds: Int, limit: Int): List<Product> {
         val now = System.currentTimeMillis()
         return jdbcTemplate.query(
             "select * from $products where " +
                     "$lastCheck + ? <= ?" +
                     "order by $lastCheck limit ?",
-            timeInterval * 1000, now, limit
+            timeIntervalInSeconds * 1000, now, limit
         ) { rs: ResultSet, _: Int ->
             Product(
                 rs.getLong(id),
@@ -138,7 +158,10 @@ class ProductDao(private val jdbcTemplate: JdbcTemplate) {
         }
     }
 
-    fun getXpathByUrl(baseUrl: String): List<String> {
+    /**
+     * Получение xpath-ов по URL.
+     */
+    fun findXpathByUrl(baseUrl: String): List<String> {
 
         return jdbcTemplate.query(
             "select $xpath, count(id) as cnt from products where $url like ? group by $xpath order by cnt desc",

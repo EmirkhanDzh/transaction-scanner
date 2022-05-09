@@ -1,6 +1,6 @@
 package com.notiprice.config
 
-import com.notiprice.config.jwt.JwtFilter
+import com.notiprice.security.JwtFilter
 import com.notiprice.exception.RestTemplateResponseErrorHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -19,12 +19,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import java.time.Duration
 import java.util.*
 
-
+/**
+ * Конфигурация для программы.
+ */
 @Configuration
 @EnableScheduling
 @EnableWebSecurity
 class ServiceConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAdapter() {
     /**
+     * Создание экземпляра класса RestTemplate.
      * "Instances of the JdbcTemplate class are threadsafe once configured"
      * https://docs.spring.io/spring-framework/docs/3.0.x/spring-framework-reference/html/jdbc.html
      */
@@ -39,6 +42,9 @@ class ServiceConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAda
         .setReadTimeout(Duration.ofSeconds(readTimeout))
         .build()
 
+    /**
+     * Конфигурация безопасности программы.
+     */
     override fun configure(http: HttpSecurity?) {
         http!!.httpBasic().disable().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -51,6 +57,9 @@ class ServiceConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAda
             .cors().configurationSource(corsConfigurationSource())
     }
 
+    /**
+     * Конфигурация для CORS Policy.
+     */
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()

@@ -16,18 +16,37 @@ import java.util.concurrent.TimeUnit
 private val logger = KotlinLogging.logger {}
 
 /**
- * Scanning db to find products to check
+ * Сканирует продукты, если цена меняется, то отправляет сообщение пользователю.
  */
 @EnableScheduling
 @Component
 class PriceScanner(
+    /**
+     * DAO продукта для работы с базой данных.
+     */
     private val productDao: ProductDao,
+    /**
+     * DAO для класса Subscription для работы с базой данных.
+     */
     private val subscriptionDao: SubscriptionDao,
+    /**
+     * Клиент для HTTP запросов.
+     */
     private val restTemplate: RestTemplate,
+    /**
+     * Интервал времени в секундах. Показывает интервал проверки продуктов.
+     */
     @Value("\${scan.recheck.in.seconds}") private val timeIntervalInSeconds: Int,
+    /**
+     * Сколько товаров обрабатывать одновременно.
+     */
     @Value("\${process.product.limit}") private val limit: Int
 ) {
-
+    /**
+     * Запускает сканирование с интервалом fixedDelayString в секундах.
+     * Проверяет товары, которые не проверялись определенный интервал времени в секундах timeIntervalInSeconds,
+     * если их цена меняется, то пользователям отправляются сообщения через Телеграм бот.
+     */
     @Scheduled(fixedDelayString = "\${scan.fixedDelay.in.seconds}", timeUnit = TimeUnit.SECONDS)
     fun scan(
 
@@ -40,7 +59,7 @@ class PriceScanner(
 
             products.map {
                 launch(Dispatchers.IO) {
-                    logger.info { it.toString() }
+
                     val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)
 
                     if (currentPrice == null || currentPrice == "") {
@@ -67,12 +86,13 @@ class PriceScanner(
                 }
             }.joinAll()
 
-            val i = 1
-
         } while (products.isNotEmpty())
 
     }
 
+    /**
+     * Отправка сообщения пользователям, которые следят за товаром.
+     */
     fun sendNotifications(product: Product, currentPrice: String) {
         val chatIds = subscriptionDao.findChatIdsByProductId(product.id)
 
@@ -91,9 +111,10 @@ class PriceScanner(
                 )
 
             if (response.statusCode.is2xxSuccessful) {
+                //logger.info { product.toString() }
                 logger.info { "message was sent to telegram: new price: $currentPrice" }
             } else {
-                logger.info { "Cannot send message: new price: $currentPrice to " }
+                logger.info { "Cannot send message..." }
             }
         }
     }

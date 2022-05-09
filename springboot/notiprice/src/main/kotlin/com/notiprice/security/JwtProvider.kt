@@ -1,4 +1,4 @@
-package com.notiprice.config.jwt
+package com.notiprice.security
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -8,11 +8,19 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
+/**
+ * Класс для обработки токена.
+ */
 @Component
 class JwtProvider(
+    /**
+     * Секретный ключ для шифрования.
+     */
     @Value("\${jwt.secret}") private val secret: String
 ) {
-
+    /**
+     * Генерация токена.
+     */
     fun generateToken(login: String): String {
         val date = Date.from(LocalDate.now().plusDays(3).atStartOfDay(ZoneId.systemDefault()).toInstant())
 
@@ -23,6 +31,9 @@ class JwtProvider(
             .compact()
     }
 
+    /**
+     * Валидация токена.
+     */
     fun validateToken(token: String): Boolean {
         return try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
@@ -32,6 +43,9 @@ class JwtProvider(
         }
     }
 
+    /**
+     * Получение пользовательского имени из токена.
+     */
     fun getLoginFromToken(token: String) : String {
         val claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body
 

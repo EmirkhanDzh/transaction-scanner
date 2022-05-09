@@ -5,11 +5,19 @@ import com.notiprice.entity.User
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
+/**
+ * Сервис для работы с пользователем.
+ */
 @Service
 class UserService(private val userDao: UserDao) {
-
+    /**
+     * Для хеширования пароля.
+     */
     private val passwordEncoder = BCryptPasswordEncoder()
 
+    /**
+     * Добавление пользователя.
+     */
     fun addUser(user: User): User {
 
         user.password = passwordEncoder.encode(user.password)
@@ -17,14 +25,23 @@ class UserService(private val userDao: UserDao) {
         return userDao.save(user)
     }
 
+    /**
+     * Получение пользователя по идентификатору.
+     */
     fun getProductById(id: Long): User {
         return userDao.findByIdOrNull(id) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
     }
 
+    /**
+     * Получение пользователя по пользовательскому имени.
+     */
     fun getUserByUsername(username: String): User {
         return userDao.findByUsernameOrNull(username) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
     }
 
+    /**
+     * Проверяет пароль пользователя, если пароли совпадают, возвращает пользователя, если нет, то бросает исключение.
+     */
     fun login(user: User): User {
 
         val userDb = getUserByUsername(user.username)
@@ -37,10 +54,16 @@ class UserService(private val userDao: UserDao) {
         return userDb
     }
 
-    fun updateProduct(user: User) {
+    /**
+     * Изменение данных о пользователе.
+     */
+    fun updateUser(user: User) {
         userDao.update(user) //ToDo: throw ex there
     }
 
+    /**
+     * Удаление пользователя.
+     */
     fun deleteProduct(id: Long) {
         userDao.delete(id)
     }

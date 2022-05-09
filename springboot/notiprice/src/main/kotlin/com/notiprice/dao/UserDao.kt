@@ -6,10 +6,14 @@ import org.springframework.stereotype.Component
 import java.sql.ResultSet
 import java.sql.Types
 
+/**
+ * DAO для класса User для работы с базой дынных.
+ */
 @Component
 class UserDao(private val jdbcTemplate: JdbcTemplate) {
-
-
+    /**
+     * Добавление в базу данных экземпляра класса User.
+     */
     fun save(user: User): User {
 
         val numOfUpdates = jdbcTemplate.update(
@@ -21,6 +25,9 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
         return user
     }
 
+    /**
+     * Получение User по идентификатору.
+     */
     fun findByIdOrNull(id: Long): User? {
 
         return jdbcTemplate.query(
@@ -36,6 +43,9 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
         }.firstOrNull()
     }
 
+    /**
+     * Получение User по пользовательскому имени.
+     */
     fun findByUsernameOrNull(name: String): User? {
 
         return jdbcTemplate.query(
@@ -50,7 +60,9 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
             )
         }.firstOrNull()
     }
-
+    /**
+     * Изменение данных User.
+     */
     fun update(user: User) {
 
         val numOfUpdates = jdbcTemplate.update(
@@ -64,6 +76,9 @@ class UserDao(private val jdbcTemplate: JdbcTemplate) {
         require(numOfUpdates == 1)
     }
 
+    /**
+     * Удаление User.
+     */
     fun delete(userId: Long) {
 
         val numOfUpdates = jdbcTemplate.update(

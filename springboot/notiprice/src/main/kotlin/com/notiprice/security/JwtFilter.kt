@@ -1,4 +1,4 @@
-package com.notiprice.config.jwt
+package com.notiprice.security
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -12,14 +12,24 @@ import javax.servlet.http.HttpServletRequest
 
 private const val AUTHORIZATION = "Authorization"
 
+/**
+ * Фильтр для поступающих в программу запросов для авторизации.
+ */
 @Component
 class JwtFilter(
+    /**
+     * Класс для обработки токена.
+     */
     private val jwtProvider: JwtProvider,
+    /**
+     * Сервис для класса CustomUserDetails.
+     */
     private val customUserDetailsService: CustomUserDetailsService
 ) : GenericFilterBean() {
+    /**
+     * Фильтр для поступающих в программу запросов для авторизации.
+     */
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
-
-        //println("filter...")
 
         val token = getTokenFromRequest(request as HttpServletRequest)
 
@@ -32,14 +42,15 @@ class JwtFilter(
                 UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.authorities)
 
             SecurityContextHolder.getContext().authentication = auth
-        } else {
-            println("forbitten...")
         }
 
         chain!!.doFilter(request, response)
     }
 
-    fun getTokenFromRequest(request: HttpServletRequest): String? {
+    /**
+     * Получение токена из запроса.
+     */
+    private fun getTokenFromRequest(request: HttpServletRequest): String? {
         val bearer = request.getHeader(AUTHORIZATION)
 
         if(hasText(bearer) && bearer.startsWith("Bearer ")) {

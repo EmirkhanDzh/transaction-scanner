@@ -6,42 +6,41 @@ import com.notiprice.entity.toDto
 import com.notiprice.service.UserService
 import org.springframework.web.bind.annotation.*
 
-//@CrossOrigin(origins = ["http://localhost:3000"])
-//@CrossOrigin(origins = ["*"])
+/**
+ * Контроллер пользователей.
+ */
 @RestController
 @RequestMapping("/users")
-class UserController(val userService: UserService) {
-
-//    @PostMapping
-//    fun addUser(@RequestBody user: UserDto): UserDto {
-//
-//        return userService.addUser(user.toEntity()).toDto()
-//    }
-
+class UserController(private val userService: UserService) {
+    /**
+     * Изменение данных о пользователе.
+     */
     @PutMapping("/{id}")
     fun updateUser(@PathVariable id: Long, @RequestBody user: UserDto) {
 
-        userService.updateProduct(user.toEntity())
+        userService.updateUser(user.toEntity())
     }
 
+    /**
+     * Удаление пользователя.
+     */
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: Long) {
 
         userService.deleteProduct(id)
     }
 
-//    @PostMapping("/login")
-//    fun login(@RequestBody user: UserDto): UserDto {
-//
-//        return userService.login(user.toEntity()).toDto()
-//    }
-
+    /**
+     * Получение данных о пользователе по пользовательскому имени.
+     */
     @GetMapping("/get")
     fun getUserByUsername(@RequestParam username: String): UserDto {
 
         return userService.getUserByUsername(username).toDto()
     }
-
+    /**
+     * Получение данных о пользователе по идентификатору.
+     */
     @GetMapping("/{id}")
     fun getUserById(@PathVariable id: Long): UserDto {
 
