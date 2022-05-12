@@ -29,7 +29,7 @@ class ProductService(
         if (product.url.contains("?")) {
             product.url = product.url.split("?").first()
         }
-        // ToDo: вынести название в subscriptions, добавлять, если нет продуктов с таким же url и xpath
+        // TODO: вынести название в subscriptions, добавлять, если нет продуктов с таким же url и xpath
         product.lastCheck = System.currentTimeMillis()
         val savedProduct = productDao.save(product)
 
@@ -46,7 +46,7 @@ class ProductService(
      */
     fun getProductById(id: Long): Product {
         return productDao.findByIdOrNull(id)
-            ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
+            ?: throw IllegalArgumentException("No product with id = $id")
     }
 
     /**
@@ -63,14 +63,14 @@ class ProductService(
         val prevProduct = getProductById(product.id)
         product.lastCheck = prevProduct.lastCheck
         product.priceStr = prevProduct.priceStr
-        productDao.update(product) //ToDo: throw ex there
+        require(productDao.update(product) == 1)
     }
 
     /**
      * Удаление продукта.
      */
     fun deleteProduct(id: Long) {
-        productDao.delete(id)
+        require(productDao.delete(id) == 1)
     }
 
     /**

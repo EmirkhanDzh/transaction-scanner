@@ -22,21 +22,27 @@ class UserService(private val userDao: UserDao) {
 
         user.password = passwordEncoder.encode(user.password)
 
-        return userDao.save(user)
+        return try {
+            userDao.save(user)
+        } catch (th: Throwable) {
+            throw IllegalArgumentException("Username or Telegram already exist")
+        }
     }
 
     /**
      * Получение пользователя по идентификатору.
      */
     fun getProductById(id: Long): User {
-        return userDao.findByIdOrNull(id) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
+        return userDao.findByIdOrNull(id)
+            ?: throw IllegalArgumentException("No such user with id = $id")
     }
 
     /**
      * Получение пользователя по пользовательскому имени.
      */
     fun getUserByUsername(username: String): User {
-        return userDao.findByUsernameOrNull(username) ?: throw IllegalArgumentException("No such element")//ToDo: write a norm mess
+        return userDao.findByUsernameOrNull(username)
+            ?: throw IllegalArgumentException("No such user with id = $username")
     }
 
     /**
@@ -46,9 +52,9 @@ class UserService(private val userDao: UserDao) {
 
         val userDb = getUserByUsername(user.username)
 
-        if(!passwordEncoder.matches(user.password, userDb.password)) {
+        if (!passwordEncoder.matches(user.password, userDb.password)) {
 
-            throw IllegalArgumentException("Password is incorrect")
+            throw IllegalArgumentException("Password is incorrect!")
         }
 
         return userDb
@@ -58,13 +64,13 @@ class UserService(private val userDao: UserDao) {
      * Изменение данных о пользователе.
      */
     fun updateUser(user: User) {
-        userDao.update(user) //ToDo: throw ex there
+        require(userDao.update(user) == 1)
     }
 
     /**
      * Удаление пользователя.
      */
     fun deleteProduct(id: Long) {
-        userDao.delete(id)
+        require(userDao.delete(id) == 1)
     }
 }

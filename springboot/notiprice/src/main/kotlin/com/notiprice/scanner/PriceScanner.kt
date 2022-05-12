@@ -40,7 +40,8 @@ class PriceScanner(
     /**
      * Сколько товаров обрабатывать одновременно.
      */
-    @Value("\${process.product.limit}") private val limit: Int
+    @Value("\${process.product.limit}") private val limit: Int,
+    @Value("\${bot.token}") private val botToken: String,
 ) {
     /**
      * Запускает сканирование с интервалом fixedDelayString в секундах.
@@ -60,31 +61,28 @@ class PriceScanner(
             products.map {
                 launch(Dispatchers.IO) {
 
-                    val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)
+                    when (val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)) {
 
-                    if (currentPrice == null || currentPrice == "") {
-                        logger.info { "Cannot get price from the object" }
-                        it.lastCheck = System.currentTimeMillis()
-                        productDao.update(it)
-                        return@launch
+                        null, "" -> {
+
+                            logger.warn { "Cannot get price from the object: ${it.name}" }
+                        }
+                        it.priceStr -> {
+
+                            logger.info { "Price of ${it.name} wasn't changed: $currentPrice" }
+                        }
+                        else -> {
+
+                            sendNotifications(it, currentPrice)
+                            it.priceStr = currentPrice
+                        }
                     }
-
-                    if (currentPrice == it.priceStr) {
-
-                        logger.info { "Price wasn't changed: $currentPrice" }
-                        it.lastCheck = System.currentTimeMillis()
-                        productDao.update(it)
-                        return@launch
-                    }
-
-                    sendNotifications(it, currentPrice)
 
                     it.lastCheck = System.currentTimeMillis()
-                    it.priceStr = currentPrice
                     productDao.update(it)
-
                 }
-            }.joinAll()
+            }
+                .joinAll()
 
         } while (products.isNotEmpty())
 
@@ -93,8 +91,10 @@ class PriceScanner(
     /**
      * Отправка сообщения пользователям, которые следят за товаром.
      */
-    fun sendNotifications(product: Product, currentPrice: String) {
+    suspend fun sendNotifications(product: Product, currentPrice: String) {
+
         val chatIds = subscriptionDao.findChatIdsByProductId(product.id)
+
 
         for (chatId in chatIds) {
 
@@ -102,20 +102,21 @@ class PriceScanner(
                     "\nname ${product.name}" +
                     "\nprice $currentPrice" +
                     "\nurl ${product.url}"
-
+            // По хорошему нужно через WebClient
             val response: ResponseEntity<String> =
-                restTemplate.getForEntity(
-                    "https://api.telegram.org/bot5119272724:AAGaZ5I0olOEpDAZIqT-TXTJiJqBNxfpb_w/" +
-                            "sendMessage?chat_id=$chatId&text=$text",
-                    String::class.java
-                )
+                withContext(Dispatchers.IO) {
+                    restTemplate.getForEntity(
+                        "https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=$text",
+                        String::class.java
+                    )
+                }
 
             if (response.statusCode.is2xxSuccessful) {
-                //logger.info { product.toString() }
-                logger.info { "message was sent to telegram: new price: $currentPrice" }
+                logger.info { "Notification of ${product.name} was sent to Telegram" }
             } else {
-                logger.info { "Cannot send message..." }
+                logger.warn { "Cannot send notification of ${product.name}..." }
             }
         }
+
     }
 }

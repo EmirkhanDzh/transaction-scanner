@@ -55,7 +55,7 @@ const EditProduct = (props) => {
                     <label>Name</label>
                     <input type="text" name="name" placeholder="input there the product's name"
                         value={name}
-                        onChange={(e) => setName(e.target.value)} />
+                        onChange={(e) => setName(e?.target?.value?.match(/[\p{L}\p{N}\s]/gu)?.join('') || "")} />
                 </div>
                 <div className="field">
                     <label>URL</label>

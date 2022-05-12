@@ -31,10 +31,16 @@ function SignUp(props) {
     const formSchema = Yup.object().shape({
         password: Yup.string()
             .required('Password is required')
+            .matches(/^[a-z0-9]*$/i, {message:"Only lowercase letters and numbers are allowed"})
             .min(4, 'Password length should be at least 4 characters'),
         passwordConfirm: Yup.string()
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password')], 'Passwords must and should match'),
+        username: Yup.string()
+            .matches(/^[a-z0-9]*$/i, {message:"Only lowercase letters and numbers are allowed"})
+            .required('Username is required')
+            .min(4, 'Username length should be at least 4 characters'),
+            
     });
 
     const validationOpt = { resolver: yupResolver(formSchema) }
@@ -56,13 +62,18 @@ function SignUp(props) {
                         <label>Your username</label>
                         <input
                             type="text"
+                            name="username"
                             placeholder="Username"
                             {...register("username", {
                                 required: "Username is required",
                                 minLength: {
                                     value: 5,
                                     message: "Username must be more than 5 characters",
-                                }
+                                },
+                                pattern: {
+                                    value: /^[a-z0-9]*$/,
+                                    message: 'Please enter a number',
+                                },
                             })}
                         />
                     </div>
@@ -78,6 +89,7 @@ function SignUp(props) {
                         />
                     </div>
                     <p className="authP">{errors?.passwordConfirm?.message}</p>
+                    <p className="authP">{errors?.password?.message}</p>
 
                     <div className="field">
                         <label>Password Confirmation</label>
@@ -89,6 +101,7 @@ function SignUp(props) {
                         />
                     </div>
                     <p className="authP">{errors?.passwordConfirm?.message}</p>
+                    <p className="authP">{errors?.password?.message}</p>
                 </div>
                 <button className="fluid ui button blue">Sign Up</button>
             </form >

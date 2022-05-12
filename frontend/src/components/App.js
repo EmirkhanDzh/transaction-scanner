@@ -61,21 +61,39 @@ function App(props) {
 
   const login = async (user) => {
 
-    let response
-
-    response = await api.post(`/auth/sign-in`, user);
-
-
-    if (!response || response.status !== 200) {
+    api.post(`/auth/sign-in`, user).then((response) => {
+      if (!response || response.status !== 200) {
+        alert("Please check your username and password");
+        return;
+      }
+      console.log(response.data);
+      console.log(user);
+      localStorage.setItem("token", response.data);
+      localStorage.setItem("username", user.username);
+      //localStorage.setItem("chatId", user.chatId);
+      setIsAuth(true);
+      window.location.reload();
+    }).catch((err) => {
+      
       alert("Please check your username and password")
-      return;
-    }
-    console.log(response.data);
-    console.log(user)
-    localStorage.setItem("token", response.data);
-    localStorage.setItem("username", user.username);
-    //localStorage.setItem("chatId", user.chatId);
-    setIsAuth(true);
+    })
+
+    // let response
+    
+    // response = await api.post(`/auth/sign-in`, user);
+
+
+    // if (!response || response.status !== 200) {
+    //   alert("Please check your username and password")
+    //   return;
+    // }
+    // console.log(response.data);
+    // console.log(user)
+    // localStorage.setItem("token", response.data);
+    // localStorage.setItem("username", user.username);
+    // //localStorage.setItem("chatId", user.chatId);
+    // setIsAuth(true);
+    // window.location.reload();
   }
 
   const logout = () => {
@@ -97,6 +115,7 @@ function App(props) {
         };
         return true;
       }).catch((error) => {
+        alert("Couldn't add a new user")
         console.log(error);
       });
     // const response = await api.post("/users", user);

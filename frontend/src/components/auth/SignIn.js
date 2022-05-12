@@ -26,6 +26,10 @@ function SignIn(props) {
                                 minLength: {
                                     value: 5,
                                     message: "Password must be more than 5 characters",
+                                },
+                                pattern: {
+                                    value: /^[a-z0-9]*$/i,
+                                    message: "Only lowercase letters and numbers are allowed"
                                 }
                             })}
                         />
@@ -44,10 +48,10 @@ function SignIn(props) {
                                         value: 4,
                                         message: "Password must be more than 4 characters",
                                     },
-                                    maxLength: {
-                                        value: 20,
-                                        message: "Password cannot exceed more than 10 characters",
-                                    },
+                                    pattern: {
+                                        value: /^[a-z0-9]*$/i,
+                                        message: "Only lowercase letters and numbers are allowed"
+                                    }
                                 })}
                         />
                     </div>
