@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 import us.codecraft.xsoup.Xsoup
 import java.net.URL
 
+//private val logger = KotlinLogging.logger {}
+
 /**
  * Сервис для товаров.
  */
@@ -77,14 +79,21 @@ class ProductService(
      * Получает страницу по URL и выделяет элемент по xpath и возвращает страницу.
      */
     fun getHtmlWithHighlightedElement(url: String, xpath: String): String {
-        val doc = Jsoup.connect(url).get()
+        try {
+            val doc = Jsoup.connect(url).get()
 
-        Xsoup.compile(xpath)
-            .evaluate(doc)
-            .elements.first()
-            ?.attr("style", "background-color: #FFFF00")
+            Xsoup.compile(xpath)
+                .evaluate(doc)
+                .elements.first()
+                ?.attr("style", "background-color: #FFFF00")
 
-        return doc.toString()
+            return doc.toString()
+        } catch (ex: Exception) {
+
+            //logger.warn { "Cannot get page $url" }
+            throw IllegalArgumentException("Cannot get page $url")
+        }
+
     }
 
     /**
