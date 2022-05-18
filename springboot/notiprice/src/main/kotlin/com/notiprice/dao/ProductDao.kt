@@ -32,7 +32,7 @@ interface ProductDao {
      * Получение товаров для сканирования. Возвращает товары, которые не проверялись определенный
      * интервал времени в секундах timeInterval.
      */
-    fun findToCheck(timeIntervalInSeconds: Int, limit: Int): List<Product>
+    fun findToCheck(recheckInSeconds: Int, limit: Int): List<Product>
 
     /**
      * Получение xpath-ов по URL.

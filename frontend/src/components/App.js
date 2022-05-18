@@ -16,16 +16,18 @@ function App(props) {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const [isAuth, setIsAuth] = useState(localStorage.getItem("username") && localStorage.getItem("token"));
+  const [isAuth, setIsAuth] = useState(false);
   //console.log(authHeader())
   
-  isAuth && api
+  localStorage.getItem("username") && localStorage.getItem("token") && api
     .get(`/users/get?username=${localStorage.getItem("username")}`)
     .then((response) => {
       if (response.status !== 200) {
 
         throw new Error("user doesn't exist");
       }
+
+      setIsAuth(true);
     })
     .catch(() => {
       localStorage.removeItem("token");

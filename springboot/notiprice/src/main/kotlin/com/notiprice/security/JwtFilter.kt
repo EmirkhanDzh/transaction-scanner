@@ -34,14 +34,20 @@ class JwtFilter(
         val token = getTokenFromRequest(request as HttpServletRequest)
 
         if(token != null && jwtProvider.validateToken(token)) {
-            val userLogin = jwtProvider.getLoginFromToken(token)
 
-            val customUserDetails = customUserDetailsService.loadUserByUsername(userLogin)
 
-            val auth =
-                UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.authorities)
+            try {
+                val userLogin = jwtProvider.getLoginFromToken(token)
 
-            SecurityContextHolder.getContext().authentication = auth
+                val customUserDetails = customUserDetailsService.loadUserByUsername(userLogin)
+
+                val auth =
+                    UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.authorities)
+
+                SecurityContextHolder.getContext().authentication = auth
+            }catch (_: IllegalArgumentException) {
+            }
+
         }
 
         chain!!.doFilter(request, response)

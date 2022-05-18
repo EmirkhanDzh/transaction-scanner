@@ -36,7 +36,7 @@ class PriceScanner(
     /**
      * Интервал времени в секундах. Показывает интервал проверки продуктов.
      */
-    @Value("\${scan.recheck.in.seconds}") private val timeIntervalInSeconds: Int,
+    @Value("\${scan.recheck.in.seconds}") private val recheckInSeconds: Int,
     /**
      * Сколько товаров обрабатывать одновременно.
      */
@@ -56,26 +56,19 @@ class PriceScanner(
         var products: List<Product>
 
         do {
-            products = productDao.findToCheck(timeIntervalInSeconds, limit)
+            products = productDao.findToCheck(recheckInSeconds, limit)
 
             products.map {
                 launch(Dispatchers.IO) {
+                    val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)
 
-                    when (val currentPrice = getValueByXpath(url = it.url, xpath = it.xpath)) {
-
-                        null, "" -> {
-
-                            logger.warn { "Cannot get price from the object: ${it.name}" }
-                        }
-                        it.priceStr -> {
-
-                            logger.info { "Price of ${it.name} wasn't changed: $currentPrice" }
-                        }
-                        else -> {
-
-                            sendNotifications(it, currentPrice)
-                            it.priceStr = currentPrice
-                        }
+                    if (currentPrice != null &&
+                        currentPrice.isNotEmpty() &&
+                        currentPrice.isNotBlank() &&
+                        currentPrice != it.priceStr
+                    ) {
+                        sendNotifications(it, currentPrice)
+                        it.priceStr = currentPrice
                     }
 
                     it.lastCheck = System.currentTimeMillis()

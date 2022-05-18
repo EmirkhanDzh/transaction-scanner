@@ -23,6 +23,11 @@ fun getValueByXpath(url: String, xpath: String): String? =
             ?.childNodes()?.first()
             ?.outerHtml()?.replace("&nbsp;", " ")
     } catch (th: Throwable) {
-        logger.warn { "Cannot read a value by this xpath" }
+
+        logger.warn {
+            "Cannot read a value by this xpath: \n" +
+                    "message = ${th.message}\n" +
+                    "url = $url\nxpath = $xpath"
+        }
         null
     }
