@@ -12,6 +12,9 @@ group = "com.notiprice"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
+val testcontainersVersion = "1.17.1"
+val postgresVersion= "42.3.4"
+
 repositories {
     mavenCentral()
 
@@ -37,14 +40,19 @@ dependencies {
     // Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     // Databases
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.postgresql:postgresql")
+    //runtimeOnly("com.h2database:h2")
+
+    runtimeOnly("org.postgresql:postgresql:$postgresVersion")
     implementation("org.flywaydb:flyway-core")
 
 
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
+    testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
 }
 
 tasks.withType<KotlinCompile> {
