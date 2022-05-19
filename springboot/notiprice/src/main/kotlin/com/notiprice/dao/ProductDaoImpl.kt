@@ -136,7 +136,7 @@ class ProductDaoImpl(private val jdbcTemplate: JdbcTemplate) : ProductDao {
      * Получение товаров для сканирования. Возвращает товары, которые не проверялись определенный
      * интервал времени в секундах timeInterval.
      */
-    override fun findToCheck(rechecklInSeconds: Int, limit: Int): List<Product> {
+    override fun findToCheck(recheckInSeconds: Int, limit: Int): List<Product> {
         val sql = """
             SELECT * FROM products 
                 WHERE last_check + ? <= ?
@@ -147,7 +147,7 @@ class ProductDaoImpl(private val jdbcTemplate: JdbcTemplate) : ProductDao {
 
         return jdbcTemplate.query(
             sql,
-            arrayOf(rechecklInSeconds * 1000, now, limit),
+            arrayOf(recheckInSeconds * 1000, now, limit),
             intArrayOf(Types.BIGINT, Types.BIGINT, Types.BIGINT),
             productRowMapper
         )
@@ -166,7 +166,7 @@ class ProductDaoImpl(private val jdbcTemplate: JdbcTemplate) : ProductDao {
 
         return jdbcTemplate.query(
             sql,
-            arrayOf("'%$baseUrl%'"),
+            arrayOf("%$baseUrl%"),
             intArrayOf(Types.VARCHAR)
         ) { rs: ResultSet, _: Int ->
             rs.getString(Columns.xpath)
