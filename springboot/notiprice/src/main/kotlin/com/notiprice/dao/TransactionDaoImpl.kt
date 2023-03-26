@@ -32,20 +32,7 @@ class TransactionDaoImpl(
     }
 
     override fun getAllByUserId(userId: Long): List<Transaction> {
-        val sql = """
-            SELECT * 
-            FROM transactions 
-            WHERE user_id = ?
-        """.trimIndent()
-
-        return jdbcTemplate.query(
-            sql,
-            arrayOf<Any>(userId),
-            intArrayOf(Types.BIGINT),
-        ) { rs: ResultSet, _: Int ->
-            Transaction(
-            )
-        }
+        TODO()
     }
 
 

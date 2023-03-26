@@ -1,24 +1,24 @@
 package com.notiprice.dto
 
-import com.notiprice.entity.Bank
-import com.notiprice.entity.BankClient
+import com.notiprice.entity.Client
+import com.notiprice.entity.Country
 import java.time.LocalDate
 
-data class BankClientDto(
+data class ClientDto(
     val id: Long = 0,
     val name: String? = null,
     val patronymic: String? = null,
     val birthDay: LocalDate? = null,
     val phoneNumber: String? = null,
-    val citizenshipCountryId: Long = 0,
+    val citizenshipCountry: CountryDto? = null,
 ) {
-    fun toEntity() = BankClient(
+    fun toEntity() = Client(
         id,
         name,
         patronymic,
         birthDay,
         phoneNumber,
-        citizenshipCountryId,
+        citizenshipCountry?.toEntity(),
     )
 
 }
