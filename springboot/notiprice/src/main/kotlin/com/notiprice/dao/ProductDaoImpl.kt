@@ -1,6 +1,5 @@
 package com.notiprice.dao
 
-import com.notiprice.entity.Columns
 import com.notiprice.entity.Product
 import com.notiprice.entity.ProductRowMapper
 import org.springframework.context.annotation.Primary

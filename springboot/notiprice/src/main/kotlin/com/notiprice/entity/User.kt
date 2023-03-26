@@ -1,6 +1,7 @@
 package com.notiprice.entity
 
 import com.notiprice.dto.UserDto
+import com.notiprice.enums.Role
 
 /**
  * Для отображения таблицы users из базы данных.
@@ -9,7 +10,7 @@ data class User(
     /**
      * Идентификатор чата пользователя в Телеграме. Первичный ключ.
      */
-    val chatId: Long,
+    val id: Long,
     /**
      * Логин пользователя.
      */
@@ -18,6 +19,8 @@ data class User(
      * Пароль пользователя.
      */
     var password: String,
-)
 
-fun User.toDto() = UserDto(chatId, username, password)
+    var role: Role = Role.OPERATOR,
+) {
+    fun toDto() = UserDto(id, username, password, role)
+}
