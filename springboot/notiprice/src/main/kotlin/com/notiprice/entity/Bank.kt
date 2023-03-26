@@ -6,7 +6,7 @@ data class Bank(
     val id: Long = 0,
     val name: String? = null,
     val code: String? = null,
-    val countryId: Long = 0,
+    val country: Country? = null,
 ) {
-    fun toDto() = BankDto(id, name, code, countryId)
+    fun toDto() = BankDto(id, name, code, country)
 }
