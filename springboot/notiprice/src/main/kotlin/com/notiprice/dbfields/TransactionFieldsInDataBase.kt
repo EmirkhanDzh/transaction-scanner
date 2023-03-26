@@ -1,4 +1,4 @@
-package com.notiprice.entity
+package com.notiprice.dbfields
 
 enum class TransactionFieldsInDataBase(name: String) {
     ID("id"),

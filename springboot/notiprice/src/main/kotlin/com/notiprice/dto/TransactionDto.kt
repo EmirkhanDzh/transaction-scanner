@@ -1,9 +1,11 @@
-package com.notiprice.entity
+package com.notiprice.dto
 
-import com.notiprice.dto.TransactionDto
+import com.notiprice.entity.Transaction
+import com.notiprice.entity.User
+import java.math.BigDecimal
 import java.time.LocalDateTime
 
-data class Transaction(
+class TransactionDto(
     val id: Long = 0,
     val clientIdFrom: Long? = null,
     val clientIdTo: Long? = null,
@@ -21,7 +23,7 @@ data class Transaction(
     val rulesEngineResultId: Long? = null,
     val operatorResultId: Long? = null,
 ) {
-    fun toDto() = TransactionDto(
+    fun toEntity() = Transaction(
         id,
         clientIdFrom,
         clientIdTo,
