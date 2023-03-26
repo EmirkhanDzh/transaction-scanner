@@ -4,11 +4,12 @@ import api from "../api/products"
 import './App.css';
 import Header from './Header';
 import AddProduct from './AddProduct';
-import ProductList from './ProductList';
+import TransactionsMainPage from './TransactionsMainPage';
 import * as myConstants from './Constants'
 import ProductDetail from "./ProductDetails";
-import EditProduct from "./EditProduct";
+import ValidateTransaction from "./ValidateTransaction";
 import Auth from "./auth/Auth";
+import UploadTransactions from "./UploadTransactions";
 
 
 function App(props) {
@@ -18,7 +19,7 @@ function App(props) {
   const [searchResult, setSearchResult] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
   //console.log(authHeader())
-  
+
   localStorage.getItem("username") && localStorage.getItem("token") && api
     .get(`/users/get?username=${localStorage.getItem("username")}`)
     .then((response) => {
@@ -41,7 +42,7 @@ function App(props) {
       if (!isAuth) {
         return;
       }
-      
+
       const response = await api.get(`/products?username=${localStorage.getItem("username")}`)
 
       if (response.status !== 200) {
@@ -76,12 +77,12 @@ function App(props) {
       setIsAuth(true);
       window.location.reload();
     }).catch((err) => {
-      
+
       alert("Please check your username and password")
     })
 
     // let response
-    
+
     // response = await api.post(`/auth/sign-in`, user);
 
 
@@ -131,9 +132,9 @@ function App(props) {
     // login(user, "ok")
   }
 
-  if (!isAuth) {
-    return (<Auth login={login} signUp={signUp} />)
-  }
+  // if (!isAuth) {
+  //   return (<Auth login={login} signUp={signUp} />)
+  // }
 
   const addProductHandler = async (product) => {
     console.log(`going to add the product ${JSON.stringify(product)}`);
@@ -203,11 +204,11 @@ function App(props) {
         <Routes>
           <Route path={myConstants.HOME} exact
             element={
-              <ProductList products={searchTerm.length < 1 ? products : searchResult}
+              <TransactionsMainPage products={searchTerm.length < 1 ? products : searchResult}
                 term={searchTerm}
                 searchHandler={searchHandler} />}
           />
-          <Route
+          {/* <Route
             path={myConstants.ADD_PRODUCT}
             element={<AddProduct
               addProductHandler={addProductHandler} />}
@@ -215,10 +216,21 @@ function App(props) {
           <Route
             path="/product/:id"
             element={<ProductDetail {...props} removeProductHandler={removeProductHandler} />}
+          /> */}
+          <Route
+            path={"/transaction/validate/:id"}
+            element={<ValidateTransaction {...props} updateProductHandler={updateProductHandler} />}
+          />
+
+          <Route
+
+            path={"/operator/auth"}
+            element={<Auth login={login} signUp={signUp} />}
           />
           <Route
-            path={`${myConstants.EDIT_PRODUCT}/:id`}
-            element={<EditProduct updateProductHandler={updateProductHandler} />}
+
+            path={"/transaction/upload"}
+            element={<UploadTransactions/>}
           />
         </Routes>
       </Router>

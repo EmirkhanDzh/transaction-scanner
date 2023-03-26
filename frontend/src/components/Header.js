@@ -4,7 +4,7 @@ const Header = (props) => {
   return (
     <div className="ui fixed menu">
       <div className="ui container center">
-        <h2>Notiprice</h2>
+        <h2>TransactionScanner</h2>
       </div>
       <div className="logout">
       <i className="big sign out alternate icon" onClick={props.logout}/>

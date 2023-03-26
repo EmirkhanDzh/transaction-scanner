@@ -13,7 +13,7 @@ function SignIn(props) {
         <div className="authContainer">
             <p className="invisible">Prrr</p>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h2>Welcome to Notiprice</h2>
+                <h2>Welcome to TransactionScanner</h2>
                 <div className="ui divider"></div>
                 <div className="ui form">
                     <div className="field">
@@ -56,12 +56,12 @@ function SignIn(props) {
                         />
                     </div>
                     <p className="authP">{errors?.password?.message}</p>
-                    <button className="fluid ui button blue">Sign In</button>
+                    <button className="fluid ui button blue">Sign In As Operator</button>
                 </div>
             </form>
 
             <a className="signInUpFooter" href={TELEGRAM_BOT} target="_blank" rel="noreferrer">
-                Not on Notiprice yet? Type to our <u>Telegram bot</u>
+                Not on TransactionScanner yet? <u>Type to the administrator</u>
             </a>
         </div>
     );
