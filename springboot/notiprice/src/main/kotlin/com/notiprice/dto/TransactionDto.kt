@@ -1,44 +1,43 @@
 package com.notiprice.dto
 
+import com.notiprice.entity.Bank
 import com.notiprice.entity.Transaction
-import com.notiprice.entity.User
-import java.math.BigDecimal
 import java.time.LocalDateTime
 
 class TransactionDto(
     val id: Long = 0,
-    val clientIdFrom: Long? = null,
-    val clientIdTo: Long? = null,
+    val clientFrom: ClientDto? = null,
+    val clientTo: ClientDto? = null,
     val amount: Long? = null,
-    val currency: String? = "RUB",
-    val bankFrom: String? = "TNKF",
-    val bankTo: String? = null,
-    val paySystemFrom: String? = "MIR",
-    val paySystemTo: String? = null,
+    val currency: String? = null,
+    val bankFrom: BankDto? = null,
+    val bankTo: BankDto? = null,
+    val paySystemFrom: PaysystemDto? = null,
+    val paySystemTo: PaysystemDto? = null,
     val transferDate: LocalDateTime? = null,
-    val cityCodeFrom: String? = null,
-    val cityCodeTo: String? = null,
-    val countryCodeFrom: String? = "RU",
-    val countryCodeTo: String? = null,
-    val rulesEngineResultId: Long? = null,
-    val operatorResultId: Long? = null,
+    val cityFrom: String? = null,
+    val cityTo: String? = null,
+    val countryFrom: CountryDto? = null,
+    val countryTo: CountryDto? = null,
+    val rulesEngineResult: RulesEngineResultDto? = null,
+    val operatorResult: OperatorResultDto? = null,
 ) {
     fun toEntity() = Transaction(
         id,
-        clientIdFrom,
-        clientIdTo,
+        clientFrom?.toEntity(),
+        clientTo?.toEntity(),
         amount,
         currency,
-        bankFrom,
-        bankTo,
-        paySystemFrom,
-        paySystemTo,
+        bankFrom?.toEntity(),
+        bankTo?.toEntity(),
+        paySystemFrom?.toEntity(),
+        paySystemTo?.toEntity(),
         transferDate,
-        cityCodeFrom,
-        cityCodeTo,
-        countryCodeFrom,
-        countryCodeTo,
-        rulesEngineResultId,
-        operatorResultId,
+        cityFrom,
+        cityTo,
+        countryFrom?.toEntity(),
+        countryTo?.toEntity(),
+        rulesEngineResult?.toEntity(),
+        operatorResult?.toEntity(),
     )
 }

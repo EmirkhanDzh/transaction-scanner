@@ -3,23 +3,15 @@ package com.notiprice.entity
 import com.notiprice.dto.RulesEngineResultDto
 
 data class RulesEngineResult(
-    override val id: Long = 0,
-    override val transactionId: Long = 0,
-    override val isClear: Boolean = true,
-    override val clientSanctionId: Long? = null,
-    override val bankSanctionId: Long? = null,
-    override val paysystemSanctionId: Long? = null,
-    override val countrySanctionId: Long? = null,
-) : Result(
-    id,
-    transactionId,
-    isClear,
-    clientSanctionId,
-    bankSanctionId,
-    paysystemSanctionId,
-    countrySanctionId,
+    val id: Long = 0,
+    val transactionId: Long = 0,
+    val isClear: Boolean = true,
+    val clientSanctionId: Long? = null,
+    val bankSanctionId: Long? = null,
+    val paysystemSanctionId: Long? = null,
+    val countrySanctionId: Long? = null,
 ) {
-    override fun toDto() = RulesEngineResultDto(
+    fun toDto() = RulesEngineResultDto(
         id,
         transactionId,
         isClear,

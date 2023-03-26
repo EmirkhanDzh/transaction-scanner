@@ -1,7 +1,15 @@
 package com.notiprice.service
 
+import com.notiprice.dao.BankDao
+import com.notiprice.dao.ClientDao
+import com.notiprice.dao.CountryDao
+import com.notiprice.dao.OperatorResultDao
+import com.notiprice.dao.PaysystemDao
 import com.notiprice.dao.ResultDaoImpl
+import com.notiprice.dao.RulesEngineResultDao
+import com.notiprice.dao.TransactionDao
 import com.notiprice.dao.TransactionDaoImpl
+import com.notiprice.dto.OperatorResultDto
 import com.notiprice.dto.TransactionDto
 import com.notiprice.entity.OperatorResult
 import com.notiprice.entity.RulesEngineResult
@@ -11,22 +19,30 @@ import org.springframework.stereotype.Service
 
 @Service
 class TransactionService(
-    val transactionDao: TransactionDaoImpl,
-    val resultDao: ResultDaoImpl,
+    val transactionDao: TransactionDao,
+    // Создать классы-бины для интрефейсов
+    val clientDao: ClientDao,
+    val bankDao: BankDao,
+    val countryDao: CountryDao,
+    val paysystemDao: PaysystemDao,
+    val operatorResultDao: OperatorResultDao,
+    val rulesEngineResultDao: RulesEngineResultDao,
     val transactionScannerService: TransactionScannerService,
 ) {
 
-    fun getAllTransactionByUserId(userId: Long) = transactionEntityListToTransactionDtoList(
-        transactionDao.getAllByUserId(userId)
-    )
+    // подумать над тем как доставать данные из БД,
+    // чтобы сконструировать TransactionDto, ведь из БД мы получаем только id'шники
+    fun getAllTransactionByUserId(userId: Long) : List<TransactionDto> {
+        val transactions = transactionDao.getAllByUserId(userId)
+        return transactionEntityListToTransactionDtoList(transactions)
+    }
 
     fun saveAndAnalyseTransactionList(transactionDtoList: List<TransactionDto>) {
         val transactionList = transactionDtoListToTransactionEntityList(transactionDtoList)
         saveTransactionList(transactionList)
-        analyseTransactionList(transactionList)
-        updateTransactionList(transactionList)
     }
 
+    // сохранять по батчам
     fun saveTransactionList(transactionList: List<Transaction>) {
         transactionList.asSequence().forEach {
             try {
@@ -58,8 +74,13 @@ class TransactionService(
     fun getTransaction(transactionId: Long) = transactionDao.findByIdOrNull(transactionId)
 
     fun getTransactionRulesCheckingResult(transactionId: Long): RulesEngineResult? =
-        resultDao.getRulesEngineCheckingResult(transactionId)
+        rulesEngineResultDao.findByIdOrNull(transactionId)
 
     fun getTransactionOperatorCheckingResult(transactionId: Long): OperatorResult? =
-        resultDao.getOperatorCheckingResult(transactionId)
+        operatorResultDao.findByIdOrNull(transactionId)
+
+    fun createOperatorResult(operatorResultDto: OperatorResultDto) {
+        // в базу сохраняем сущность
+        TODO()
+    }
 }
