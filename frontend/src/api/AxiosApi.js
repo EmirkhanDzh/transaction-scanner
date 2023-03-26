@@ -20,17 +20,3 @@ const api = axios.create({ baseURL: BASE_URL });
 
 
 export default api;
-
-
-
-
-// export const authHeader = () => {
-//     const bearer = authBearer()
-    
-//     if (bearer !== {}) {
-//         //console.log({ headers: bearer })
-//         return { headers: bearer }
-//     } else {
-//         return {}
-//     }
-// }

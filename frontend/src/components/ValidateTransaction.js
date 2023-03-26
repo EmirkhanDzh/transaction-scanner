@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { PRODUCT } from "./Constants"
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { TableCell, TableRow, TableBody, Table } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -17,8 +16,8 @@ const ValidateTransaction = (props) => {
         <div className="main">
             <div>
             <h3>Transaction Validation</h3>
-            <Link to={`/`}>
-                <button className="ui right floated button black ">Back</button>
+            <Link to={`/operator`}>
+                <button className="ui right floated button black ">Home</button>
             </Link>
             </div>
             

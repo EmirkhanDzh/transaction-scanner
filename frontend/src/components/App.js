@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import api from "../api/products"
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import api from "../api/AxiosApi"
 import './App.css';
 import Header from './Header';
 import AddProduct from './AddProduct';
@@ -13,12 +13,10 @@ import UploadTransactions from "./UploadTransactions";
 
 
 function App(props) {
-
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
-  //console.log(authHeader())
 
   localStorage.getItem("username") && localStorage.getItem("token") && api
     .get(`/users/get?username=${localStorage.getItem("username")}`)
@@ -58,52 +56,47 @@ function App(props) {
     getAllProducts();
   }, [isAuth]);
 
-  // useEffect(() => {
-  //   localStorage.setItem(PRODUCTS_LS_KEY, JSON.stringify(products))
-  // }, [products]);
-
   const login = async (user) => {
 
-    api.post(`/auth/sign-in`, user).then((response) => {
+    api.post(`/operator/auth/sign-in`, user).then((response) => {
       if (!response || response.status !== 200) {
         alert("Please check your username and password");
         return;
       }
-      console.log(response.data);
+
+      console.log(response);
       console.log(user);
-      localStorage.setItem("token", response.data);
-      localStorage.setItem("username", user.username);
-      //localStorage.setItem("chatId", user.chatId);
+
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("operatorId", response.data.operatorId);
       setIsAuth(true);
+
       window.location.reload();
     }).catch((err) => {
 
-      alert("Please check your username and password")
-    })
+      // alert("Please check your username and password");
+      // console.log(err);
 
-    // let response
-
-    // response = await api.post(`/auth/sign-in`, user);
-
-
-    // if (!response || response.status !== 200) {
-    //   alert("Please check your username and password")
-    //   return;
-    // }
-    // console.log(response.data);
-    // console.log(user)
-    // localStorage.setItem("token", response.data);
-    // localStorage.setItem("username", user.username);
-    // //localStorage.setItem("chatId", user.chatId);
-    // setIsAuth(true);
-    // window.location.reload();
+      localStorage.setItem("token", "token");
+      localStorage.setItem("username", "username");
+      localStorage.setItem("operatorId", "operatorId");
+      setIsAuth(true);
+      // navigate("/operator");
+      console.log(window.location.origin);
+      window.location.replace(`${window.location.origin}/operator`);
+      
+      // window.location.reload();
+    });
   }
 
   const logout = () => {
 
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("operatorId");
     setIsAuth(false);
+    window.location.replace(`${window.location.origin}/operator/auth`);
   }
 
   const signUp = async (user) => {
@@ -118,18 +111,9 @@ function App(props) {
         };
         return true;
       }).catch((error) => {
-        alert("Couldn't add a new user")
+        alert("Couldn't add a new user");
         console.log(error);
       });
-    // const response = await api.post("/users", user);
-
-    // if (response.status !== 200 && response.status !== 201) {
-    //   alert("Couldn't add a new user")
-    //   return false;
-    // };
-
-    // return true;
-    // login(user, "ok")
   }
 
   // if (!isAuth) {
@@ -195,14 +179,12 @@ function App(props) {
     }
   }
 
-
-
   return (
     <div className='ui container'>
       <Router>
         <Header logout={logout} />
         <Routes>
-          <Route path={myConstants.HOME} exact
+          <Route path={"/operator"} exact
             element={
               <TransactionsMainPage products={searchTerm.length < 1 ? products : searchResult}
                 term={searchTerm}

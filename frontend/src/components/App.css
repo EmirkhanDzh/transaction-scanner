@@ -54,6 +54,15 @@ i.icon {
   margin-right: 0.5rem !important;
 }
 
+.leftMargin {
+  margin-left: 0.5rem !important;
+}
+
+.headerPadding {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .backAndNext {
   display: flex;
   align-items: center;

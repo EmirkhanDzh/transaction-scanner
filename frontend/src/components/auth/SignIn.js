@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { TELEGRAM_BOT } from "../Constants";
 import "./Auth.css";
 
 function SignIn(props) {
@@ -7,7 +6,7 @@ function SignIn(props) {
     const { errors } = formState
     const onSubmit = (data) => {
         console.log(data);
-        props.login(data, "ok")
+        props.login(data, "ok");
     };
     return (
         <div className="authContainer">
@@ -60,7 +59,7 @@ function SignIn(props) {
                 </div>
             </form>
 
-            <a className="signInUpFooter" href={TELEGRAM_BOT} target="_blank" rel="noreferrer">
+            <a className="signInUpFooter" href={""} target="_blank" rel="noreferrer">
                 Not on TransactionScanner yet? <u>Type to the administrator</u>
             </a>
         </div>

@@ -17,7 +17,7 @@ const UploadTransactions = (props) => {
         <div className="main">
             <div>
             <h3>Upload Transactions To System</h3>
-            <Link to={`/`}>
+            <Link to={`/operator`}>
                 <button className="ui right floated button black bottomMargin">Home</button>
             </Link>
             </div>

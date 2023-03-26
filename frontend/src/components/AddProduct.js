@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BASE_URL, HOME } from "./Constants"
 import { useNavigate } from "react-router-dom";
-import api from "../api/products"
+import api from "../api/AxiosApi"
 
 
 const AddProduct = (props) => {
