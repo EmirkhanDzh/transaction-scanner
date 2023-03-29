@@ -11,6 +11,116 @@ const ValidateTransaction = (props) => {
     const navigate = useNavigate();
     const { id } = useParams()
 
+    const transaction = {
+        "id":1,
+        "clientFrom":{
+           "id":1,
+           "name":"Ivan Petrov",
+           "patronymic":"Andreevich",
+           "birthDay":[
+              2001,
+              1,
+              1
+           ],
+           "phoneNumber":"+79993334455",
+           "citizenshipCountry":{
+              "id":1,
+              "name":"Russia",
+              "code":"RUS"
+           }
+        },
+        "clientTo":{
+           "id":2,
+           "name":"Ivan Yan",
+           "patronymic":"Andreevich",
+           "birthDay":[
+              2002,
+              1,
+              2
+           ],
+           "phoneNumber":"+79993334444",
+           "citizenshipCountry":{
+              "id":1,
+              "name":"Russia",
+              "code":"RUS"
+           }
+        },
+        "amount":100,
+        "currency":"RUB",
+        "bankFrom":{
+           "id":1,
+           "name":"Tinkoff",
+           "code":"TNF",
+           "country":{
+              "id":1,
+              "name":"Russia",
+              "code":"RUS"
+           }
+        },
+        "bankTo":{
+           "id":1,
+           "name":"Tinkoff",
+           "code":"TNF",
+           "country":{
+              "id":1,
+              "name":"Russia",
+              "code":"RUS"
+           }
+        },
+        "paySystemFrom":{
+           "name":"VISA",
+           "code":"VSA",
+           "country":{
+              "id":1,
+              "name":"Russia",
+              "code":"RUS"
+           }
+        },
+        "paySystemTo":{
+           "name":"VISA",
+           "code":"VSA",
+           "country":{
+              "id":1,
+              "name":"Russia",
+              "code":"RUS"
+           }
+        },
+        "transferDate":[
+           2023,
+           3,
+           29,
+           7,
+           0
+        ],
+        "cityFrom":"Moscow",
+        "cityTo":"Moscow",
+        "countryFrom":{
+           "id":1,
+           "name":"Russia",
+           "code":"RUS"
+        },
+        "countryTo":{
+           "id":1,
+           "name":"Russia",
+           "code":"RUS"
+        },
+        "rulesEngineResult":{
+           "id":1,
+           "transactionId":1,
+           "isClear":false,
+           "clientSanctionId":1,
+           "bankSanctionId":null,
+           "paysystemSanctionId":null,
+           "countrySanctionId":null,
+           "clientSanction":{
+              "id":1,
+              "code":"SC1",
+              "description":"Client is in DPRK list",
+              "entity_id":1
+           }
+        },
+        "operatorResult":null
+     }
 
     return (
         <div className="main">
@@ -25,20 +135,50 @@ const ValidateTransaction = (props) => {
             <Table className="TransactionDetailTable">
                 <TableBody>
                     <TableRow>
-                        <TableCell className="FieldHeader">Header 1</TableCell>
-                        <TableCell className="FieldValue">Cell 1</TableCell>
+                        <TableCell className="FieldHeader">Sender Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.clientFrom.name}</TableCell>
                         <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
                         <TableCell className="FieldResultDescription"></TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell className="FieldHeader">Header 2</TableCell>
-                        <TableCell className="FieldValue">Cell 2</TableCell>
+                        <TableCell className="FieldHeader">Recipient Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.clientTo.name}</TableCell>
                         <TableCell className="FieldResultIcon">{false ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas blandit diam non arcu fringilla tincidunt sed a ipsum. In dapibus justo eu est pulvinar tempus. Integer nec vehicula tellus. Proin suscipit libero vitae velit scelerisque pharetra. Curabitur a velit pulvinar, rutrum enim ac, tristique ex</TableCell>
+                        <TableCell className="FieldResultDescription">Получатель находится в списке санкций</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell className="FieldHeader">Header 1</TableCell>
-                        <TableCell className="FieldValue">Cell 3</TableCell>
+                        <TableCell className="FieldHeader">Sender Bank Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.bankFrom.name}</TableCell>
+                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription"></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell className="FieldHeader">Recipient Bank Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.bankTo.name}</TableCell>
+                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription"></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell className="FieldHeader">Sender Paysystem Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.paySystemFrom.name}</TableCell>
+                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription"></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell className="FieldHeader">Recipient Paysystem Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.paySystemTo.name}</TableCell>
+                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription"></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell className="FieldHeader">Sender Country Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.countryFrom.name}</TableCell>
+                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription"></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell className="FieldHeader">Recipient Country Scoring</TableCell>
+                        <TableCell className="FieldValue">{transaction.countryTo.name}</TableCell>
                         <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
                         <TableCell className="FieldResultDescription"></TableCell>
                     </TableRow>
@@ -55,12 +195,12 @@ const ValidateTransaction = (props) => {
                 defaultValue=""
             />
 
-            <div>
+            <div style={{justifyContent:"space-between", display: "flex", paddingBottom: "0.5rem"}}>
             <Link to={`/`}>
-                <button className="ui left floated button positive">Save As Clear</button>
+                <button className="ui   button positive">Save As Clear</button>
             </Link>
             <Link to={`/`}>
-                <button className="ui right floated button negative">Save As Sactional</button>
+                <button className="ui button negative">Save As Sactional</button>
             </Link>
             </div>
             
