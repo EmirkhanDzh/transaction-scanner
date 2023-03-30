@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="com.notiprice.transaction-scanner.main" target="11" />
+      <module name="com.notiprice.transaction-scanner.test" target="11" />
+      <module name="notiprice" target="11" />
+      <module name="notiprice.main" target="11" />
+      <module name="notiprice.test" target="11" />
+      <module name="transaction-scanner.main~1" target="11" />
+      <module name="transaction-scanner.test~1" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
