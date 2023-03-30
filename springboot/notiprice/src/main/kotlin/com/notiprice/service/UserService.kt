@@ -1,6 +1,7 @@
 package com.notiprice.service
 
 import com.notiprice.dao.UserDao
+import com.notiprice.dao.UserDaoImpl
 import com.notiprice.entity.User
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service
  * Сервис для работы с пользователем.
  */
 @Service
-class UserService(private val userDao: UserDao) {
+class UserService(private val userDao: UserDao = UserDaoImpl()) {
     /**
      * Для хеширования пароля.
      */

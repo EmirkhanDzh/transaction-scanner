@@ -4,20 +4,19 @@ import com.notiprice.entity.OperatorResult
 
 
 data class OperatorResultDto(
-    val id: Long = 0,
-    val transactionId: Long = 0,
-    val isClear: Boolean = true,
-    val operatorId: Long? = null,
-    val isClearByOperator: Boolean = true,
-    val comment: String? = null,
+    var id: Long? = null,
+    var operatorId: Long? = null,
+    var rulesEngineResultDto: RulesEngineResultDto? = null,
+    var isClear: Boolean? = null,
+    var comment: String? = null,
 ) {
-    fun toEntity() = OperatorResult(
-        id,
-        transactionId,
-        isClear,
-        operatorId,
-        isClearByOperator,
-        comment,
-    )
+//    fun toEntity() = OperatorResult(
+//        id,
+//        transactionId,
+//        isClear,
+//        operatorId,
+//        isClearByOperator,
+//        comment,
+//    )
 }
 

@@ -10,12 +10,12 @@ data class OperatorResult(
     val isClearByOperator: Boolean = true,
     val comment: String? = null,
 ) {
-    fun toDto() = OperatorResultDto(
-        id,
-        transactionId,
-        isClear,
-        operatorId,
-        isClearByOperator,
-        comment,
-    )
+//    fun toDto() = OperatorResultDto(
+//        id,
+//        transactionId,
+//        isClear,
+//        operatorId,
+//        isClearByOperator,
+//        comment,
+//    )
 }
