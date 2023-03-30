@@ -7,18 +7,15 @@ import com.notiprice.entity.Sanction
  * Из этой сущности мы достаем информацию для комментария по санкционной транзакции.
  */
 data class SanctionDto(
-    val id: Long = 0,
-    val code: String? = null,
-    val description: String? = null,
-    /**
-     * Идентификатор экзмепляра одной из 4-х сущностей: банк, клиент банка, страна, платежная система
-     */
-    val entity_id: Long? = null,
+    var id: Long? = null,
+    var type: String? = null,
+    var value: String? = null,
+    var description: String? = null,
 ) {
-    fun toEntity() = Sanction(
-        id,
-        code,
-        description,
-        entity_id,
-    )
+//    fun toEntity() = Sanction(
+//        id,
+//        code,
+//        description,
+//        entity_id,
+//    )
 }

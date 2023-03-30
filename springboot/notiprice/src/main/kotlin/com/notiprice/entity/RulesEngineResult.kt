@@ -11,13 +11,13 @@ data class RulesEngineResult(
     val paysystemSanctionId: Long? = null,
     val countrySanctionId: Long? = null,
 ) {
-    fun toDto() = RulesEngineResultDto(
-        id,
-        transactionId,
-        isClear,
-        clientSanctionId,
-        bankSanctionId,
-        paysystemSanctionId,
-        countrySanctionId,
-    )
+//    fun toDto() = RulesEngineResultDto(
+//        id,
+//        transactionId,
+//        isClear,
+//        clientSanctionId,
+//        bankSanctionId,
+//        paysystemSanctionId,
+//        countrySanctionId,
+//    )
 }

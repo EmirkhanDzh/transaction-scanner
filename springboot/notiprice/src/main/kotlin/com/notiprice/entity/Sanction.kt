@@ -15,5 +15,5 @@ data class Sanction(
      */
     val entity_id: Long? = null,
 ) {
-    fun toDto() = SanctionDto(id, code, description, entity_id)
+//    fun toDto() = SanctionDto(id, code, description, entity_id)
 }

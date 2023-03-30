@@ -29,13 +29,14 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
     override fun configure(http: HttpSecurity?) {
         http!!.httpBasic().disable().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().authorizeRequests()
-            .antMatchers("/products*").hasRole("USER")
-            .antMatchers("/users*").hasRole("USER")
-            .antMatchers("/auth*").permitAll()
             .and()
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .cors().configurationSource(corsConfigurationSource())
+            .authorizeRequests()
+//            .antMatchers("/products*").hasRole("USER")
+//            .antMatchers("/users*").hasRole("USER")
+            .antMatchers("/*").permitAll()
+//            .and()
+//            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+//            .cors().configurationSource(corsConfigurationSource())
     }
 
     /**
