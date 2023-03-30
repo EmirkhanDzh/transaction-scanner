@@ -12,125 +12,125 @@ const ValidateTransaction = (props) => {
     const { id } = useParams()
 
     const transaction = {
-        "id":1,
-        "clientFrom":{
-           "id":1,
-           "name":"Ivan Petrov",
-           "patronymic":"Andreevich",
-           "birthDay":[
-              2001,
-              1,
-              1
-           ],
-           "phoneNumber":"+79993334455",
-           "citizenshipCountry":{
-              "id":1,
-              "name":"Russia",
-              "code":"RUS"
-           }
+        "id": 1,
+        "clientFrom": {
+            "id": 1,
+            "name": "Ivan Petrov",
+            "patronymic": "Andreevich",
+            "birthDay": [
+                2001,
+                1,
+                1
+            ],
+            "phoneNumber": "+79993334455",
+            "citizenshipCountry": {
+                "id": 1,
+                "name": "Russia",
+                "code": "RUS"
+            }
         },
-        "clientTo":{
-           "id":2,
-           "name":"Ivan Yan",
-           "patronymic":"Andreevich",
-           "birthDay":[
-              2002,
-              1,
-              2
-           ],
-           "phoneNumber":"+79993334444",
-           "citizenshipCountry":{
-              "id":1,
-              "name":"Russia",
-              "code":"RUS"
-           }
+        "clientTo": {
+            "id": 2,
+            "name": "Ivan Yan",
+            "patronymic": "Andreevich",
+            "birthDay": [
+                2002,
+                1,
+                2
+            ],
+            "phoneNumber": "+79993334444",
+            "citizenshipCountry": {
+                "id": 1,
+                "name": "Russia",
+                "code": "RUS"
+            }
         },
-        "amount":100,
-        "currency":"RUB",
-        "bankFrom":{
-           "id":1,
-           "name":"Tinkoff",
-           "code":"TNF",
-           "country":{
-              "id":1,
-              "name":"Russia",
-              "code":"RUS"
-           }
+        "amount": 100,
+        "currency": "RUB",
+        "bankFrom": {
+            "id": 1,
+            "name": "Tinkoff",
+            "code": "TNF",
+            "country": {
+                "id": 1,
+                "name": "Russia",
+                "code": "RUS"
+            }
         },
-        "bankTo":{
-           "id":1,
-           "name":"Tinkoff",
-           "code":"TNF",
-           "country":{
-              "id":1,
-              "name":"Russia",
-              "code":"RUS"
-           }
+        "bankTo": {
+            "id": 1,
+            "name": "Tinkoff",
+            "code": "TNF",
+            "country": {
+                "id": 1,
+                "name": "Russia",
+                "code": "RUS"
+            }
         },
-        "paySystemFrom":{
-           "name":"VISA",
-           "code":"VSA",
-           "country":{
-              "id":1,
-              "name":"Russia",
-              "code":"RUS"
-           }
+        "paySystemFrom": {
+            "name": "VISA",
+            "code": "VSA",
+            "country": {
+                "id": 1,
+                "name": "Russia",
+                "code": "RUS"
+            }
         },
-        "paySystemTo":{
-           "name":"VISA",
-           "code":"VSA",
-           "country":{
-              "id":1,
-              "name":"Russia",
-              "code":"RUS"
-           }
+        "paySystemTo": {
+            "name": "VISA",
+            "code": "VSA",
+            "country": {
+                "id": 1,
+                "name": "Russia",
+                "code": "RUS"
+            }
         },
-        "transferDate":[
-           2023,
-           3,
-           29,
-           7,
-           0
+        "transferDate": [
+            2023,
+            3,
+            29,
+            7,
+            0
         ],
-        "cityFrom":"Moscow",
-        "cityTo":"Moscow",
-        "countryFrom":{
-           "id":1,
-           "name":"Russia",
-           "code":"RUS"
+        "cityFrom": "Moscow",
+        "cityTo": "Moscow",
+        "countryFrom": {
+            "id": 1,
+            "name": "Russia",
+            "code": "RUS"
         },
-        "countryTo":{
-           "id":1,
-           "name":"Russia",
-           "code":"RUS"
+        "countryTo": {
+            "id": 1,
+            "name": "Russia",
+            "code": "RUS"
         },
-        "rulesEngineResult":{
-           "id":1,
-           "transactionId":1,
-           "isClear":false,
-           "clientSanctionId":1,
-           "bankSanctionId":null,
-           "paysystemSanctionId":null,
-           "countrySanctionId":null,
-           "clientSanction":{
-              "id":1,
-              "code":"SC1",
-              "description":"Client is in DPRK list",
-              "entity_id":1
-           }
+        "rulesEngineResult": {
+            "id": 1,
+            "transactionId": 1,
+            "isClear": false,
+            "clientSanctionId": 1,
+            "bankSanctionId": null,
+            "paysystemSanctionId": null,
+            "countrySanctionId": null,
+            "clientSanction": {
+                "id": 1,
+                "code": "SC1",
+                "description": "Client is in DPRK list",
+                "entity_id": 1
+            }
         },
-        "operatorResult":null
-     }
+        "operatorResult": null
+    }
 
     return (
         <div className="main">
             <div>
-            <h3>Transaction Validation</h3>
-            <Link to={`/operator`}>
-                <button className="ui right floated button black ">Home</button>
-            </Link>
+                <h3>Transaction Validation</h3>
+                <Link to={`/operator`}>
+                    <button className="ui right floated button black ">Home</button>
+                </Link>
             </div>
-            
+
             <h4>Rules result:</h4>
             <Table className="TransactionDetailTable">
                 <TableBody>
@@ -195,15 +195,14 @@ const ValidateTransaction = (props) => {
                 defaultValue=""
             />
 
-            <div style={{justifyContent:"space-between", display: "flex", paddingBottom: "0.5rem"}}>
-            <Link to={`/`}>
-                <button className="ui   button positive">Save As Clear</button>
-            </Link>
-            <Link to={`/`}>
-                <button className="ui button negative">Save As Sactional</button>
-            </Link>
+            <div style={{ justifyContent: "space-between", display: "flex", paddingBottom: "0.5rem" }}>
+                <Link to={`/`}>
+                    <button className="ui   button positive">Save As Clear</button>
+                </Link>
+                <Link to={`/`}>
+                    <button className="ui button negative">Save As Sactional</button>
+                </Link>
             </div>
-            
 
         </div>
     );

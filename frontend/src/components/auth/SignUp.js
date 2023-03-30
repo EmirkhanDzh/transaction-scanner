@@ -6,7 +6,7 @@ import "./Auth.css";
 
 function SignUp(props) {
 
-    const {id} = useParams();
+    const { id } = useParams();
     console.log(id)
     const navigate = useNavigate();
 
@@ -17,30 +17,30 @@ function SignUp(props) {
             password: data.password
         };
 
-        if(await props.signUp(user, "ok")) {
+        if (await props.signUp(user, "ok")) {
             navigate("/");
         } else {
 
             alert("Cannot connect to server");
             window.location.reload();
         }
-        
-        
+
+
     };
 
     const formSchema = Yup.object().shape({
         password: Yup.string()
             .required('Password is required')
-            .matches(/^[a-z0-9]*$/i, {message:"Only lowercase letters and numbers are allowed"})
+            .matches(/^[a-z0-9]*$/i, { message: "Only lowercase letters and numbers are allowed" })
             .min(4, 'Password length should be at least 4 characters'),
         passwordConfirm: Yup.string()
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password')], 'Passwords must and should match'),
         username: Yup.string()
-            .matches(/^[a-z0-9]*$/i, {message:"Only lowercase letters and numbers are allowed"})
+            .matches(/^[a-z0-9]*$/i, { message: "Only lowercase letters and numbers are allowed" })
             .required('Username is required')
             .min(4, 'Username length should be at least 4 characters'),
-            
+
     });
 
     const validationOpt = { resolver: yupResolver(formSchema) }

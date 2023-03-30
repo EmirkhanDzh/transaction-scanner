@@ -3,13 +3,12 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import api from "../api/AxiosApi"
 import './App.css';
 import Header from './Header';
-import AddProduct from './AddProduct';
 import TransactionsMainPage from './TransactionsMainPage';
-import * as myConstants from './Constants'
-import ProductDetail from "./ProductDetails";
 import ValidateTransaction from "./ValidateTransaction";
 import Auth from "./auth/Auth";
 import UploadTransactions from "./UploadTransactions";
+import CheckedTransactions from "./CheckedTransactions";
+import ViewResult from "./ViewResult";
 
 
 function App(props) {
@@ -85,7 +84,7 @@ function App(props) {
       // navigate("/operator");
       console.log(window.location.origin);
       window.location.replace(`${window.location.origin}/operator`);
-      
+
       // window.location.reload();
     });
   }
@@ -115,10 +114,6 @@ function App(props) {
         console.log(error);
       });
   }
-
-  // if (!isAuth) {
-  //   return (<Auth login={login} signUp={signUp} />)
-  // }
 
   const addProductHandler = async (product) => {
     console.log(`going to add the product ${JSON.stringify(product)}`);
@@ -190,18 +185,20 @@ function App(props) {
                 term={searchTerm}
                 searchHandler={searchHandler} />}
           />
-          {/* <Route
-            path={myConstants.ADD_PRODUCT}
-            element={<AddProduct
-              addProductHandler={addProductHandler} />}
-          />
-          <Route
-            path="/product/:id"
-            element={<ProductDetail {...props} removeProductHandler={removeProductHandler} />}
-          /> */}
+
           <Route
             path={"/transaction/validate/:id"}
             element={<ValidateTransaction {...props} updateProductHandler={updateProductHandler} />}
+          />
+
+          <Route
+            path={"/transaction/result/view/all"}
+            element={<CheckedTransactions />}
+          />
+
+          <Route
+            path={"/transaction/result/view/:id"}
+            element={<ViewResult />}
           />
 
           <Route
@@ -212,7 +209,7 @@ function App(props) {
           <Route
 
             path={"/transaction/upload"}
-            element={<UploadTransactions/>}
+            element={<UploadTransactions />}
           />
         </Routes>
       </Router>

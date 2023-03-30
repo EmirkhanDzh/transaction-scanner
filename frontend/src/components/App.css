@@ -55,7 +55,7 @@ i.icon {
 }
 
 .leftMargin {
-  margin-left: 0.5rem !important;
+  margin-left: 0.7rem !important;
 }
 
 .headerPadding {
@@ -110,6 +110,8 @@ i.icon {
   display: flex;
   align-items: center;
   align-content: center;
+  cursor: pointer;
+  font-weight: 550;
 }
 
 

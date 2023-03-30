@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import { PRODUCT } from "./Constants"
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { TableCell, TableRow, TableBody, Table } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import CheckIcon from '@mui/icons-material/Check';
-import { red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom";
 
@@ -16,10 +11,10 @@ const UploadTransactions = (props) => {
     return (
         <div className="main">
             <div>
-            <h3>Upload Transactions To System</h3>
-            <Link to={`/operator`}>
-                <button className="ui right floated button black bottomMargin">Home</button>
-            </Link>
+                <h3>Upload Transactions To System</h3>
+                <Link to={`/operator`}>
+                    <button className="ui right floated button black bottomMargin">Home</button>
+                </Link>
             </div>
 
             <TextField
@@ -32,11 +27,11 @@ const UploadTransactions = (props) => {
             />
 
             <div>
-            <Link to={`/`}>
-                <button className="ui right floated button blue">Save Transactions</button>
-            </Link>
+                <Link to={`/`}>
+                    <button className="ui right floated button blue">Save Transactions</button>
+                </Link>
             </div>
-            
+
 
         </div>
     );
