@@ -5,16 +5,16 @@ const Header = (props) => {
   const navigate = useNavigate();
   return (
     <div className="ui fixed menu headerPadding">
-      <div className="logout">
-        <i className="upload alternate icon" onClick={() => navigate("/transaction/upload")} />
+      <div className="logout" onClick={() => navigate("/transaction/upload")}>
+        <i className="upload alternate icon" />
         Send
       </div>
-      <div className="logout">
-        <i className="tasks icon leftMargin" onClick={() => navigate("/transaction/result/view/all")} />
+      <div className="logout" onClick={() => navigate("/transaction/result/view/all")}>
+        <i className="tasks icon leftMargin" />
         Checked
       </div>
-      <div className="logout">
-        <i className="home icon leftMargin" onClick={() => navigate("/operator")} />
+      <div className="logout" onClick={() => navigate("/operator")} >
+        <i className="home icon leftMargin" />
         Home
       </div>
 

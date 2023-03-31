@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TableCell, TableRow, TableBody, Table } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
@@ -21,34 +21,14 @@ const ValidateTransaction = (props) => {
         })
     }, [])
 
-    const saveOperatorResult = () => {
+    const saveOperatorResult = (isClear) => {
         console.log(valueRef.current.value);
 
         // const config = { headers: { 'Content-Type': 'application/json' } };
 
         const data = {
-            operatorResultId: 1,
-            isClear: true,
-            comment: valueRef.current.value,
-        }
-
-        api.put("/transaction/complete-operator-result", data).then((response) => {
-            navigate("/operator")
-        }).catch((err) => {
-            console.log(err);
-            alert("Check if json is valid!");
-            navigate("/operator")
-        })
-    }
-
-    const saveOperatorResultNegative = () => {
-        console.log(valueRef.current.value);
-
-        // const config = { headers: { 'Content-Type': 'application/json' } };
-
-        const data = {
-            operatorResultId: 1,
-            isClear: false,
+            operatorResultId: transaction.operatorResult.id,
+            isClear: isClear,
             comment: valueRef.current.value,
         }
 
@@ -138,12 +118,8 @@ const ValidateTransaction = (props) => {
             />
 
             <div style={{ justifyContent: "space-between", display: "flex", paddingBottom: "0.5rem" }}>
-
-                <button className="ui   button positive" onClick={saveOperatorResult}>Save As Clear</button>
-
-
-                <button className="ui button negative" onClick={saveOperatorResultNegative}>Save As Sactional</button>
-
+                <button className="ui   button positive" onClick={() => saveOperatorResult(true)}>Save As Clear</button>
+                <button className="ui button negative" onClick={() => saveOperatorResult(false)}>Save As Sactional</button>
             </div>
 
         </div>
