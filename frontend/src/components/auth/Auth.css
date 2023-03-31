@@ -19,6 +19,10 @@
     background: #fff;
 }
 
+.cPointer {
+    cursor: pointer;
+}
+
 pre {
     width: 70%;
     color: #fff;

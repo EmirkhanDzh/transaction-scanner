@@ -2,12 +2,12 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import "./Auth.css";
 
-function SignIn(props) {
+function SignInAdmin(props) {
     const { register, handleSubmit, formState } = useForm();
     const { errors } = formState
     const onSubmit = (data) => {
         console.log(data);
-        props.login(data, "ok");
+        props.adminLogin(data, "ok");
     };
     return (
         <div className="authContainer">
@@ -56,15 +56,15 @@ function SignIn(props) {
                         />
                     </div>
                     <p className="authP">{errors?.password?.message}</p>
-                    <button className="fluid ui button blue">Sign In As Operator</button>
+                    <button className="fluid ui button blue">Sign In As Admin</button>
                 </div>
             </form>
 
-            <Link className="signInUpFooter"  to='/admin/sign-in'>
-                <p>Sign In As Administrator </p>
+            <Link className="signInUpFooter"  to='/operator/sign-in'>
+                <p>Sign In As Operator </p>
             </Link>
         </div>
     );
 }
 
-export default SignIn;
+export default SignInAdmin;

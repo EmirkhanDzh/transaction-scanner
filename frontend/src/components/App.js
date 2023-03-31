@@ -9,6 +9,7 @@ import Auth from "./auth/Auth";
 import UploadTransactions from "./UploadTransactions";
 import CheckedTransactions from "./CheckedTransactions";
 import ViewResult from "./ViewResult";
+import SignUp from "./auth/SignUp";
 
 
 function App(props) {
@@ -17,46 +18,50 @@ function App(props) {
   const [searchResult, setSearchResult] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
 
-  localStorage.getItem("username") && localStorage.getItem("token") && api
-    .get(`/users/get?username=${localStorage.getItem("username")}`)
-    .then((response) => {
-      if (response.status !== 200) {
+  // localStorage.getItem("username") && localStorage.getItem("token") && api
+  //   .get(`/users/get?username=${localStorage.getItem("username")}`)
+  //   .then((response) => {
+  //     if (response.status !== 200) {
 
-        throw new Error("user doesn't exist");
-      }
+  //       throw new Error("user doesn't exist");
+  //     }
 
-      setIsAuth(true);
-    })
-    .catch(() => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("chatId");
-      setIsAuth(false);
-    });
+  //     setIsAuth(true);
+  //   })
+  //   .catch(() => {
+  //     localStorage.removeItem("token");
+  //     localStorage.removeItem("username");
+  //     localStorage.removeItem("chatId");
+  //     setIsAuth(false);
+  //   });
 
-  useEffect(() => {
-    const getAllProducts = async () => {
-      if (!isAuth) {
-        return;
-      }
+  if(!isAuth && localStorage.getItem("username") && localStorage.getItem("token")) {
+    setIsAuth(true);
+  }
 
-      const response = await api.get(`/products?username=${localStorage.getItem("username")}`)
+  // useEffect(() => {
+  //   const getAllProducts = async () => {
+  //     if (!isAuth) {
+  //       return;
+  //     }
 
-      if (response.status !== 200) {
-        alert("Couldn't retrieve products");
-        return;
-      }
+  //     const response = await api.get(`/products?username=${localStorage.getItem("username")}`)
 
-      if (response.data) {
-        setProducts(response.data);
-      }
+  //     if (response.status !== 200) {
+  //       alert("Couldn't retrieve products");
+  //       return;
+  //     }
 
-    };
-    getAllProducts();
-  }, [isAuth]);
+  //     if (response.data) {
+  //       setProducts(response.data);
+  //     }
+
+  //   };
+  //   getAllProducts();
+  // }, [isAuth]);
 
   const login = async (user) => {
-
+    localStorage.setItem("role", "operator");
     api.post(`/operator/auth/sign-in`, user).then((response) => {
       if (!response || response.status !== 200) {
         alert("Please check your username and password");
@@ -80,12 +85,47 @@ function App(props) {
       localStorage.setItem("token", "token");
       localStorage.setItem("username", "username");
       localStorage.setItem("operatorId", "operatorId");
+      localStorage.setItem("role", "operator");
       setIsAuth(true);
       // navigate("/operator");
       console.log(window.location.origin);
       window.location.replace(`${window.location.origin}/operator`);
 
       // window.location.reload();
+    });
+  };
+
+  const adminLogin = async (user) => {
+
+    localStorage.setItem("role", "admin");
+
+    api.post(`/operator/auth/sign-in`, user).then((response) => {
+      if (!response || response.status !== 200) {
+        alert("Please check your username and password");
+        return;
+      }
+
+      console.log(response);
+      console.log(user);
+
+      localStorage.setItem("token", "token");
+      localStorage.setItem("username", "username");
+      localStorage.setItem("role", "admin");
+
+      setIsAuth(true);
+
+      window.location.reload();
+    }).catch((err) => {
+
+      // alert("Please check your username and password");
+      // console.log(err);
+
+      localStorage.setItem("token", "token");
+      localStorage.setItem("username", "username");
+      localStorage.setItem("adminId", "adminId");
+      localStorage.setItem("role", "admin");
+      setIsAuth(true);
+      window.location.replace(`${window.location.origin}/`);
     });
   }
 
@@ -94,8 +134,10 @@ function App(props) {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     localStorage.removeItem("operatorId");
+    localStorage.removeItem("role");
+    localStorage.setItem("adminId", "adminId");
     setIsAuth(false);
-    window.location.replace(`${window.location.origin}/operator/auth`);
+    window.location.replace(`${window.location.origin}/`);
   }
 
   const signUp = async (user) => {
@@ -113,6 +155,11 @@ function App(props) {
         alert("Couldn't add a new user");
         console.log(error);
       });
+  }
+
+  console.log(isAuth)
+  if (!isAuth) {
+    return (<Auth login={login} adminLogin={adminLogin} logout={logout} signUp={signUp} />)
   }
 
   const addProductHandler = async (product) => {
@@ -174,7 +221,8 @@ function App(props) {
     }
   }
 
-  return (
+
+  return localStorage.getItem("role") !== "admin" ? (
     <div className='ui container'>
       <Router>
         <Header logout={logout} />
@@ -210,6 +258,17 @@ function App(props) {
 
             path={"/transaction/upload"}
             element={<UploadTransactions />}
+          />
+        </Routes>
+      </Router>
+    </div>
+  ) : (
+    <div className='ui container'>
+      <Router>
+        <Routes>
+          <Route
+            path={"/"}
+            element={<SignUp {...props} logout={logout} />}
           />
         </Routes>
       </Router>

@@ -55,7 +55,7 @@ function SignUp(props) {
         <div className="authContainer">
             <p className="invisible">Prrr</p>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h2>Sign up for Notiprice</h2>
+                <h2>Add a Operator</h2>
                 <div className="ui divider"></div>
                 <div className="ui form">
                     <div className="field">
@@ -103,11 +103,11 @@ function SignUp(props) {
                     <p className="authP">{errors?.passwordConfirm?.message}</p>
                     <p className="authP">{errors?.password?.message}</p>
                 </div>
-                <button className="fluid ui button blue">Sign Up</button>
+                <button className="fluid ui button blue">Add The Operator</button>
             </form >
-            <Link to="/" className="signInUpFooter">
-                Already on Notiprice? <u>Sign In</u>
-            </Link>
+            <div className="signInUpFooter cPointer"  onClick={props.logout}>
+                Logout
+            </div>
         </div >
     );
 }
