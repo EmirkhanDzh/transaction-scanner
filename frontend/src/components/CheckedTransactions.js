@@ -1,25 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "material-table";
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Link } from "react-router-dom";
+import api from "../api/AxiosApi";
 
 
 const CheckedTransactions = () => {
     const defaultMaterialTheme = createTheme();
-    const transactions = [{ "id": 1, "clientFrom": { "id": 1, "name": "Ivan Petrov", "patronymic": "Andreevich", "birthDay": [2001, 1, 1], "phoneNumber": "+79993334455", "citizenshipCountry": { "id": 1, "name": "Russia", "code": "RUS" } }, "clientTo": { "id": 2, "name": "Ivan Yan", "patronymic": "Andreevich", "birthDay": [2002, 1, 2], "phoneNumber": "+79993334444", "citizenshipCountry": { "id": 1, "name": "Russia", "code": "RUS" } }, "amount": 100, "currency": "RUB", "bankFrom": { "id": 1, "name": "Tinkoff", "code": "TNF", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "bankTo": { "id": 1, "name": "Tinkoff", "code": "TNF", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "paySystemFrom": { "name": "VISA", "code": "VSA", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "paySystemTo": { "name": "VISA", "code": "VSA", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "transferDate": [2023, 3, 29, 7, 0], "cityFrom": "Moscow", "cityTo": "Moscow", "countryFrom": { "id": 1, "name": "Russia", "code": "RUS" }, "countryTo": { "id": 1, "name": "Russia", "code": "RUS" }, "rulesEngineResult": { "id": 1, "transactionId": 1, "isClear": false, "clientSanctionId": 1, "bankSanctionId": null, "paysystemSanctionId": null, "countrySanctionId": null, "clientSanction": { "id": 1, "code": "SC1", "description": "Client is in DPRK list", "entity_id": 1 } }, "operatorResult": { "id": 1, "transactionId": 1, "isClear": false, "operatorId": 1, "isClearByOperator": false, "comment": "Да, действительно, клиент находится в санкционном списке" } }, { "id": 1, "clientFrom": { "id": 1, "name": "Ivan Petrov", "patronymic": "Andreevich", "birthDay": [2001, 1, 1], "phoneNumber": "+79993334455", "citizenshipCountry": { "id": 1, "name": "Russia", "code": "RUS" } }, "clientTo": { "id": 2, "name": "Ivan Yan", "patronymic": "Andreevich", "birthDay": [2002, 1, 2], "phoneNumber": "+79993334444", "citizenshipCountry": { "id": 1, "name": "Russia", "code": "RUS" } }, "amount": 100, "currency": "RUB", "bankFrom": { "id": 1, "name": "Tinkoff", "code": "TNF", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "bankTo": { "id": 1, "name": "Tinkoff", "code": "TNF", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "paySystemFrom": { "name": "VISA", "code": "VSA", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "paySystemTo": { "name": "VISA", "code": "VSA", "country": { "id": 1, "name": "Russia", "code": "RUS" } }, "transferDate": [2023, 3, 29, 7, 0], "cityFrom": "Moscow", "cityTo": "Moscow", "countryFrom": { "id": 1, "name": "Russia", "code": "RUS" }, "countryTo": { "id": 1, "name": "Russia", "code": "RUS" }, "rulesEngineResult": { "id": 1, "transactionId": 1, "isClear": false, "clientSanctionId": 1, "bankSanctionId": null, "paysystemSanctionId": null, "countrySanctionId": null, "clientSanction": { "id": 1, "code": "SC1", "description": "Client is in DPRK list", "entity_id": 1 } }, "operatorResult": { "id": 1, "transactionId": 1, "isClear": false, "operatorId": 1, "isClearByOperator": true, "comment": "Нет, клиент не находится в санкционном списке" } }]
 
+    const [transactions, setTransactions] = useState([])
+    useEffect(() => {
+        api.get(`/transaction/all`,
+            {
+                params: {
+                    userId: localStorage.getItem("userId") || 1,
+                    isChecked: true
+                }
+            }).then((response) => {
+                console.log(response.data);
+                setTransactions(response.data)
+            })
+    }, [])
 
     const columns = [
-        { title: 'Sender client', field: "clientFrom.name" },
-        { title: 'Recipient client', field: "clientTo.name" },
+        { title: 'Sender client', field: "clientFrom" },
+        { title: 'Recipient client', field: "clientTo" },
         { title: 'Amount', field: "amount" },
-        { title: 'Sender Bank', field: "bankFrom.name" },
-        { title: 'Recipient Bank', field: "bankTo.name" },
-        { title: 'Sender Paysystem', field: "paySystemFrom.name" },
-        { title: 'Recipient Paysystem', field: "paySystemTo.name" },
-        { title: 'Is Clear', render: rowData => <button className={`ui button ${rowData.operatorResult.isClearByOperator ? 'green' : 'red'}`}>{rowData.operatorResult.isClearByOperator ? 'Yes' : 'No'}</button>, field: "operatorResult.isClearByOperator" },
+        { title: 'Sender Bank', field: "bankFrom" },
+        { title: 'Recipient Bank', field: "bankTo" },
+        { title: 'Sender Paysystem', field: "paySystemFrom" },
+        { title: 'Recipient Paysystem', field: "paySystemTo" },
+        { title: 'Is Clear', render: rowData => <button className={`ui button ${rowData.operatorResult.isClear ? 'green' : 'red'}`}>{rowData.operatorResult.isClear ? 'Yes' : 'No'}</button>, field: "operatorResult.isClearByOperator" },
         {
-            title: 'View', render: rowData => <Link to={`/transaction/result/view/${rowData.name}`}>
+            title: 'View', render: rowData => <Link to={`/transaction/result/view/${rowData.id}`}>
                 <button className="ui button blue">View</button>
             </Link>
         }

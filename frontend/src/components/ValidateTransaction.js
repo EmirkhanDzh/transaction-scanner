@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { TableCell, TableRow, TableBody, Table } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -6,123 +6,35 @@ import CheckIcon from '@mui/icons-material/Check';
 import { red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import { Link } from "react-router-dom";
+import api from "../api/AxiosApi";
 
 const ValidateTransaction = (props) => {
     const navigate = useNavigate();
     const { id } = useParams()
+    const [transaction, setTransaction] = useState(null)
 
-    const transaction = {
-        "id": 1,
-        "clientFrom": {
-            "id": 1,
-            "name": "Ivan Petrov",
-            "patronymic": "Andreevich",
-            "birthDay": [
-                2001,
-                1,
-                1
-            ],
-            "phoneNumber": "+79993334455",
-            "citizenshipCountry": {
-                "id": 1,
-                "name": "Russia",
-                "code": "RUS"
-            }
-        },
-        "clientTo": {
-            "id": 2,
-            "name": "Ivan Yan",
-            "patronymic": "Andreevich",
-            "birthDay": [
-                2002,
-                1,
-                2
-            ],
-            "phoneNumber": "+79993334444",
-            "citizenshipCountry": {
-                "id": 1,
-                "name": "Russia",
-                "code": "RUS"
-            }
-        },
-        "amount": 100,
-        "currency": "RUB",
-        "bankFrom": {
-            "id": 1,
-            "name": "Tinkoff",
-            "code": "TNF",
-            "country": {
-                "id": 1,
-                "name": "Russia",
-                "code": "RUS"
-            }
-        },
-        "bankTo": {
-            "id": 1,
-            "name": "Tinkoff",
-            "code": "TNF",
-            "country": {
-                "id": 1,
-                "name": "Russia",
-                "code": "RUS"
-            }
-        },
-        "paySystemFrom": {
-            "name": "VISA",
-            "code": "VSA",
-            "country": {
-                "id": 1,
-                "name": "Russia",
-                "code": "RUS"
-            }
-        },
-        "paySystemTo": {
-            "name": "VISA",
-            "code": "VSA",
-            "country": {
-                "id": 1,
-                "name": "Russia",
-                "code": "RUS"
-            }
-        },
-        "transferDate": [
-            2023,
-            3,
-            29,
-            7,
-            0
-        ],
-        "cityFrom": "Moscow",
-        "cityTo": "Moscow",
-        "countryFrom": {
-            "id": 1,
-            "name": "Russia",
-            "code": "RUS"
-        },
-        "countryTo": {
-            "id": 1,
-            "name": "Russia",
-            "code": "RUS"
-        },
-        "rulesEngineResult": {
-            "id": 1,
-            "transactionId": 1,
-            "isClear": false,
-            "clientSanctionId": 1,
-            "bankSanctionId": null,
-            "paysystemSanctionId": null,
-            "countrySanctionId": null,
-            "clientSanction": {
-                "id": 1,
-                "code": "SC1",
-                "description": "Client is in DPRK list",
-                "entity_id": 1
-            }
-        },
-        "operatorResult": null
+    useEffect(() => {
+        api.get(`/transaction/${id}`).then((response) => {
+            console.log(response.data)
+            setTransaction(response.data)
+        })
+    }, [])
+
+    if (!transaction) {
+        return (<p>processing...</p>)
     }
 
-    return (
+    const sanction = transaction.operatorResult.rulesEngineResultDto.sanctionDto
+
+    const clientSanction = sanction.type === "ClientSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+    const bankSanction = sanction.type === "BankSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+    const paySystemSanction = sanction.type === "paySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+    const countrySanction = sanction.type === "countrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+
+
+    console.log(clientSanction)
+
+    return transaction ? (
         <div className="main">
             <div>
                 <h3>Transaction Validation</h3>
@@ -135,53 +47,33 @@ const ValidateTransaction = (props) => {
             <Table className="TransactionDetailTable">
                 <TableBody>
                     <TableRow>
-                        <TableCell className="FieldHeader">Sender Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.clientFrom.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
+                        <TableCell className="FieldHeader"><h5>Clients</h5></TableCell>
+                        <TableCell className="FieldValue">{`${transaction.clientFrom} → ${transaction.clientTo}`}</TableCell>
+                        <TableCell className="FieldResultIcon">{!clientSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription">{clientSanction || ""}</TableCell>
                     </TableRow>
+
                     <TableRow>
-                        <TableCell className="FieldHeader">Recipient Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.clientTo.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{false ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription">Получатель находится в списке санкций</TableCell>
+                        <TableCell className="FieldHeader"><h5>Banks</h5></TableCell>
+                        <TableCell className="FieldValue">{`${transaction.bankFrom} → ${transaction.bankTo}`}</TableCell>
+                        <TableCell className="FieldResultIcon">{!bankSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription">{bankSanction || ""}</TableCell>
                     </TableRow>
+
                     <TableRow>
-                        <TableCell className="FieldHeader">Sender Bank Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.bankFrom.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
+                        <TableCell className="FieldHeader"><h5>Paysystems</h5></TableCell>
+                        <TableCell className="FieldValue">{`${transaction.paySystemFrom} → ${transaction.paySystemTo}`}</TableCell>
+                        <TableCell className="FieldResultIcon">{!paySystemSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription">{paySystemSanction || ""}</TableCell>
                     </TableRow>
+
                     <TableRow>
-                        <TableCell className="FieldHeader">Recipient Bank Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.bankTo.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
+                        <TableCell className="FieldHeader"><h5>Countries</h5></TableCell>
+                        <TableCell className="FieldValue">{`${transaction.countryFrom} → ${transaction.countryTo}`}</TableCell>
+                        <TableCell className="FieldResultIcon">{!countrySanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                        <TableCell className="FieldResultDescription">{countrySanction || ""}</TableCell>
                     </TableRow>
-                    <TableRow>
-                        <TableCell className="FieldHeader">Sender Paysystem Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.paySystemFrom.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="FieldHeader">Recipient Paysystem Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.paySystemTo.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="FieldHeader">Sender Country Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.countryFrom.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell className="FieldHeader">Recipient Country Scoring</TableCell>
-                        <TableCell className="FieldValue">{transaction.countryTo.name}</TableCell>
-                        <TableCell className="FieldResultIcon">{true ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription"></TableCell>
-                    </TableRow>
+
                 </TableBody>
             </Table>
             <h4>Validation result:</h4>
@@ -205,7 +97,7 @@ const ValidateTransaction = (props) => {
             </div>
 
         </div>
-    );
+    ) : (<p>processing...</p>);
 }
 
 export default ValidateTransaction;

@@ -34,9 +34,9 @@ class SecurityConfig(private val jwtFilter: JwtFilter) : WebSecurityConfigurerAd
 //            .antMatchers("/products*").hasRole("USER")
 //            .antMatchers("/users*").hasRole("USER")
             .antMatchers("/*").permitAll()
-//            .and()
+            .and()
 //            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
-//            .cors().configurationSource(corsConfigurationSource())
+            .cors().configurationSource(corsConfigurationSource())
     }
 
     /**
