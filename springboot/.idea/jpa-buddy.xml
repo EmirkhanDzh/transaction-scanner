@@ -2,5 +2,7 @@
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig">
     <option name="defaultUnitInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="8fc525d8-8b37-4016-98fc-6b1450f32493" />
+    <option name="reLastEntityCreationPackage" value="transaction-scanner/src/main/kotlin/com/notiprice/entity" />
   </component>
 </project>

@@ -1,6 +1,9 @@
 package com.notiprice.controller
 
+import com.notiprice.dao.TransactionRepository
 import com.notiprice.dto.*
+import com.notiprice.entity.OperatorsResult
+import com.notiprice.entity.Transaction
 //import com.notiprice.service.TransactionService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,7 +16,8 @@ import java.time.LocalDateTime
 
 @RestController
 class TransactionController(
-//    private val transactionService: TransactionService
+//    private val transactionService: TransactionService,
+    private val transactionRepository: TransactionRepository,
 ) {
 
     val dbListOfTransactions = mutableListOf(
@@ -170,12 +174,28 @@ class TransactionController(
         transactionList.forEach {
             check(it.operatorResult == null) { "Operator result shouldn't have been set" }
             it.operatorResult = OperatorResultDto(
-                id = dbListOfTransactions.size + 1L,
+                id = null,
                 operatorId = 1,
             )
         }
 
         dbListOfTransactions.addAll(transactionList)
+
+        transactionRepository.saveAll(transactionList.map {
+            Transaction().apply {
+                id = 4
+                clientFrom = it.clientFrom
+                clientTo = it.clientTo
+                amount = it.amount
+                bankFrom = it.bankFrom
+                bankTo = it.bankTo
+                paySystemFrom = it.paySystemFrom
+                paySystemTo = it.paySystemTo
+                transferDate = it.transferDate
+                countryFrom = it.countryFrom
+                countryTo = it.countryTo
+            }
+        })
 
         // transactionService.saveAndAnalyseTransactionList(transactionList)
     }
