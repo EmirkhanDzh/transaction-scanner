@@ -13,7 +13,7 @@ open class RulesEngineResult() {
     @Column(name = "is_clear")
     open var isClear: Boolean? = null
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "sanction_id")
     open var sanction: Sanction? = null
 

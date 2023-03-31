@@ -1,9 +1,12 @@
 package com.notiprice.controller
 
+import com.notiprice.dao.OperatorRepository
+import com.notiprice.dao.OperatorsResultRepository
 import com.notiprice.extension.toDto
 import com.notiprice.extension.toEntity
 import com.notiprice.dao.TransactionRepository
 import com.notiprice.dto.*
+import com.notiprice.entity.OperatorsResult
 //import com.notiprice.service.TransactionService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,6 +21,8 @@ import java.time.LocalDateTime
 class TransactionController(
 //    private val transactionService: TransactionService,
     private val transactionRepository: TransactionRepository,
+    private val operatorsResultRepository: OperatorsResultRepository,
+    private val operatorRepository: OperatorRepository,
 ) {
 
     val dbListOfTransactions = mutableListOf(
@@ -111,7 +116,7 @@ class TransactionController(
                     isClear = false,
                     sanction = SanctionDto(
                         id = 3,
-                        type = "paySystemSanctionList",
+                        type = "PaySystemSanctionList",
                         value = "Mir",
                         description = "PaySystem in the sanction list of England",
                     )
@@ -144,7 +149,7 @@ class TransactionController(
                     isClear = false,
                     sanction = SanctionDto(
                         id = 4,
-                        type = "countrySanctionList",
+                        type = "CountrySanctionList",
                         value = "Tajikistan",
                         description = "Country in the sanction list of EU",
                     )
@@ -159,32 +164,34 @@ class TransactionController(
     @GetMapping("/transaction/all")
     fun getTransactions(@RequestParam operatorId: Long, @RequestParam isChecked: Boolean): List<TransactionDto> {
 
-        return transactionRepository.findAllByOperatorResult_OperatorId(operatorId).map {
-            it.toDto()
-        }
+        return transactionRepository
+            .findAllByOperatorResult_OperatorId(operatorId)
+            .filter {
+                if (isChecked) {
+                    it.operatorResult?.rulesEngineResult != null && checkNotNull(it.operatorResult).isClear != null
+                } else {
+                    it.operatorResult?.rulesEngineResult != null && checkNotNull(it.operatorResult).isClear == null
+                }
+            }
+            .map { it.toDto() }
 
-        return if (isChecked) {
-            dbListOfTransactions.filter { it.operatorResult?.rulesEngineResult != null && checkNotNull(it.operatorResult).isClear != null }
-        } else {
-            dbListOfTransactions.filter { it.operatorResult?.rulesEngineResult != null && checkNotNull(it.operatorResult).isClear == null }
-        }
-//        transactionService.getAllTransactionByUserId(userId)
     }
 
     @GetMapping("/transaction/{transactionId}")
     fun getTransaction(@PathVariable transactionId: Long): TransactionDto? =
-        dbListOfTransactions.find { it.id == transactionId }
-//        transactionService.getTransaction(transactionId)?.toDto()
+        transactionRepository.findById(transactionId).orElse(null)?.toDto()
 
     // сохранение решения от оператора
-    // подумать над редактированием уже принятого решения от оператора
     @PutMapping("/transaction/complete-operator-result")
     fun completeOperatorResult(@RequestBody dto: CompleteOperatorResultRequestDto) {
-        dbListOfTransactions.find { checkNotNull(it.operatorResult).id == dto.operatorResultId }?.apply {
-            operatorResult?.isClear = dto.isClear
-            operatorResult?.comment = dto.comment
-        }
-//        transactionService.createOperatorResult(operatorResultDto)
+
+        val result = operatorsResultRepository.findById(requireNotNull(dto.operatorResultId)).orElse(null)
+        requireNotNull(result) { "There is no operatorResult with id = ${dto.operatorResultId}" }
+
+        result.comment = dto.comment
+        result.isClear = dto.isClear
+
+        operatorsResultRepository.save(result)
     }
 
     /**
@@ -193,34 +200,16 @@ class TransactionController(
     @PostMapping("/transaction/save")
     fun saveTransactions(@RequestBody transactionList: List<TransactionDto>) {
 
-        transactionList.forEach {
+        val transactions = transactionList.map { it.toEntity() }
+
+        transactions.forEach {
             check(it.operatorResult == null) { "Operator result shouldn't have been set" }
-            it.operatorResult = OperatorResultDto(
-                // id = 4,
-                operator = OperatorDto(
-                    id = 1,
-                    username = "operator_1",
-                    password = "pwd_1",
-                ),
-                rulesEngineResult = RulesEngineResultDto(
-                    // id = 4,
-                    isClear = false,
-                    sanction = SanctionDto(
-                        // id = 4,
-                        type = "countrySanctionList",
-                        value = "USA",
-                        description = "Country in the sanction list of EAEU",
-                    )
-                ),
-                isClear = false,
-                comment = "USA in the sanction list of EU",
-            )
+
+            it.operatorResult = OperatorsResult().apply {
+                operator = operatorRepository.findById(1).get()
+            }
         }
 
-        // dbListOfTransactions.addAll(transactionList)
-
-        transactionRepository.saveAll(transactionList.map {
-            it.toEntity()
-        })
+        transactionRepository.saveAll(transactions)
     }
 }

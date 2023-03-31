@@ -16,11 +16,11 @@ open class OperatorsResult() {
     @Column(name = "comment", length = 1000)
     open var comment: String? = null
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "operator_id")
     open var operator: Operator? = null
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "rules_engine_result_id")
     open var rulesEngineResult: com.notiprice.entity.RulesEngineResult? = null
 
