@@ -13,7 +13,7 @@ export const TransactionsTable = () => {
         api.get(`/transaction/all`,
             {
                 params: {
-                    userId: localStorage.getItem("userId") || 1,
+                    operatorId: localStorage.getItem("operatorId") || 1,
                     isChecked: false
                 }
             }).then((response) => {

@@ -22,13 +22,22 @@ const ViewResult = (props) => {
    if (!transaction) {
       return (<p>processing...</p>)
    }
-   
-   const sanction = transaction.operatorResult.rulesEngineResultDto.sanctionDto
 
-   const clientSanction = sanction.type === "ClientSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-   const bankSanction = sanction.type === "BankSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-   const paySystemSanction = sanction.type === "paySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-   const countrySanction = sanction.type === "countrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+   const sanction = transaction?.operatorResult?.rulesEngineResultDto?.sanctionDto
+
+
+   let clientSanction
+   let bankSanction
+   let paySystemSanction
+   let countrySanction
+
+   if (sanction) {
+      clientSanction = sanction.type === "ClientSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+      bankSanction = sanction.type === "BankSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+      paySystemSanction = sanction.type === "paySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+      countrySanction = sanction.type === "countrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+   }
+
 
 
    const isClear = transaction.operatorResult.isClear
@@ -44,37 +53,37 @@ const ViewResult = (props) => {
 
          <h4>Rules result:</h4>
          <Table className="TransactionDetailTable">
-                <TableBody>
-                    <TableRow>
-                        <TableCell className="FieldHeader"><h5>Clients</h5></TableCell>
-                        <TableCell className="FieldValue">{`${transaction.clientFrom} → ${transaction.clientTo}`}</TableCell>
-                        <TableCell className="FieldResultIcon">{!clientSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription">{clientSanction || ""}</TableCell>
-                    </TableRow>
+            <TableBody>
+               <TableRow>
+                  <TableCell className="FieldHeader"><h5>Clients</h5></TableCell>
+                  <TableCell className="FieldValue">{`${transaction.clientFrom} → ${transaction.clientTo}`}</TableCell>
+                  <TableCell className="FieldResultIcon">{!clientSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                  <TableCell className="FieldResultDescription">{clientSanction || ""}</TableCell>
+               </TableRow>
 
-                    <TableRow>
-                        <TableCell className="FieldHeader"><h5>Banks</h5></TableCell>
-                        <TableCell className="FieldValue">{`${transaction.bankFrom} → ${transaction.bankTo}`}</TableCell>
-                        <TableCell className="FieldResultIcon">{!bankSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription">{bankSanction || ""}</TableCell>
-                    </TableRow>
+               <TableRow>
+                  <TableCell className="FieldHeader"><h5>Banks</h5></TableCell>
+                  <TableCell className="FieldValue">{`${transaction.bankFrom} → ${transaction.bankTo}`}</TableCell>
+                  <TableCell className="FieldResultIcon">{!bankSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                  <TableCell className="FieldResultDescription">{bankSanction || ""}</TableCell>
+               </TableRow>
 
-                    <TableRow>
-                        <TableCell className="FieldHeader"><h5>Paysystems</h5></TableCell>
-                        <TableCell className="FieldValue">{`${transaction.paySystemFrom} → ${transaction.paySystemTo}`}</TableCell>
-                        <TableCell className="FieldResultIcon">{!paySystemSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription">{paySystemSanction || ""}</TableCell>
-                    </TableRow>
+               <TableRow>
+                  <TableCell className="FieldHeader"><h5>Paysystems</h5></TableCell>
+                  <TableCell className="FieldValue">{`${transaction.paySystemFrom} → ${transaction.paySystemTo}`}</TableCell>
+                  <TableCell className="FieldResultIcon">{!paySystemSanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                  <TableCell className="FieldResultDescription">{paySystemSanction || ""}</TableCell>
+               </TableRow>
 
-                    <TableRow>
-                        <TableCell className="FieldHeader"><h5>Countries</h5></TableCell>
-                        <TableCell className="FieldValue">{`${transaction.countryFrom} → ${transaction.countryTo}`}</TableCell>
-                        <TableCell className="FieldResultIcon">{!countrySanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
-                        <TableCell className="FieldResultDescription">{countrySanction || ""}</TableCell>
-                    </TableRow>
+               <TableRow>
+                  <TableCell className="FieldHeader"><h5>Countries</h5></TableCell>
+                  <TableCell className="FieldValue">{`${transaction.countryFrom} → ${transaction.countryTo}`}</TableCell>
+                  <TableCell className="FieldResultIcon">{!countrySanction ? <CheckIcon /> : <CloseIcon sx={{ color: red[500] }} />}</TableCell>
+                  <TableCell className="FieldResultDescription">{countrySanction || ""}</TableCell>
+               </TableRow>
 
-                </TableBody>
-            </Table>
+            </TableBody>
+         </Table>
          <h4 className={`ui ${isClear ? 'green' : 'red'} header`}>Validation result: {isClear ? 'clear' : 'sanctioned'}</h4>
 
          <TextField

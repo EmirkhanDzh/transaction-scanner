@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { TableCell, TableRow, TableBody, Table } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,6 +10,7 @@ import api from "../api/AxiosApi";
 
 const ValidateTransaction = (props) => {
     const navigate = useNavigate();
+    const valueRef = useRef("");
     const { id } = useParams()
     const [transaction, setTransaction] = useState(null)
 
@@ -20,16 +21,64 @@ const ValidateTransaction = (props) => {
         })
     }, [])
 
+    const saveOperatorResult = () => {
+        console.log(valueRef.current.value);
+
+        // const config = { headers: { 'Content-Type': 'application/json' } };
+
+        const data = {
+            operatorResultId: 1,
+            isClear: true,
+            comment: valueRef.current.value,
+        }
+
+        api.put("/transaction/complete-operator-result", data).then((response) => {
+            navigate("/operator")
+        }).catch((err) => {
+            console.log(err);
+            alert("Check if json is valid!");
+            navigate("/operator")
+        })
+    }
+
+    const saveOperatorResultNegative = () => {
+        console.log(valueRef.current.value);
+
+        // const config = { headers: { 'Content-Type': 'application/json' } };
+
+        const data = {
+            operatorResultId: 1,
+            isClear: false,
+            comment: valueRef.current.value,
+        }
+
+        api.put("/transaction/complete-operator-result", data).then((response) => {
+            navigate("/operator")
+        }).catch((err) => {
+            console.log(err);
+            alert("Check if json is valid!");
+            navigate("/operator")
+        })
+    }
+
     if (!transaction) {
         return (<p>processing...</p>)
     }
 
-    const sanction = transaction.operatorResult.rulesEngineResultDto.sanctionDto
+    const sanction = transaction?.operatorResult?.rulesEngineResultDto?.sanctionDto
 
-    const clientSanction = sanction.type === "ClientSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-    const bankSanction = sanction.type === "BankSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-    const paySystemSanction = sanction.type === "paySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-    const countrySanction = sanction.type === "countrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+
+    let clientSanction
+    let bankSanction
+    let paySystemSanction
+    let countrySanction
+
+    if (sanction) {
+        clientSanction = sanction.type === "ClientSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+        bankSanction = sanction.type === "BankSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+        paySystemSanction = sanction.type === "paySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+        countrySanction = sanction.type === "countrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+    }
 
 
     console.log(clientSanction)
@@ -84,16 +133,17 @@ const ValidateTransaction = (props) => {
                 label="Input there a comment"
                 multiline
                 rows={4}
+                inputRef={valueRef}
                 defaultValue=""
             />
 
             <div style={{ justifyContent: "space-between", display: "flex", paddingBottom: "0.5rem" }}>
-                <Link to={`/`}>
-                    <button className="ui   button positive">Save As Clear</button>
-                </Link>
-                <Link to={`/`}>
-                    <button className="ui button negative">Save As Sactional</button>
-                </Link>
+
+                <button className="ui   button positive" onClick={saveOperatorResult}>Save As Clear</button>
+
+
+                <button className="ui button negative" onClick={saveOperatorResultNegative}>Save As Sactional</button>
+
             </div>
 
         </div>

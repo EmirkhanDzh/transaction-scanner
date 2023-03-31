@@ -84,7 +84,7 @@ function App(props) {
 
       localStorage.setItem("token", "token");
       localStorage.setItem("username", "username");
-      localStorage.setItem("operatorId", "operatorId");
+      localStorage.setItem("operatorId", 1);
       localStorage.setItem("role", "operator");
       setIsAuth(true);
       // navigate("/operator");

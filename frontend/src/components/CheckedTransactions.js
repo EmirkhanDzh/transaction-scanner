@@ -13,7 +13,7 @@ const CheckedTransactions = () => {
         api.get(`/transaction/all`,
             {
                 params: {
-                    userId: localStorage.getItem("userId") || 1,
+                    operatorId: localStorage.getItem("operatorId") || 1,
                     isChecked: true
                 }
             }).then((response) => {
