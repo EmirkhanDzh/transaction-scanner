@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "username": "operator_1",
+    "password": "pwd1"
+  },
+  {
+    "id": 2,
+    "username": "operator_2",
+    "password": "pwd2"
+  },
+  {
+    "id": 3,
+    "username": "operator_3",
+    "password": "pwd3"
+  },
+  {
+    "id": 4,
+    "username": "operator_4",
+    "password": "pwd4"
+  },
+  {
+    "id": 5,
+    "username": "operator_5",
+    "password": "pwd5"
+  }
+]

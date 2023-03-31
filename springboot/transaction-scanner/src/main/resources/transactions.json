@@ -1,0 +1,131 @@
+[
+  {
+    "id": 3,
+    "clientFrom": "Timur Gagarin",
+    "clientTo": "Oleg Popov ",
+    "amount": 85,
+    "bankFrom": "Rosbank",
+    "bankTo": "Tinkoff",
+    "paySystemFrom": "Mastercard",
+    "paySystemTo": "Mir",
+    "transferDate": "2023-03-30T20:48:00",
+    "countryFrom": "Russia",
+    "countryTo": "Russia",
+    "operatorResult": {
+      "id": 3,
+      "operatorId": 1,
+      "rulesEngineResultDto": {
+        "id": 3,
+        "isClear": false,
+        "sanctionDto": {
+          "id": 3,
+          "type": "paySystemSanctionList",
+          "value": "Mir",
+          "description": "PaySystem in the sanction list of England"
+        }
+      },
+      "isClear": true,
+      "comment": "Mir is Russia's official PaySystem"
+    }
+  },
+  {
+    "id": 4,
+    "clientFrom": "Anna Smirnova",
+    "clientTo": "Timur Gagarin",
+    "amount": 23,
+    "bankFrom": "Optbank",
+    "bankTo": "BapeshBank",
+    "paySystemFrom": "Mir",
+    "paySystemTo": "Maestro",
+    "transferDate": "2023-03-27T17:13:00",
+    "countryFrom": "Russia",
+    "countryTo": "Tajikistan",
+    "operatorResult": {
+      "id": 4,
+      "operatorId": 1,
+      "rulesEngineResultDto": {
+        "id": 4,
+        "isClear": false,
+        "sanctionDto": {
+          "id": 4,
+          "type": "countrySanctionList",
+          "value": "Tajikistan",
+          "description": "Country in the sanction list of EU"
+        }
+      },
+      "isClear": false,
+      "comment": "Yes, Tajikistan in the sanction list of EU"
+    }
+  }
+]
+
+
+
+[
+  {
+    "id": "1",
+    "clientFrom": "Gaiyp Akbarov",
+    "clientTo": "Gasyr Polotov ",
+    "amount": 170,
+    "bankFrom": "Belbank",
+    "bankTo": "DomalaqBank",
+    "paySystemFrom": "VISA",
+    "paySystemTo": "ELCARD",
+    "transferDate": "2023-02-22T21:22:00",
+    "countryFrom": "Belarus",
+    "countryTo": "Kazakhstan"
+    // "operatorResult" : {
+    //             "id" : 1,
+    //             "operator" : {
+    //                 "id" : 1,
+    //                 "username" : "operator_1",
+    //                 "password" : "pwd_1"
+    //             },
+    //             "rulesEngineResult" : {
+    //                 "id" : 4,
+    //                 "isClear" : false,
+    //                 "sanction" : {
+    //                     "id" : 4,
+    //                     "type" : "countrySanctionList",
+    //                     "value" : "Tajikistan",
+    //                     "description" : "Country in the sanction list of EU"
+    //                 }
+    //             },
+    //             "isClear" : false,
+    //             "comment " : "Yes, Tajikistan in the sanction list of EU"
+    // }
+  },
+  {
+    "id": "2",
+    "clientFrom": "Alla Kulikova",
+    "clientTo": "Archy Ivanov",
+    "amount": 382,
+    "bankFrom": "Optimabank",
+    "bankTo": "BashBank",
+    "paySystemFrom": "Mir",
+    "paySystemTo": "MasterCard",
+    "transferDate": "2023-03-23T17:13:00",
+    "countryFrom": "Kyrgyzstan",
+    "countryTo": "Azerbaijan"
+    //     "operatorResult" : {
+    //             "id" : 2,
+    //             "operator" : {
+    //                 "id" : 2,
+    //                 "username" : "operator_2",
+    //                 "password" : "pwd_2"
+    //             },
+    //             "rulesEngineResult" : {
+    //                 "id" : 5,
+    //                 "isClear" : false,
+    //                 "sanction" : {
+    //                     "id" : 5,
+    //                     "type" : "countrySanctionList",
+    //                     "value" : "USA",
+    //                     "description" : "Country in the sanction list of EAEU"
+    //                 }
+    //             },
+    //             "isClear" : false,
+    //             "comment " : "USA in the sanction list of EU"
+    // }
+  }
+]

@@ -7,9 +7,9 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=alma312
-      - POSTGRES_DB=transactionscanner
+      - POSTGRES_DB=notiprice
   backendapp:
-    container_name: transactionscanner
+    container_name: notiprice
     image: notiprice:latest
     build: ./
     ports:
@@ -17,5 +17,5 @@ services:
     depends_on:
       - postgre
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgre:5432/transactionscanner
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgre:5432/notiprice
 
