@@ -41,7 +41,7 @@ open class Transaction() {
     @Column(name = "country_to")
     open var countryTo: String? = null
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "operator_result_id")
     open var operatorResult: OperatorsResult? = null
 
