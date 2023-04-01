@@ -11,10 +11,13 @@ const UploadTransactions = (props) => {
     const saveTransaction = () => {
         console.log(valueRef.current.value);
 
-        const config = { headers: {'Content-Type': 'application/json'} };
+        const operatorId = localStorage.getItem("operatorId")
 
-        api.post("/transaction/save", valueRef.current.value, config).then((response)=>{
-            alert("Transactions were send to scanner engine!");
+        const config = { headers: { 'Content-Type': 'application/json' } };
+
+        api.post("/transaction/save?operatorId=" + operatorId, valueRef.current.value, config).then((response) => {
+            console.log("Transactions were send to scanner engine!");
+            navigate("/operator")
         }).catch((err) => {
             console.log(err);
             alert("Check if json is valid!");

@@ -10,13 +10,16 @@ export const TransactionsTable = () => {
     const [transactions, setTransactions] = useState([])
 
     useEffect(() => {
+        const operatorId = localStorage.getItem("operatorId")
         api.get(`/transaction/all`,
             {
                 params: {
-                    operatorId: localStorage.getItem("operatorId") || 1,
+                    operatorId: operatorId,
                     isChecked: false
-                }
+                },
+
             }).then((response) => {
+                console.log(operatorId)
                 console.log(response.data);
                 setTransactions(response.data)
             })

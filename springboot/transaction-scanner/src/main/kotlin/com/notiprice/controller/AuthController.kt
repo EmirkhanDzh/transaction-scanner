@@ -2,6 +2,8 @@ package com.notiprice.controller
 
 //import com.notiprice.security.JwtProvider
 
+import com.notiprice.dao.AdminRepository
+import com.notiprice.dao.OperatorRepository
 import com.notiprice.entity.Admin
 import com.notiprice.entity.AuthUser
 import com.notiprice.entity.Operator
@@ -22,12 +24,13 @@ import org.springframework.web.bind.annotation.*
  * Контроллер для аутентификации и регистрации.
  */
 @RestController
-@RequestMapping("/auth")
 class AuthController(
     private val operatorService: OperatorService,
     private val adminService: AdminService,
     private val authManager: AuthenticationManager,
     private val jwtUtil: JwtTokenUtil,
+    private val operatorRepository: OperatorRepository,
+    private val adminRepository: AdminRepository,
 
 //    private val jwtProvider: JwtProvider
 ) {
@@ -41,21 +44,21 @@ class AuthController(
         return savedUser
     }
 
-    /**
-     * Регистрация пользователя.
-     */
-    @PostMapping("/admin/sign-up")
-    fun addAdmin(@RequestBody user: Admin): Admin {
-        val savedUser = adminService.addUser(user)
-        savedUser.adminPassword = ""
-        return savedUser
-    }
+//    /**
+//     * Регистрация пользователя.
+//     */
+//    @PostMapping("/admin/sign-up")
+//    fun addAdmin(@RequestBody user: Admin): Admin {
+//        val savedUser = adminService.addUser(user)
+//        savedUser.adminPassword = ""
+//        return savedUser
+//    }
 
     /**
      * Проверяет пароль пользователя, если пароли совпадают, возвращает токен, если нет, то бросает исключение.
      */
-    @PostMapping("/operator/sign-in")
-    fun login(@RequestBody user: Operator): ResponseEntity<String> {
+    @PostMapping("/auth/operator/sign-in")
+    fun login(@RequestBody user: Operator): ResponseEntity<*> {
 //        return ResponseEntity.ok().body("accessToken")
 
         return try {
@@ -67,18 +70,27 @@ class AuthController(
             )
 
             val accessToken = jwtUtil.generateAccessToken(authentication.principal as AuthUser)
-            ResponseEntity.ok().body(accessToken)
+
+            val entity = operatorRepository.findByOperatorUsername(user.username)!!
+
+            ResponseEntity.ok().body(
+                mapOf(
+                    "token" to accessToken,
+                    "operatorId" to entity.id,
+                    "operatorUsername" to entity.username
+                )
+            )
         } catch (ex: BadCredentialsException) {
             logger.warn { ex.message }
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build<String>()
         } catch (th: Throwable) {
             logger.error { th.message }
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build<String>()
         }
     }
 
-    @PostMapping("/admin/sign-in")
-    fun loginAdmin(@RequestBody user: Admin): ResponseEntity<String> {
+    @PostMapping("/auth/admin/sign-in")
+    fun loginAdmin(@RequestBody user: Admin): ResponseEntity<*> {
         return try {
 
             val token = UsernamePasswordAuthenticationToken(user.username, user.password)
@@ -87,14 +99,22 @@ class AuthController(
                 token
             )
 
+            val entity = adminRepository.findByAdminUsername(user.username)!!
+
             val accessToken = jwtUtil.generateAccessToken(authentication.principal as AuthUser)
-            ResponseEntity.ok().body(accessToken)
+            ResponseEntity.ok().body(
+                mapOf(
+                    "token" to accessToken,
+                    "adminId" to entity.id,
+                    "adminUsername" to entity.username
+                )
+            )
         } catch (ex: BadCredentialsException) {
             logger.warn { ex.message }
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).build<String>()
         } catch (th: Throwable) {
             logger.error { th.message }
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build<String>()
         }
     }
 

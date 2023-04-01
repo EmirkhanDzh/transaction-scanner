@@ -20,6 +20,10 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import java.util.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -83,29 +87,22 @@ class SecurityConfig(
             }
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
-//        http!!.httpBasic().disable().csrf().disable()
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            .and()
-//            .authorizeRequests()
-//            .antMatchers("/operator*").hasRole("USER")
-//            .antMatchers("/transaction*").hasRole("USER")
-//            .antMatchers("/auth*").permitAll()
-//            .and()
-//            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
-//            .cors().configurationSource(corsConfigurationSource())
+
+        http.cors().configurationSource(corsConfigurationSource())
+
     }
 
-//    /**
-//     * Конфигурация для CORS Policy.
-//     */
-//    @Bean
-//    fun corsConfigurationSource(): CorsConfigurationSource {
-//        val configuration = CorsConfiguration()
-//        configuration.allowedOrigins = listOf("*")
-//        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
-//        configuration.allowedHeaders = Collections.singletonList("*")
-//        val source = UrlBasedCorsConfigurationSource()
-//        source.registerCorsConfiguration("/**", configuration)
-//        return source
-//    }
+    /**
+     * Конфигурация для CORS Policy.
+     */
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = listOf("*")
+        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
+        configuration.allowedHeaders = Collections.singletonList("*")
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
+    }
 }

@@ -6,28 +6,6 @@ import "./Auth.css";
 
 function SignUp(props) {
 
-    const { id } = useParams();
-    console.log(id)
-    const navigate = useNavigate();
-
-    const onSubmit = async (data) => {
-        const user = {
-            chatId: id,
-            username: data.username,
-            password: data.password
-        };
-
-        if (await props.signUp(user, "ok")) {
-            navigate("/");
-        } else {
-
-            alert("Cannot connect to server");
-            window.location.reload();
-        }
-
-
-    };
-
     const formSchema = Yup.object().shape({
         password: Yup.string()
             .required('Password is required')
@@ -54,7 +32,7 @@ function SignUp(props) {
     return (
         <div className="authContainer">
             <p className="invisible">Prrr</p>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(props.signUp)}>
                 <h2>Add a Operator</h2>
                 <div className="ui divider"></div>
                 <div className="ui form">

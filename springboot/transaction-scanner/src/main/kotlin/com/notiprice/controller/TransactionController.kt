@@ -193,7 +193,7 @@ class TransactionController(
      * контроллер, который обрабатывает отправку транзакций со стороны пользователя
      */
     @PostMapping("/save")
-    fun saveTransactions(@RequestBody transactionList: List<TransactionDto>) {
+    fun saveTransactions(@RequestParam operatorId: Long, @RequestBody transactionList: List<TransactionDto>) {
 
         val transactions = transactionList.map { it.toEntity() }
 
@@ -201,7 +201,7 @@ class TransactionController(
             check(it.operatorResult == null) { "Operator result shouldn't have been set" }
 
             it.operatorResult = OperatorsResult().apply {
-                operator = operatorRepository.findById(1).get()
+                operator = operatorRepository.findById(operatorId).get()
             }
         }
 

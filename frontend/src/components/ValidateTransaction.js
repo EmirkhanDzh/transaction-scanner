@@ -45,8 +45,7 @@ const ValidateTransaction = (props) => {
         return (<p>processing...</p>)
     }
 
-    const sanction = transaction?.operatorResult?.rulesEngineResultDto?.sanctionDto
-
+    const sanction = transaction?.operatorResult?.rulesEngineResult?.sanction
 
     let clientSanction
     let bankSanction
@@ -56,8 +55,8 @@ const ValidateTransaction = (props) => {
     if (sanction) {
         clientSanction = sanction.type === "ClientSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
         bankSanction = sanction.type === "BankSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-        paySystemSanction = sanction.type === "paySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
-        countrySanction = sanction.type === "countrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+        paySystemSanction = sanction.type === "PaySystemSanctionList" ? `${sanction.value + ": " + sanction.description}` : null
+        countrySanction = sanction.type === "CountrySanctionList" ? `${sanction.value + ": " + sanction.description}` : null
     }
 
 
