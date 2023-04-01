@@ -1,10 +1,8 @@
 package com.transaction.scanner.config
 
-//import com.notiprice.security.JwtFilter
-
-import com.notiprice.dao.AdminRepository
-import com.notiprice.dao.OperatorRepository
-import com.notiprice.security.JwtTokenFilter
+import com.transaction.scanner.dao.AdminRepository
+import com.transaction.scanner.dao.OperatorRepository
+import com.transaction.scanner.security.JwtTokenFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableScheduling

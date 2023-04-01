@@ -1,7 +1,7 @@
 package com.transaction.scanner.controller
 
-import com.notiprice.dto.*
-import com.notiprice.service.TransactionService
+import com.transaction.scanner.dto.*
+import com.transaction.scanner.service.TransactionService
 import org.springframework.web.bind.annotation.*
 
 @RestController

@@ -1,6 +1,6 @@
 package com.transaction.scanner.security
 
-import com.notiprice.entity.AuthUser
+import com.transaction.scanner.entity.AuthUser
 import io.jsonwebtoken.*
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value

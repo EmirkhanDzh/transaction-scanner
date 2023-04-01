@@ -1,6 +1,6 @@
 package com.transaction.scanner.dao
 
-import com.notiprice.entity.Operator
+import com.transaction.scanner.entity.Operator
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface OperatorRepository: JpaRepository<Operator, Long> {

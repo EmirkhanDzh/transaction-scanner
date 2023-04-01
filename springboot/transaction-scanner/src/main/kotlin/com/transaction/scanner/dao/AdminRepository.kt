@@ -1,6 +1,6 @@
 package com.transaction.scanner.dao;
 
-import com.notiprice.entity.Admin
+import com.transaction.scanner.entity.Admin
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AdminRepository : JpaRepository<Admin, Long> {

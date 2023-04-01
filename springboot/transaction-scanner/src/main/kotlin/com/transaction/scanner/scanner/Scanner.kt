@@ -1,7 +1,7 @@
 package com.transaction.scanner.scanner
 
-import com.notiprice.entity.Sanction
-import com.notiprice.entity.Transaction
+import com.transaction.scanner.entity.Sanction
+import com.transaction.scanner.entity.Transaction
 
 interface Scanner {
     fun scan(tr: Transaction, sanctions: List<Sanction>): List<Sanction> {

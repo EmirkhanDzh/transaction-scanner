@@ -1,11 +1,11 @@
 package com.transaction.scanner.service
 
-import com.notiprice.dao.AdminRepository
-import com.notiprice.dao.OperatorRepository
-import com.notiprice.entity.Admin
-import com.notiprice.entity.AuthUser
-import com.notiprice.entity.Operator
-import com.notiprice.security.JwtTokenUtil
+import com.transaction.scanner.dao.AdminRepository
+import com.transaction.scanner.dao.OperatorRepository
+import com.transaction.scanner.entity.Admin
+import com.transaction.scanner.entity.AuthUser
+import com.transaction.scanner.entity.Operator
+import com.transaction.scanner.security.JwtTokenUtil
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication

@@ -1,7 +1,7 @@
 package com.transaction.scanner.service
 
-import com.notiprice.dao.OperatorRepository
-import com.notiprice.entity.Operator
+import com.transaction.scanner.dao.OperatorRepository
+import com.transaction.scanner.entity.Operator
 import org.springframework.stereotype.Component
 
 @Component

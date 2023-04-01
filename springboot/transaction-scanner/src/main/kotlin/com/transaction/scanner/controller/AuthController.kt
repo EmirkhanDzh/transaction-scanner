@@ -1,8 +1,8 @@
 package com.transaction.scanner.controller
 
-import com.notiprice.entity.Admin
-import com.notiprice.entity.Operator
-import com.notiprice.service.AuthService
+import com.transaction.scanner.entity.Admin
+import com.transaction.scanner.entity.Operator
+import com.transaction.scanner.service.AuthService
 import mu.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

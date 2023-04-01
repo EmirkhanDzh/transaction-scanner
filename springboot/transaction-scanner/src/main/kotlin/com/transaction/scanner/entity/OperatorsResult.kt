@@ -22,7 +22,7 @@ open class OperatorsResult() {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinColumn(name = "rules_engine_result_id")
-    open var rulesEngineResult: com.notiprice.entity.RulesEngineResult? = null
+    open var rulesEngineResult: com.transaction.scanner.entity.RulesEngineResult? = null
 
     constructor(
         id: Long?,

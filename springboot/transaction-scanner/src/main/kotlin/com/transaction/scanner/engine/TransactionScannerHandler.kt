@@ -1,12 +1,12 @@
 package com.transaction.scanner.engine
 
-import com.notiprice.dao.SanctionRepository
-import com.notiprice.dao.TransactionDao
-import com.notiprice.dao.TransactionRepository
-import com.notiprice.entity.RulesEngineResult
-import com.notiprice.entity.Sanction
-import com.notiprice.entity.Transaction
-import com.notiprice.scanner.Scanner
+import com.transaction.scanner.dao.SanctionRepository
+import com.transaction.scanner.dao.TransactionDao
+import com.transaction.scanner.dao.TransactionRepository
+import com.transaction.scanner.entity.RulesEngineResult
+import com.transaction.scanner.entity.Sanction
+import com.transaction.scanner.entity.Transaction
+import com.transaction.scanner.scanner.Scanner
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
 

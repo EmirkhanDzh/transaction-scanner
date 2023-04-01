@@ -1,13 +1,13 @@
 package com.transaction.scanner.service
 
-import com.notiprice.dao.OperatorRepository
-import com.notiprice.dao.OperatorsResultRepository
-import com.notiprice.dao.TransactionRepository
-import com.notiprice.dto.CompleteOperatorResultRequestDto
-import com.notiprice.dto.TransactionDto
-import com.notiprice.entity.OperatorsResult
-import com.notiprice.extension.toDto
-import com.notiprice.extension.toEntity
+import com.transaction.scanner.dao.OperatorRepository
+import com.transaction.scanner.dao.OperatorsResultRepository
+import com.transaction.scanner.dao.TransactionRepository
+import com.transaction.scanner.dto.CompleteOperatorResultRequestDto
+import com.transaction.scanner.dto.TransactionDto
+import com.transaction.scanner.entity.OperatorsResult
+import com.transaction.scanner.extension.toDto
+import com.transaction.scanner.extension.toEntity
 import org.springframework.stereotype.Service
 
 @Service
