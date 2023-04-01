@@ -65,8 +65,8 @@ fun OperatorDto.toEntity() = Operator(
 
 fun Operator.toDto() = OperatorDto(
     id = this.id,
-    username = this.username,
-    password = this.password,
+    username = this.operatorUsername,
+    password = this.operatorPassword,
 )
 
 fun RulesEngineResultDto.toEntity() = RulesEngineResult(

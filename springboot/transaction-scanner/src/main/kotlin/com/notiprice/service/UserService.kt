@@ -1,77 +1,40 @@
 package com.notiprice.service
 
-import com.notiprice.dao.UserDao
-import com.notiprice.dao.UserDaoImpl
-import com.notiprice.entity.User
+import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.stereotype.Service
 
 /**
  * Сервис для работы с пользователем.
  */
-@Service
-class UserService(private val userDao: UserDao = UserDaoImpl()) {
+abstract class UserService<T>(
+    private val userDao: JpaRepository<T, Long>,
+//                              private val bCryptPasswordEncoder: BCryptPasswordEncoder
+) {
     /**
      * Для хеширования пароля.
      */
-    private val passwordEncoder = BCryptPasswordEncoder()
+    protected val passwordEncoder = BCryptPasswordEncoder()
+
+    abstract fun encodePassword(user: T)
 
     /**
      * Добавление пользователя.
      */
-    fun addUser(user: User): User {
-
-        user.password = passwordEncoder.encode(user.password)
+    fun addUser(user: T): T {
+        encodePassword(user)
 
         return try {
             userDao.save(user)
         } catch (th: Throwable) {
-            throw IllegalArgumentException("Username or Telegram already exist")
+
+            throw IllegalArgumentException("Username already exist")
         }
-    }
-
-    /**
-     * Получение пользователя по идентификатору.
-     */
-    fun getProductById(id: Long): User {
-        return userDao.findByIdOrNull(id)
-            ?: throw IllegalArgumentException("No such user with id = $id")
-    }
-
-    /**
-     * Получение пользователя по пользовательскому имени.
-     */
-    fun getUserByUsername(username: String): User {
-        return userDao.findByUsernameOrNull(username)
-            ?: throw IllegalArgumentException("No such user with id = $username")
     }
 
     /**
      * Проверяет пароль пользователя, если пароли совпадают, возвращает пользователя, если нет, то бросает исключение.
      */
-    fun login(user: User): User {
+    abstract fun login(user: T): T
 
-        val userDb = getUserByUsername(user.username)
 
-        if (!passwordEncoder.matches(user.password, userDb.password)) {
-
-            throw IllegalArgumentException("Password is incorrect!")
-        }
-
-        return userDb
-    }
-
-    /**
-     * Изменение данных о пользователе.
-     */
-    fun updateUser(user: User) {
-        require(userDao.update(user) == 1)
-    }
-
-    /**
-     * Удаление пользователя.
-     */
-    fun deleteProduct(id: Long) {
-        require(userDao.delete(id) == 1)
-    }
 }

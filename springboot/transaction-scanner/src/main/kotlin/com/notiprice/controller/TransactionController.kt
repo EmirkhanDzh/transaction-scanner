@@ -7,17 +7,12 @@ import com.notiprice.extension.toEntity
 import com.notiprice.dao.TransactionRepository
 import com.notiprice.dto.*
 import com.notiprice.entity.OperatorsResult
+import org.springframework.web.bind.annotation.*
 //import com.notiprice.service.TransactionService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
+@RequestMapping("/transaction")
 class TransactionController(
 //    private val transactionService: TransactionService,
     private val transactionRepository: TransactionRepository,
@@ -161,7 +156,7 @@ class TransactionController(
     )
 
     // возвращать сущности вместо айдишников
-    @GetMapping("/transaction/all")
+    @GetMapping("/all")
     fun getTransactions(@RequestParam operatorId: Long, @RequestParam isChecked: Boolean): List<TransactionDto> {
 
         return transactionRepository
@@ -177,12 +172,12 @@ class TransactionController(
 
     }
 
-    @GetMapping("/transaction/{transactionId}")
+    @GetMapping("/{transactionId}")
     fun getTransaction(@PathVariable transactionId: Long): TransactionDto? =
         transactionRepository.findById(transactionId).orElse(null)?.toDto()
 
     // сохранение решения от оператора
-    @PutMapping("/transaction/complete-operator-result")
+    @PutMapping("/complete-operator-result")
     fun completeOperatorResult(@RequestBody dto: CompleteOperatorResultRequestDto) {
 
         val result = operatorsResultRepository.findById(requireNotNull(dto.operatorResultId)).orElse(null)
@@ -197,7 +192,7 @@ class TransactionController(
     /**
      * контроллер, который обрабатывает отправку транзакций со стороны пользователя
      */
-    @PostMapping("/transaction/save")
+    @PostMapping("/save")
     fun saveTransactions(@RequestBody transactionList: List<TransactionDto>) {
 
         val transactions = transactionList.map { it.toEntity() }

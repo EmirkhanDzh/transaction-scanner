@@ -1,26 +1,40 @@
 package com.notiprice.entity
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+import javax.persistence.*
 
 @Entity
 @Table(name = "operators")
-open class Operator() {
+class Operator(): AuthUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    open var id: Long? = null
+    var id: Long? = null
 
     @Column(name = "username")
-    open var username: String? = null
+    var operatorUsername: String? = null
 
     @Column(name = "password")
-    open var password: String? = null
+    var operatorPassword: String? = null
 
     constructor(id: Long?, username: String?, password: String?) : this() {
         this.id = id
-        this.username = username
-        this.password = password
+        this.operatorUsername = username
+        this.operatorPassword = password
     }
+
+    override fun getUserId(): Long? {
+        return id
+    }
+
+
+    override fun getPassword(): String? {
+        return operatorPassword
+    }
+
+    override fun getUsername(): String? {
+        return operatorUsername
+    }
+
 }
