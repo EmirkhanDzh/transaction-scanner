@@ -10,14 +10,14 @@ function SignUp(props) {
         password: Yup.string()
             .required('Password is required')
             .matches(/^[a-z0-9]*$/i, { message: "Only lowercase letters and numbers are allowed" })
-            .min(4, 'Password length should be at least 4 characters'),
+            .min(5, 'Password length should be at least 5 characters'),
         passwordConfirm: Yup.string()
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password')], 'Passwords must and should match'),
         username: Yup.string()
             .matches(/^[a-z0-9]*$/i, { message: "Only lowercase letters and numbers are allowed" })
             .required('Username is required')
-            .min(4, 'Username length should be at least 4 characters'),
+            .min(5, 'Username length should be at least 5 characters'),
 
     });
 
